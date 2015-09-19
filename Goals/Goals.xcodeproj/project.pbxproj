@@ -16,6 +16,7 @@
 		935409791BADF43B003E8454 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935409781BADF43B003E8454 /* Social.framework */; };
 		9354097B1BADF531003E8454 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9354097A1BADF531003E8454 /* Accounts.framework */; };
 		9354097D1BADF55D003E8454 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9354097C1BADF55D003E8454 /* FBSDKLoginKit.framework */; };
+		935409811BADF998003E8454 /* YNCGoal.m in Sources */ = {isa = PBXBuildFile; fileRef = 935409801BADF998003E8454 /* YNCGoal.m */; };
 		93FBB2DD1BADD5EE00022B2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2DC1BADD5EE00022B2E /* main.m */; };
 		93FBB2E01BADD5EE00022B2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2DF1BADD5EE00022B2E /* AppDelegate.m */; };
 		93FBB2E31BADD5EE00022B2E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2E21BADD5EE00022B2E /* ViewController.m */; };
@@ -59,6 +60,8 @@
 		935409781BADF43B003E8454 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		9354097A1BADF531003E8454 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		9354097C1BADF55D003E8454 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		9354097F1BADF998003E8454 /* YNCGoal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCGoal.h; sourceTree = "<group>"; };
+		935409801BADF998003E8454 /* YNCGoal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCGoal.m; sourceTree = "<group>"; };
 		93FBB2D71BADD5EE00022B2E /* Goals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Goals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93FBB2DB1BADD5EE00022B2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93FBB2DC1BADD5EE00022B2E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -130,13 +133,22 @@
 			name = Util;
 			sourceTree = "<group>";
 		};
+		9354097E1BADF947003E8454 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9354097F1BADF998003E8454 /* YNCGoal.h */,
+				935409801BADF998003E8454 /* YNCGoal.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		93FBB2CE1BADD5EE00022B2E = {
 			isa = PBXGroup;
 			children = (
-				93FBB3411BADE4EE00022B2E /* Frameworks */,
 				93FBB2D91BADD5EE00022B2E /* Goals */,
 				93FBB2F31BADD5EE00022B2E /* GoalsTests */,
 				93FBB2D81BADD5EE00022B2E /* Products */,
+				93FBB3411BADE4EE00022B2E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -152,6 +164,7 @@
 		93FBB2D91BADD5EE00022B2E /* Goals */ = {
 			isa = PBXGroup;
 			children = (
+				9354097E1BADF947003E8454 /* Model */,
 				935409681BADED8F003E8454 /* Util */,
 				93FBB2DE1BADD5EE00022B2E /* AppDelegate.h */,
 				93FBB2DF1BADD5EE00022B2E /* AppDelegate.m */,
@@ -323,6 +336,7 @@
 				93FBB2E01BADD5EE00022B2E /* AppDelegate.m in Sources */,
 				9354096E1BADEE5F003E8454 /* YNCLoginViewController.m in Sources */,
 				9354096B1BADEDA7003E8454 /* YNCAutoLayout.m in Sources */,
+				935409811BADF998003E8454 /* YNCGoal.m in Sources */,
 				93FBB2DD1BADD5EE00022B2E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
