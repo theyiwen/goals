@@ -7,6 +7,7 @@
 //
 
 #import "YNCGoal.h"
+#import "YNCUser.h"
 
 const struct YNCGoalPFKey YNCGoalPFKey = {
   .titleKey = @"title",
@@ -16,7 +17,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 
 @interface YNCGoal()
 
-@property (nonatomic, readwrite) NSArray *goals;
+@property (nonatomic, readwrite) NSArray *users;
 @property (strong, nonatomic) PFObject *pfObject;
 
 @end
@@ -38,10 +39,22 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   return (NSString *)self.pfObject[YNCGoalPFKey.descriptionKey];
 }
 
+- (NSArray *)users {
+  if (!_users) {
+    NSMutableArray *usersBuilder = [[NSMutableArray alloc] init];
+    for (PFObject *userObject in self.pfObject[YNCGoalPFKey.usersListKey]) {
+      [usersBuilder addObject:[[YNCUser alloc] initWithPFObject:userObject]];
+    }
+    _users = [usersBuilder copy];
+  }
+  return _users;
+}
+
 + (void)loadGoalsWithCallback:(void (^)(NSArray *goals, NSError *error))callback {
   PFQuery *query = [PFQuery queryWithClassName:[YNCGoal pfClassName]];
   [query orderByDescending:@"createdAt"];
   [query whereKey:YNCGoalPFKey.usersListKey equalTo:[PFUser currentUser]];
+  [query includeKey:YNCGoalPFKey.usersListKey];
   query.cachePolicy = kPFCachePolicyNetworkElseCache;
   [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
     if (!error) {
