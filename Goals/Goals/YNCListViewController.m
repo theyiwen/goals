@@ -7,6 +7,7 @@
 //
 
 #import "YNCListViewController.h"
+#import "YNCGoalViewController.h"
 #import "YNCAutoLayout.h"
 #import "YNCGoal.h"
 
@@ -45,6 +46,10 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
   }];
 }
 
+- (YNCGoal *)goalAtIndexPath:(NSIndexPath *)indexPath {
+  return (YNCGoal *)self.goals[indexPath.row];
+
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   return 1;
 }
@@ -55,9 +60,15 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kYNCListViewCellIdentifier];
-  YNCGoal *goal = (YNCGoal *)self.goals[indexPath.row];
+  YNCGoal *goal = [self goalAtIndexPath:indexPath];
   cell.textLabel.text = goal.title;
   return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  YNCGoal *goal = [self goalAtIndexPath:indexPath];
+  YNCGoalViewController *goalVC = [[YNCGoalViewController alloc] initWithGoal:goal];
+  [self.navigationController pushViewController:goalVC animated:YES];
 }
 
 @end
