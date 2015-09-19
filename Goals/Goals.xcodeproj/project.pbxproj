@@ -7,10 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9354096B1BADEDA7003E8454 /* YNCAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354096A1BADEDA7003E8454 /* YNCAutoLayout.m */; };
+		9354096E1BADEE5F003E8454 /* YNCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354096D1BADEE5F003E8454 /* YNCLoginViewController.m */; };
+		935409701BADEEA9003E8454 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9354096F1BADEEA9003E8454 /* ParseUI.framework */; };
+		935409721BADEF7E003E8454 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935409711BADEF7E003E8454 /* FBSDKCoreKit.framework */; };
+		935409751BADF2BF003E8454 /* YNCListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 935409741BADF2BF003E8454 /* YNCListViewController.m */; };
+		935409771BADF403003E8454 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935409761BADF403003E8454 /* ParseFacebookUtilsV4.framework */; };
+		935409791BADF43B003E8454 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935409781BADF43B003E8454 /* Social.framework */; };
+		9354097B1BADF531003E8454 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9354097A1BADF531003E8454 /* Accounts.framework */; };
+		9354097D1BADF55D003E8454 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9354097C1BADF55D003E8454 /* FBSDKLoginKit.framework */; };
 		93FBB2DD1BADD5EE00022B2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2DC1BADD5EE00022B2E /* main.m */; };
 		93FBB2E01BADD5EE00022B2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2DF1BADD5EE00022B2E /* AppDelegate.m */; };
 		93FBB2E31BADD5EE00022B2E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2E21BADD5EE00022B2E /* ViewController.m */; };
-		93FBB2E61BADD5EE00022B2E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93FBB2E41BADD5EE00022B2E /* Main.storyboard */; };
 		93FBB2E81BADD5EE00022B2E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93FBB2E71BADD5EE00022B2E /* Images.xcassets */; };
 		93FBB2EB1BADD5EE00022B2E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FBB2E91BADD5EE00022B2E /* LaunchScreen.xib */; };
 		93FBB2F71BADD5EE00022B2E /* GoalsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2F61BADD5EE00022B2E /* GoalsTests.m */; };
@@ -39,6 +47,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		935409691BADEDA7003E8454 /* YNCAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCAutoLayout.h; sourceTree = "<group>"; };
+		9354096A1BADEDA7003E8454 /* YNCAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCAutoLayout.m; sourceTree = "<group>"; };
+		9354096C1BADEE5F003E8454 /* YNCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCLoginViewController.h; sourceTree = "<group>"; };
+		9354096D1BADEE5F003E8454 /* YNCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCLoginViewController.m; sourceTree = "<group>"; };
+		9354096F1BADEEA9003E8454 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
+		935409711BADEF7E003E8454 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		935409731BADF2BF003E8454 /* YNCListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCListViewController.h; sourceTree = "<group>"; };
+		935409741BADF2BF003E8454 /* YNCListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCListViewController.m; sourceTree = "<group>"; };
+		935409761BADF403003E8454 /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
+		935409781BADF43B003E8454 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		9354097A1BADF531003E8454 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		9354097C1BADF55D003E8454 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		93FBB2D71BADD5EE00022B2E /* Goals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Goals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93FBB2DB1BADD5EE00022B2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93FBB2DC1BADD5EE00022B2E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -46,7 +66,6 @@
 		93FBB2DF1BADD5EE00022B2E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		93FBB2E11BADD5EE00022B2E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		93FBB2E21BADD5EE00022B2E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		93FBB2E51BADD5EE00022B2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		93FBB2E71BADD5EE00022B2E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		93FBB2EA1BADD5EE00022B2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		93FBB2F01BADD5EE00022B2E /* GoalsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoalsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +90,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9354097B1BADF531003E8454 /* Accounts.framework in Frameworks */,
+				935409791BADF43B003E8454 /* Social.framework in Frameworks */,
+				9354097D1BADF55D003E8454 /* FBSDKLoginKit.framework in Frameworks */,
 				93FBB3591BADE59D00022B2E /* libsqlite3.dylib in Frameworks */,
 				93FBB3571BADE59600022B2E /* libz.dylib in Frameworks */,
 				93FBB3551BADE58F00022B2E /* SystemConfiguration.framework in Frameworks */,
@@ -82,7 +104,10 @@
 				93FBB3491BADE56A00022B2E /* CFNetwork.framework in Frameworks */,
 				93FBB3471BADE56400022B2E /* AudioToolbox.framework in Frameworks */,
 				93FBB3451BADE4FA00022B2E /* Parse.framework in Frameworks */,
+				935409721BADEF7E003E8454 /* FBSDKCoreKit.framework in Frameworks */,
 				93FBB3441BADE4FA00022B2E /* Bolts.framework in Frameworks */,
+				935409701BADEEA9003E8454 /* ParseUI.framework in Frameworks */,
+				935409771BADF403003E8454 /* ParseFacebookUtilsV4.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +121,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		935409681BADED8F003E8454 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				935409691BADEDA7003E8454 /* YNCAutoLayout.h */,
+				9354096A1BADEDA7003E8454 /* YNCAutoLayout.m */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
 		93FBB2CE1BADD5EE00022B2E = {
 			isa = PBXGroup;
 			children = (
@@ -118,11 +152,15 @@
 		93FBB2D91BADD5EE00022B2E /* Goals */ = {
 			isa = PBXGroup;
 			children = (
+				935409681BADED8F003E8454 /* Util */,
 				93FBB2DE1BADD5EE00022B2E /* AppDelegate.h */,
 				93FBB2DF1BADD5EE00022B2E /* AppDelegate.m */,
+				9354096C1BADEE5F003E8454 /* YNCLoginViewController.h */,
+				9354096D1BADEE5F003E8454 /* YNCLoginViewController.m */,
+				935409731BADF2BF003E8454 /* YNCListViewController.h */,
+				935409741BADF2BF003E8454 /* YNCListViewController.m */,
 				93FBB2E11BADD5EE00022B2E /* ViewController.h */,
 				93FBB2E21BADD5EE00022B2E /* ViewController.m */,
-				93FBB2E41BADD5EE00022B2E /* Main.storyboard */,
 				93FBB2E71BADD5EE00022B2E /* Images.xcassets */,
 				93FBB2E91BADD5EE00022B2E /* LaunchScreen.xib */,
 				93FBB2DA1BADD5EE00022B2E /* Supporting Files */,
@@ -159,6 +197,12 @@
 		93FBB3411BADE4EE00022B2E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9354097C1BADF55D003E8454 /* FBSDKLoginKit.framework */,
+				9354097A1BADF531003E8454 /* Accounts.framework */,
+				935409781BADF43B003E8454 /* Social.framework */,
+				935409761BADF403003E8454 /* ParseFacebookUtilsV4.framework */,
+				935409711BADEF7E003E8454 /* FBSDKCoreKit.framework */,
+				9354096F1BADEEA9003E8454 /* ParseUI.framework */,
 				93FBB3581BADE59D00022B2E /* libsqlite3.dylib */,
 				93FBB3561BADE59600022B2E /* libz.dylib */,
 				93FBB3541BADE58F00022B2E /* SystemConfiguration.framework */,
@@ -255,7 +299,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93FBB2E61BADD5EE00022B2E /* Main.storyboard in Resources */,
 				93FBB2EB1BADD5EE00022B2E /* LaunchScreen.xib in Resources */,
 				93FBB2E81BADD5EE00022B2E /* Images.xcassets in Resources */,
 			);
@@ -276,7 +319,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				93FBB2E31BADD5EE00022B2E /* ViewController.m in Sources */,
+				935409751BADF2BF003E8454 /* YNCListViewController.m in Sources */,
 				93FBB2E01BADD5EE00022B2E /* AppDelegate.m in Sources */,
+				9354096E1BADEE5F003E8454 /* YNCLoginViewController.m in Sources */,
+				9354096B1BADEDA7003E8454 /* YNCAutoLayout.m in Sources */,
 				93FBB2DD1BADD5EE00022B2E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -300,14 +346,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		93FBB2E41BADD5EE00022B2E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				93FBB2E51BADD5EE00022B2E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		93FBB2E91BADD5EE00022B2E /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -7,8 +7,13 @@
 //
 
 #import "AppDelegate.h"
+#import "YNCLoginViewController.h"
+#import "YNCListViewController.h"
 #import <Parse/Parse.h>
-@interface AppDelegate ()
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <ParseFacebookUtilsV4/PFFacebookUtils.h>
+
+@interface AppDelegate ()<PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
 @end
 
@@ -18,16 +23,50 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
   NSLog(@"Hello World");
-  
-  [Parse enableLocalDatastore];
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
   
   // Initialize Parse.
   [Parse setApplicationId:@"G6ytzz5MuXyjrQVNvXuRBr6Xe0eyDrpBL8rjaPgn"
                 clientKey:@"JVpCvikLi7GQv33RTxTysRhRbyrGvIZUVYVwHz9r"];
+  [PFFacebookUtils initializeFacebookWithApplicationLaunchOptions:launchOptions];
+
   
-  // [Optional] Track statistics around application opens.
-  [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-  return YES;
+  if (![PFUser currentUser]) { // No user logged in
+    YNCLoginViewController *logInViewController = [[YNCLoginViewController alloc] init];
+    logInViewController.fields = PFLogInFieldsFacebook;
+    logInViewController.facebookPermissions = @[@"user_friends", @"public_profile"];
+    [logInViewController setDelegate:self]; // Set ourselves as the delegate
+    self.window.rootViewController = logInViewController;
+  } else {
+    [self postLoginLaunch];
+  }
+  
+  self.window.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1];
+  [self.window makeKeyAndVisible];
+  
+  
+  return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                  didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
+  //  [logInController dismissViewControllerAnimated:YES completion:nil];
+  [self postLoginLaunch];
+}
+
+- (void)postLoginLaunch {
+  YNCListViewController *listView = [[YNCListViewController alloc] init];
+  UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:listView];
+  self.window.rootViewController = navVC;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+  return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                        openURL:url
+                                              sourceApplication:sourceApplication
+                                                     annotation:annotation
+          ];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
