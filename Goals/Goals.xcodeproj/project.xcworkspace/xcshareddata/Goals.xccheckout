@@ -5,13 +5,13 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>78253D17-D939-4A25-A506-6B8BB01C5BF3</string>
+	<string>95307937-25F4-4C64-AB05-08CB012F7142</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Goals</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>502C7893072E8A903F64650D3AC8D9CD79044015</key>
-		<string>https://github.com/theyiwen/goals.git</string>
+		<string>personal:theyiwen/goals.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Goals/Goals.xcodeproj</string>
@@ -21,7 +21,7 @@
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/theyiwen/goals.git</string>
+	<string>personal:theyiwen/goals.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>

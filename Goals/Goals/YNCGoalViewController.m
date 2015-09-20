@@ -11,8 +11,9 @@
 #import "YNCUser.h"
 #import "YNCGoalUserView.h"
 #import "YNCLog.h"
+#import "YNCCreateLogViewController.h"
 
-@interface YNCGoalViewController ()
+@interface YNCGoalViewController ()<YNCCreateLogViewControllerDelegate>
 
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *descLabel;
@@ -57,7 +58,7 @@
   [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[usersContainer]|" toView:container];
-  [autoLayout addConstraintForView:addLog withSize:CGSizeMake(20,20) toView:addLog];
+  [autoLayout addConstraintForView:addLog withSize:CGSizeMake(75,75) toView:addLog];
 
   YNCGoalUserView *lastLabel;
   NSInteger count = 0;
@@ -98,9 +99,8 @@
   
   self.view.backgroundColor = [UIColor whiteColor];
   [self setGoalDetails];
+  [addLog setImage:[UIImage imageNamed:@"add_log_button.png"] forState:UIControlStateNormal];
   [addLog addTarget:self action:@selector(addLogPressed) forControlEvents:UIControlEventTouchUpInside];
-  addLog.layer.cornerRadius = 10;
-  addLog.backgroundColor = [UIColor grayColor];
 }
 
 - (void)setGoalDetails {
@@ -110,9 +110,19 @@
 }
 
 - (void)addLogPressed {
+  YNCCreateLogViewController *logVC = [[YNCCreateLogViewController alloc] init];
+  logVC.delegate = self;
+  logVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+
+  [self presentViewController:logVC animated:YES completion:nil];
+}
+
+- (void)createLogViewControllerDidSubmit:(YNCCreateLogViewController *)createLogViewController
+                                witCount:(NSNumber *)count
+                                   notes:(NSString *)notes {
   [YNCLog createAndSaveLogWithGoal:self.goal
-                             count:@1
-                             notes:@"test"];
+                             count:count
+                             notes:notes];
 }
 
 
