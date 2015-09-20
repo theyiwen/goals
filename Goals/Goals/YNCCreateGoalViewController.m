@@ -9,6 +9,7 @@
 #import "YNCCreateGoalViewController.h"
 #import "YNCAutoLayout.h"
 #import "YNCFont.h"
+#import "YNCColor.h"
 #import "YNCGoal.h"
 #import "YNCUser.h"
 
@@ -49,7 +50,7 @@
   UITextField *goalTitleTextField = self.goalTitleTextField = [[UITextField alloc] init];
   goalTitleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"GOAL" attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
   UIView *goalTitleTextFieldBottomBorder = self.goalTitleTextFieldBottomBorder = [[UIView alloc] init];
-  goalTitleTextFieldBottomBorder.backgroundColor = [UIColor colorWithRed:121.0/255.0f green:189.0/255.0f blue:154/255.0f alpha:1.0f];
+  goalTitleTextFieldBottomBorder.backgroundColor = [YNCColor tealColor];
   
   UITextView *goalDescriptionTextView = self.goalDescriptionTextView = [[UITextView alloc] init];
   goalDescriptionTextView.layer.borderWidth = 1.0f;
@@ -65,7 +66,7 @@
   NSMutableArray *typeButtons = self.typeButtons = [[NSMutableArray alloc] initWithArray:@[dailyTypeButton, sumTypeButton]];
   [dailyTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   [dailyTypeButton setTitle:@"DAILY" forState:UIControlStateNormal];
-  dailyTypeButton.layer.borderColor = [UIColor colorWithRed:121.0/255.0f green:189.0/255.0f blue:154/255.0f alpha:1.0f].CGColor;
+  dailyTypeButton.layer.borderColor = [YNCColor tealColor].CGColor;
   dailyTypeButton.layer.borderWidth = 2.0f;
   dailyTypeButton.tag = daily;
   dailyTypeButton.layer.cornerRadius = 40.0f;
@@ -73,7 +74,7 @@
   
   [sumTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   [sumTypeButton setTitle:@"TOTAL" forState:UIControlStateNormal];
-  sumTypeButton.layer.borderColor = [UIColor colorWithRed:121.0/255.0f green:189.0/255.0f blue:154/255.0f alpha:1.0f].CGColor;
+  sumTypeButton.layer.borderColor = [YNCColor tealColor].CGColor;
   sumTypeButton.layer.borderWidth = 2.0f;
   sumTypeButton.tag = sum;
   sumTypeButton.layer.cornerRadius = 40.0f;
@@ -86,7 +87,7 @@
   goalDurationTextField.keyboardType = UIKeyboardTypeNumberPad;
   goalDurationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"DURATION" attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
   UIView *goalDurationTextFieldBottomBorder = self.goalDurationTextFieldBottomBorder = [[UIView alloc] init];
-  goalDurationTextFieldBottomBorder.backgroundColor = [UIColor colorWithRed:121.0/255.0f green:189.0/255.0f blue:154/255.0f alpha:1.0f];
+  goalDurationTextFieldBottomBorder.backgroundColor = [YNCColor tealColor];
   
   UIButton *submitButton = self.submitButton = [[UIButton alloc] init];
   [submitButton setTitle:@"SUBMIT" forState:UIControlStateNormal];
@@ -101,7 +102,7 @@
   dailyTypeButton.titleLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
   sumTypeButton.titleLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
   submitButton.titleLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
-  orLabel.font = [UIFont fontWithName:[YNCFont lightFontName] size:14];
+  orLabel.font = [UIFont fontWithName:[YNCFont lightFontName] size:16];
   
   // todo (calvin): replace all blacks with dark grey
   
@@ -121,7 +122,7 @@
   [autoLayout addVflConstraint:@"V:|-100-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-20-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersLabel]-20-[goalDescriptionLabel]-100-[submitButton]" toView:container];
   [autoLayout addVflConstraint:@"V:|-280-[goalDescriptionTextView(100)]" toView:container];
   [autoLayout addVflConstraint:@"H:[goalTitleTextField(300)]" toView:container];
-  [autoLayout addVflConstraint:@"H:[goalTypeButtons(170)]" toView:container];
+  //[autoLayout addVflConstraint:@"H:[goalTypeButtons]" toView:container];
   [autoLayout addVflConstraint:@"V:|[dailyTypeButton(80)]|" toView:goalTypeButtons];
   [autoLayout addVflConstraint:@"V:|[orLabel]|" toView:goalTypeButtons];
   [autoLayout addVflConstraint:@"V:|[sumTypeButton(80)]|" toView:goalTypeButtons];
