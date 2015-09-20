@@ -18,11 +18,12 @@ extern const struct userKey {
 
 @interface YNCUser : NSObject
 
-@property (nonatomic, readonly) NSString *firstName;
-@property (nonatomic, readonly) NSString *lastName;
-@property (nonatomic, readonly) NSString *fullName;
-@property (nonatomic, readonly) NSString *facebookId;
-@property (nonatomic, readonly) NSString *photoUrl;
+@property (strong, nonatomic, readonly) PFObject *pfObject;
+@property (strong, nonatomic, readonly) NSString *firstName;
+@property (strong, nonatomic, readonly) NSString *lastName;
+@property (strong, nonatomic, readonly) NSString *fullName;
+@property (strong, nonatomic, readonly) NSString *facebookId;
+@property (strong, nonatomic, readonly) NSString *photoUrl;
 
 - (instancetype)initWithPFObject:(PFObject *)pfObject;
 - (void)fetchAndSaveFBData;

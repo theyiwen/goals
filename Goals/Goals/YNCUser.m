@@ -19,7 +19,7 @@ const struct userKey userKey = {
 
 @interface YNCUser()
 
-@property (strong, nonatomic) PFObject *pfObject;
+@property (strong, nonatomic, readwrite) PFObject *pfObject;
 @property (nonatomic, readwrite) NSString *firstName;
 @property (nonatomic, readwrite) NSString *lastName;
 @property (nonatomic, readwrite) NSString *facebookId;

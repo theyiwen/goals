@@ -21,6 +21,7 @@
 		935409841BAE1196003E8454 /* YNCGoalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 935409831BAE1196003E8454 /* YNCGoalViewController.m */; };
 		935409871BAE1732003E8454 /* YNCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 935409861BAE1732003E8454 /* YNCUser.m */; };
 		9354098A1BAE2B34003E8454 /* YNCGoalUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = 935409891BAE2B34003E8454 /* YNCGoalUserView.m */; };
+		9354098D1BAE39E0003E8454 /* YNCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354098C1BAE39E0003E8454 /* YNCLog.m */; };
 		93FBB2DD1BADD5EE00022B2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2DC1BADD5EE00022B2E /* main.m */; };
 		93FBB2E01BADD5EE00022B2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2DF1BADD5EE00022B2E /* AppDelegate.m */; };
 		93FBB2E31BADD5EE00022B2E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2E21BADD5EE00022B2E /* ViewController.m */; };
@@ -74,6 +75,8 @@
 		935409861BAE1732003E8454 /* YNCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCUser.m; sourceTree = "<group>"; };
 		935409881BAE2B34003E8454 /* YNCGoalUserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCGoalUserView.h; sourceTree = "<group>"; };
 		935409891BAE2B34003E8454 /* YNCGoalUserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCGoalUserView.m; sourceTree = "<group>"; };
+		9354098B1BAE39E0003E8454 /* YNCLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCLog.h; sourceTree = "<group>"; };
+		9354098C1BAE39E0003E8454 /* YNCLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCLog.m; sourceTree = "<group>"; };
 		93FBB2D71BADD5EE00022B2E /* Goals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Goals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93FBB2DB1BADD5EE00022B2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93FBB2DC1BADD5EE00022B2E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -152,6 +155,8 @@
 				935409801BADF998003E8454 /* YNCGoal.m */,
 				935409851BAE1732003E8454 /* YNCUser.h */,
 				935409861BAE1732003E8454 /* YNCUser.m */,
+				9354098B1BAE39E0003E8454 /* YNCLog.h */,
+				9354098C1BAE39E0003E8454 /* YNCLog.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -355,6 +360,7 @@
 				9354098A1BAE2B34003E8454 /* YNCGoalUserView.m in Sources */,
 				935409751BADF2BF003E8454 /* YNCListViewController.m in Sources */,
 				93FBB2E01BADD5EE00022B2E /* AppDelegate.m in Sources */,
+				9354098D1BAE39E0003E8454 /* YNCLog.m in Sources */,
 				9354096E1BADEE5F003E8454 /* YNCLoginViewController.m in Sources */,
 				9354096B1BADEDA7003E8454 /* YNCAutoLayout.m in Sources */,
 				935409871BAE1732003E8454 /* YNCUser.m in Sources */,

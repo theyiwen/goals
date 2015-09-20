@@ -18,7 +18,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 @interface YNCGoal()
 
 @property (nonatomic, readwrite) NSArray *users;
-@property (strong, nonatomic) PFObject *pfObject;
+@property (strong, readwrite) PFObject *pfObject;
 
 @end
 

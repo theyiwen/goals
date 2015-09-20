@@ -44,7 +44,6 @@
     
     self.name.text = self.user.fullName;
     NSURL *url = [NSURL URLWithString:self.user.photoUrl];
-    NSLog(@"url %@",url);
     NSData *data = [NSData dataWithContentsOfURL:url];
     UIImage *img = [[UIImage alloc] initWithData:data];
     self.photo.contentMode = UIViewContentModeScaleAspectFit;

@@ -17,7 +17,8 @@ extern const struct YNCGoalPFKey {
 
 @interface YNCGoal : NSObject
 
-@property (nonatomic, readonly) NSArray *users;
+@property (strong, nonatomic, readonly) PFObject *pfObject;
+@property (strong, nonatomic, readonly) NSArray *users;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *desc;
 @property (nonatomic, copy) NSString *pfID;
