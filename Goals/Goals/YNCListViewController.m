@@ -29,7 +29,6 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
   
   UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
   self.navigationItem.rightBarButtonItem = addButton;
-  NSLog(@"yes");
   
   UITableView *tableView = self.tableView = [[UITableView alloc] init];
   [self.view addSubview:tableView];
