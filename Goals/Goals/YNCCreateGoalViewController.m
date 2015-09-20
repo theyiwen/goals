@@ -8,6 +8,7 @@
 
 #import "YNCCreateGoalViewController.h"
 #import "YNCAutoLayout.h"
+#import "YNCGoal.h"
 
 @interface YNCCreateGoalViewController ()
 
@@ -21,10 +22,12 @@
 
 @property (strong, nonatomic) UITextField *goalTitleTextField;
 @property (strong, nonatomic) UITextField *goalDescriptionTextField;
+@property (strong, nonatomic) NSMutableArray *typeButtons;
 @property (strong, nonatomic) UIButton *dailyTypeButton;
 @property (strong, nonatomic) UIButton *totalTypeButton;
 @property (strong, nonatomic) UITextField *goalDurationTextField;
 @property (strong, nonatomic) UIButton *submitButton;
+@property (nonatomic) GoalType goalType;
 
 @end
 
@@ -51,10 +54,15 @@
   UITextField *goalDescriptionTextField = self.goalDescriptionTextField = [[UITextField alloc] init];
   UIButton *dailyTypeButton = self.dailyTypeButton = [[UIButton alloc] init];
   UIButton *totalTypeButton = self.totalTypeButton = [[UIButton alloc] init];
+  NSMutableArray *typeButtons = self.typeButtons = [[NSMutableArray alloc] initWithArray:@[dailyTypeButton, totalTypeButton]];
   [dailyTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-  [totalTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   [dailyTypeButton setTitle:@"DAILY" forState:UIControlStateNormal];
+  dailyTypeButton.tag = daily;
+  [dailyTypeButton addTarget:self action:@selector(selectType:) forControlEvents:UIControlEventTouchUpInside];
+  [totalTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   [totalTypeButton setTitle:@"TOTAL" forState:UIControlStateNormal];
+  totalTypeButton.tag = sum;
+  [totalTypeButton addTarget:self action:@selector(selectType:) forControlEvents:UIControlEventTouchUpInside];
   UITextField *goalDurationTextField = self.goalDurationTextField = [[UITextField alloc] init];
   goalTitleTextField.backgroundColor = [UIColor grayColor];
   goalDurationTextField.backgroundColor = [UIColor grayColor];
@@ -63,7 +71,7 @@
   UIButton *submitButton = self.submitButton = [[UIButton alloc] init];
   [submitButton setTitle:@"SUBMIT" forState:UIControlStateNormal];
   [submitButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-  [submitButton addTarget:self action:@selector(submitButtonPressed:) forControlEvents:UIControlEventTouchUpInside]
+  [submitButton addTarget:self action:@selector(submitButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   
   [self.view addSubview:container];
   [container addSubview:goalTitleLabel];
@@ -98,8 +106,28 @@
   
 }
 
+- (void)selectType:(UIButton *)sender {
+  self.goalType = sender.tag;
+  
+  for (UIButton *button in self.typeButtons) {
+    if (button != sender) {
+      [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
+    else {
+      [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    }
+  }
+}
+
 - (void)submitButtonPressed:(UIButton *)button {
-  NSLog(@"it works");
+  // [YNCGoal createAndSaveGoalWithTitle:<#(NSString *)#> desc:<#(NSString *)#> type:<#(GoalType)#> duration:<#(NSNumber *)#> usersList:<#(NSArray *)#>
+  /* PFObject *pfObject = [PFObject objectWithClassName:@"Goal"];
+  pfObject[logKey.goal] = goal.pfObject;
+  pfObject[logKey.user] = [PFUser currentUser];
+  pfObject[logKey.count] = count;
+  pfObject[logKey.notes] = notes;
+  [pfObject saveInBackgroundWithBlock:nil];
+   */
 }
 
 @end

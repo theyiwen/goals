@@ -12,7 +12,9 @@
 const struct YNCGoalPFKey YNCGoalPFKey = {
   .titleKey = @"title",
   .descriptionKey = @"description",
-  .usersListKey = @"usersList"
+  .usersListKey = @"usersList",
+  .typeKey = @"type",
+  .durationKey = @"duration"
 };
 
 @interface YNCGoal()
@@ -37,6 +39,20 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 
 - (NSString *)desc {
   return (NSString *)self.pfObject[YNCGoalPFKey.descriptionKey];
+}
+
+- (GoalType) type {
+  if ([(NSString *)self.pfObject[YNCGoalPFKey.typeKey] isEqualToString:@"daily"]) {
+    return daily;
+  }
+  else if ([(NSString *)self.pfObject[YNCGoalPFKey.typeKey] isEqualToString:@"sum"]) {
+    return sum;
+  }
+  return 0;
+}
+
+- (NSNumber *)duration {
+  return (NSNumber *)self.pfObject[YNCGoalPFKey.durationKey];
 }
 
 - (NSArray *)users {
@@ -72,6 +88,26 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 
 + (NSString *)pfClassName {
   return @"Goal";
+}
+
++ (void)createAndSaveGoalWithTitle:(NSString *)title
+                              desc:(NSString *)desc
+                              type:(GoalType)type
+                          duration:(NSNumber *)duration
+                         usersList:(NSArray *)usersList {
+  PFObject *pfObject = [PFObject objectWithClassName:@"Goal"];
+  pfObject[YNCGoalPFKey.titleKey] = title;
+  pfObject[YNCGoalPFKey.descriptionKey] = desc;
+  pfObject[YNCGoalPFKey.durationKey] = duration;
+  if (type = daily) {
+    pfObject[YNCGoalPFKey.typeKey] = @"daily";
+  }
+  else if (type = sum) {
+    pfObject[YNCGoalPFKey.typeKey] = @"sum";
+  }
+  pfObject[YNCGoalPFKey.usersListKey] = usersList;
+  [pfObject saveInBackgroundWithBlock:nil];
+  
 }
 
 @end
