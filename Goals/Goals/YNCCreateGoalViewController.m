@@ -16,6 +16,7 @@
 @property (strong, nonatomic) UILabel *goalTitleLabel;
 @property (strong, nonatomic) UILabel *goalDescriptionLabel;
 @property (strong, nonatomic) UILabel *goalTypeLabel;
+@property (strong, nonatomic) UILabel *goalMembersLabel;
 @property (strong, nonatomic) UILabel *goalDurationLabel;
 
 @property (strong, nonatomic) UITextField *goalTitleTextField;
@@ -23,6 +24,7 @@
 @property (strong, nonatomic) UIButton *dailyTypeButton;
 @property (strong, nonatomic) UIButton *totalTypeButton;
 @property (strong, nonatomic) UITextField *goalDurationTextField;
+@property (strong, nonatomic) UIButton *submitButton;
 
 @end
 
@@ -40,6 +42,8 @@
   goalDescriptionLabel.text = @"DESCRIPTION:";
   UILabel *goalTypeLabel = self.goalTypeLabel = [[UILabel alloc] init];
   goalTypeLabel.text = @"TYPE:";
+  UILabel *goalMembersLabel = self.goalMembersLabel = [[UILabel alloc] init];
+  goalMembersLabel.text = @"WITH:";
   UILabel *goalDurationLabel = self.goalDurationLabel = [[UILabel alloc] init];
   goalDurationLabel.text = @"DURATION:";
   
@@ -53,6 +57,13 @@
   [totalTypeButton setTitle:@"TOTAL" forState:UIControlStateNormal];
   UITextField *goalDurationTextField = self.goalDurationTextField = [[UITextField alloc] init];
   goalTitleTextField.backgroundColor = [UIColor grayColor];
+  goalDurationTextField.backgroundColor = [UIColor grayColor];
+  goalDescriptionTextField.backgroundColor = [UIColor grayColor];
+  
+  UIButton *submitButton = self.submitButton = [[UIButton alloc] init];
+  [submitButton setTitle:@"SUBMIT" forState:UIControlStateNormal];
+  [submitButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+  [submitButton addTarget:self action:@selector(submitButtonPressed:) forControlEvents:UIControlEventTouchUpInside]
   
   [self.view addSubview:container];
   [container addSubview:goalTitleLabel];
@@ -62,22 +73,33 @@
   [container addSubview:totalTypeButton];
   [container addSubview:goalDurationLabel];
   [container addSubview:goalDurationTextField];
+  [container addSubview:goalMembersLabel];
   [container addSubview:goalDescriptionLabel];
   [container addSubview:goalDescriptionTextField];
+  [container addSubview:submitButton];
   
-  NSDictionary *views = NSDictionaryOfVariableBindings(container, goalTitleLabel, goalTitleTextField, goalTypeLabel, dailyTypeButton, totalTypeButton, goalDurationLabel, goalDurationTextField, goalDescriptionLabel, goalDescriptionTextField);
+  NSDictionary *views = NSDictionaryOfVariableBindings(container, goalTitleLabel, goalTitleTextField, goalTypeLabel, dailyTypeButton, totalTypeButton, goalDurationLabel, goalDurationTextField, goalMembersLabel, goalDescriptionLabel, goalDescriptionTextField, submitButton);
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-100-[goalTitleLabel]-20-[goalTypeLabel]-20-[goalDurationLabel]-20-[goalDescriptionLabel]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-100-[goalTitleLabel]-20-[goalTypeLabel]-20-[goalDurationLabel]-20-[goalMembersLabel]-20-[goalDescriptionLabel]-100-[submitButton]" toView:container];
   [autoLayout addVflConstraint:@"V:|-100-[goalTitleTextField(25)]" toView:container];
-  [autoLayout addVflConstraint:@"V:|-135-[dailyTypeButton]" toView:container];
-  [autoLayout addVflConstraint:@"V:|-135-[totalTypeButton]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-134-[dailyTypeButton]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-134-[totalTypeButton]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-175-[goalDurationTextField(25)]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-250-[goalDescriptionTextField(100)]" toView:container];
   [autoLayout addVflConstraint:@"H:|[goalTitleLabel]-10-[goalTitleTextField(200)]" toView:container];
   [autoLayout addVflConstraint:@"H:|[goalTypeLabel]-10-[dailyTypeButton]-10-[totalTypeButton]" toView:container];
+  [autoLayout addVflConstraint:@"H:|[goalDurationLabel]-10-[goalDurationTextField(200)]" toView:container];
+  [autoLayout addVflConstraint:@"H:|[goalDescriptionLabel]-10-[goalDescriptionTextField(200)]" toView:container];
+  [autoLayout addVflConstraint:@"H:[submitButton]-50-|" toView:container];
   [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
   
   // todo (calvin) -- person picker
   
+}
+
+- (void)submitButtonPressed:(UIButton *)button {
+  NSLog(@"it works");
 }
 
 @end
