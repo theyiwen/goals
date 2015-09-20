@@ -63,7 +63,7 @@
   UILabel *orLabel = [[UILabel alloc] init];
   orLabel.textColor = [UIColor blackColor];
   orLabel.text = @"OR";
-  NSMutableArray *typeButtons = self.typeButtons = [[NSMutableArray alloc] initWithArray:@[dailyTypeButton, sumTypeButton]];
+  self.typeButtons = [[NSMutableArray alloc] initWithArray:@[dailyTypeButton, sumTypeButton]];
   [dailyTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   [dailyTypeButton setTitle:@"DAILY" forState:UIControlStateNormal];
   dailyTypeButton.layer.borderColor = [YNCColor tealColor].CGColor;
@@ -169,7 +169,7 @@
 }
 
 - (void)selectType:(UIButton *)sender {
-  self.goalType = sender.tag;
+  self.goalType = (int)sender.tag;
   
   for (UIButton *button in self.typeButtons) {
     if (button != sender) {
