@@ -14,6 +14,7 @@
 #import "YNCCreateLogViewController.h"
 #import "YNCFont.h"
 #import "YNCCalendarView.h"
+#import "YNCColor.h"
 
 @interface YNCGoalViewController ()<YNCCreateLogViewControllerDelegate>
 
@@ -25,11 +26,13 @@
 @property (strong, nonatomic) UILabel *calLabel;
 @property (strong, nonatomic) UIView *container;
 @property (strong, nonatomic) UIView *usersContainer;
-@property (strong, nonatomic) NSMutableArray *usersLabels;
+@property (strong, nonatomic) NSMutableDictionary *usersLabels;
 @property (strong, nonatomic) UIButton *addLog;
 @property (strong, nonatomic) YNCCalendarView *calendar;
 
 @property (strong, nonatomic) YNCGoal *goal;
+@property (strong, nonatomic) NSArray *logs;
+@property (strong, nonatomic) NSMutableDictionary *userSums;
 
 @end
 
@@ -57,7 +60,7 @@
   CGRect calFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width - 40, 250);
   YNCCalendarView *calendar = self.calendar = [[YNCCalendarView alloc] initWithFrame:calFrame];
 
-  self.usersLabels = [[NSMutableArray alloc] init];
+  self.usersLabels = [[NSMutableDictionary alloc] init];
   
   [self.view addSubview:scrollView];
   [scrollView addSubview:container];
@@ -91,20 +94,20 @@
                      equivalentAttribute:NSLayoutAttributeWidth
                                   toView:self.view];
   scrollView.scrollEnabled = YES;
-  [autoLayout addVflConstraint:@"H:|[usersContainer]|" toView:container];
+  [autoLayout addVflConstraint:@"H:|-20-[usersContainer]-20-|" toView:container];
   [autoLayout addConstraintForView:addLog withSize:CGSizeMake(75,75) toView:addLog];
   [autoLayout addVflConstraint:@"H:|-20-[calendar]-20-|" toView:container];
 
   YNCGoalUserView *lastLabel;
   NSInteger count = 0;
   for (YNCUser *user in self.goal.users) {
-    YNCGoalUserView *label = [[YNCGoalUserView alloc] initWithUser:user];
-    [self.usersLabels addObject:label];
+    YNCGoalUserView *label = [[YNCGoalUserView alloc] initWithUser:user color:[YNCColor userColors][count]];
+    self.usersLabels[user.pfID] = label;
     [self.usersContainer addSubview:label];
     if (count == 0) {
       [autoLayout addConstraintWithItem:label
                                  toItem:usersContainer
-                    equivalentAttribute:NSLayoutAttributeTop
+                    equivalentAttribute:NSLayoutAttributeLeft
                              multiplier:1
                                constant:0
                                  toView:usersContainer];
@@ -112,21 +115,16 @@
     if (lastLabel) {
       [autoLayout addConstraintWithItem:lastLabel
                                  toItem:label
-                    equivalentAttribute:NSLayoutAttributeTop
+                    equivalentAttribute:NSLayoutAttributeLeft
                              multiplier:1
-                               constant:-50
-                                 toView:usersContainer];
-    }
-    if (count == self.goal.users.count - 1) {
-      [autoLayout addConstraintWithItem:label
-                                 toItem:usersContainer
-                    equivalentAttribute:NSLayoutAttributeBottom
-                             multiplier:1
-                               constant:0
+                               constant:(-kYNCGoalUserViewWidth - 10)
                                  toView:usersContainer];
     }
     [autoLayout addConstraintForViews:@[label,usersContainer]
-                  equivalentAttribute:NSLayoutAttributeWidth
+                  equivalentAttribute:NSLayoutAttributeTop
+                               toView:usersContainer];
+    [autoLayout addConstraintForViews:@[label,usersContainer]
+                  equivalentAttribute:NSLayoutAttributeBottom
                                toView:usersContainer];
     lastLabel = label;
     count = count + 1;
@@ -147,8 +145,33 @@
   [addLog addTarget:self action:@selector(addLogPressed) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [YNCLog getAllLogsForGoal:self.goal
+               withCallback:^(NSArray *logs, NSError *error) {
+                 if (!error) {
+                   self.logs = logs;
+                   [self processLogs];
+                 }
+               }];
+}
+
+- (YNCGoalUserView *)userLabelForUser:(NSString *)userID {
+  return (YNCGoalUserView *)self.usersLabels[userID];
+}
+
+- (void)processLogs {
+  self.userSums = [[NSMutableDictionary alloc] init];
+  for (YNCLog *log in self.logs) {
+    if (self.userSums[log.user.pfID]) {
+      self.userSums[log.user.pfID] = @([self.userSums[log.user.pfID] floatValue] + [log.value floatValue]);
+    } else {
+      self.userSums[log.user.pfID] = @([log.value floatValue]);
+    }
+  }
+  for (NSString *userID in self.userSums) {
+    [self userLabelForUser:userID].score = self.userSums[userID];
+  }
 }
 
 - (void)setGoalDetails {
@@ -167,10 +190,10 @@
 }
 
 - (void)createLogViewControllerDidSubmit:(YNCCreateLogViewController *)createLogViewController
-                                witCount:(NSNumber *)count
+                                witValue:(NSNumber *)value
                                    notes:(NSString *)notes {
   [YNCLog createAndSaveLogWithGoal:self.goal
-                             count:count
+                             value:value
                              notes:notes];
 }
 

@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "YNCUser.h"
 
+static CGFloat const kYNCGoalUserViewWidth = 45;
+
 @interface YNCGoalUserView : UIView
 
-- (instancetype)initWithUser:(YNCUser *)user;
+@property (strong, nonatomic) NSNumber *score;
+
+- (instancetype)initWithUser:(YNCUser *)user color:(UIColor *)color;
 
 @end

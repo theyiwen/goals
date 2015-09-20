@@ -20,7 +20,7 @@
 
 - (void)createLogViewControllerDidCancel:(YNCCreateLogViewController *)createLogViewController;
 - (void)createLogViewControllerDidSubmit:(YNCCreateLogViewController *)createLogViewController
-                                witCount:(NSNumber *)count
+                                withValue:(NSNumber *)value
                                    notes:(NSString *)notes;
 
 @end

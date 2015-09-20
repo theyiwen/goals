@@ -36,6 +36,10 @@ const struct userKey userKey = {
   return self;
 }
 
+- (NSString *)pfID {
+  return self.pfObject.objectId;
+}
+
 - (NSString *)firstName {
   return self.pfObject[userKey.firstName];
 }

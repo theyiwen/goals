@@ -19,6 +19,7 @@ extern const struct userKey {
 @interface YNCUser : NSObject
 
 @property (strong, nonatomic, readonly) PFObject *pfObject;
+@property (strong, nonatomic, readonly) NSString *pfID;
 @property (strong, nonatomic, readonly) NSString *firstName;
 @property (strong, nonatomic, readonly) NSString *lastName;
 @property (strong, nonatomic, readonly) NSString *fullName;

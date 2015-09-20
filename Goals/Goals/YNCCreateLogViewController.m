@@ -114,7 +114,7 @@
 - (void)submitButtonPressed {
   if (self.countEntry.text.length > 0) {
     [self.delegate createLogViewControllerDidSubmit:self
-                                           witCount:@([self.countEntry.text floatValue])
+                                          withValue:@([self.countEntry.text floatValue])
                                               notes:self.notesEntry.text];
     [self dismissViewControllerAnimated:YES completion:nil];
   } else {

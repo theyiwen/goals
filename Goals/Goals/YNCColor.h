@@ -12,6 +12,7 @@
 @interface YNCColor : NSObject
 
 + (UIColor *) tealColor;
++ (NSArray *)userColors;
 
 @end
 

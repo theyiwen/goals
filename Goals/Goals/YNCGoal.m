@@ -33,6 +33,10 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   return self;
 }
 
+- (NSString *)pfID {
+  return self.pfObject.objectId;
+}
+
 - (NSString *)title {
   return (NSString *)self.pfObject[YNCGoalPFKey.titleKey];
 }

@@ -13,7 +13,7 @@
 extern const struct logKey {
   __unsafe_unretained NSString *goal;
   __unsafe_unretained NSString *user;
-  __unsafe_unretained NSString *count;
+  __unsafe_unretained NSString *value;
   __unsafe_unretained NSString *notes;
 } logKey;
 
@@ -22,10 +22,13 @@ extern const struct logKey {
 @property (nonatomic, readonly) YNCGoal *goal;
 @property (nonatomic, readonly) YNCUser *user;
 @property (nonatomic, readonly) NSString *notes;
-@property (nonatomic, readonly) NSNumber *count;
+@property (nonatomic, readonly) NSNumber *value;
 
 + (void)createAndSaveLogWithGoal:(YNCGoal *)goal
-                           count:(NSNumber *)count
+                           value:(NSNumber *)value
                            notes:(NSString *)notes;
+
++ (void)getAllLogsForGoal:(YNCGoal *)goal
+             withCallback:(void (^)(NSArray *logs, NSError *error))callback;
 
 @end
