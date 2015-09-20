@@ -9,6 +9,7 @@
 #import "YNCGoalViewController.h"
 #import "YNCAutoLayout.h"
 #import "YNCUser.h"
+#import "YNCGoalUserView.h"
 
 @interface YNCGoalViewController ()
 
@@ -17,6 +18,7 @@
 @property (strong, nonatomic) UIView *container;
 @property (strong, nonatomic) UIView *usersContainer;
 @property (strong, nonatomic) NSMutableArray *usersLabels;
+@property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) YNCGoal *goal;
 
@@ -46,19 +48,16 @@
   
   NSDictionary *views = NSDictionaryOfVariableBindings(container, titleLabel, descLabel, usersContainer);
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-100-[titleLabel]-10-[descLabel]-10-[usersContainer]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-100-[titleLabel]-10-[descLabel]-50-[usersContainer]" toView:container];
   [autoLayout addConstraintForViews:@[container, titleLabel, descLabel] equivalentAttribute:NSLayoutAttributeCenterX toView:container];
   [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[usersContainer]|" toView:container];
 
-  UILabel *lastLabel;
+  YNCGoalUserView *lastLabel;
   NSInteger count = 0;
   for (YNCUser *user in self.goal.users) {
-    UILabel *label = [[UILabel alloc] init];
-    label.text = user.fullName;
-    label.translatesAutoresizingMaskIntoConstraints = NO;
-    
+    YNCGoalUserView *label = [[YNCGoalUserView alloc] initWithUser:user];
     [self.usersLabels addObject:label];
     [self.usersContainer addSubview:label];
     if (count == 0) {
@@ -74,7 +73,7 @@
                                  toItem:label
                     equivalentAttribute:NSLayoutAttributeTop
                              multiplier:1
-                               constant:-30
+                               constant:-50
                                  toView:usersContainer];
     }
     if (count == self.goal.users.count - 1) {
@@ -85,6 +84,9 @@
                                constant:0
                                  toView:usersContainer];
     }
+    [autoLayout addConstraintForViews:@[label,usersContainer]
+                  equivalentAttribute:NSLayoutAttributeWidth
+                               toView:usersContainer];
     lastLabel = label;
     count = count + 1;
   }

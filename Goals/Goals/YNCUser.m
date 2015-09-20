@@ -48,6 +48,10 @@ const struct userKey userKey = {
   return [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName];
 }
 
+- (NSString *)photoUrl {
+  return self.pfObject[userKey.photoUrl];
+}
+
 - (void)fetchAndSaveFBData {
   NSLog(@"Access Token %@", [FBSDKAccessToken currentAccessToken]);
   FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"/me?fields=id,first_name,last_name" parameters:nil];
