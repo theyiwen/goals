@@ -13,6 +13,7 @@
 #import "YNCLog.h"
 #import "YNCCreateLogViewController.h"
 #import "YNCFont.h"
+#import "YNCCalendarView.h"
 
 @interface YNCGoalViewController ()<YNCCreateLogViewControllerDelegate>
 
@@ -22,6 +23,7 @@
 @property (strong, nonatomic) UIView *usersContainer;
 @property (strong, nonatomic) NSMutableArray *usersLabels;
 @property (strong, nonatomic) UIButton *addLog;
+@property (strong, nonatomic) YNCCalendarView *calendar;
 
 @property (strong, nonatomic) YNCGoal *goal;
 
@@ -43,6 +45,8 @@
   UILabel *titleLabel = self.titleLabel = [[UILabel alloc] init];
   UILabel *descLabel = self.descLabel = [[UILabel alloc] init];
   UIButton *addLog = self.addLog = [[UIButton alloc] init];
+  CGRect calFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 500);
+  YNCCalendarView *calendar = self.calendar = [[YNCCalendarView alloc] initWithFrame:calFrame];
 
   self.usersLabels = [[NSMutableArray alloc] init];
   
@@ -51,15 +55,18 @@
   [container addSubview:descLabel];
   [container addSubview:usersContainer];
   [container addSubview:addLog];
+  [container addSubview:calendar];
 
-  NSDictionary *views = NSDictionaryOfVariableBindings(container, titleLabel, descLabel, usersContainer, addLog);
+  NSDictionary *views = NSDictionaryOfVariableBindings(container, titleLabel, descLabel, usersContainer, addLog, calendar);
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-100-[titleLabel]-10-[descLabel]-50-[usersContainer]-20-[addLog]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-100-[titleLabel]-10-[descLabel]-50-[usersContainer]-20-[addLog]-[calendar(500)]" toView:container];
   [autoLayout addConstraintForViews:@[container, titleLabel, descLabel, addLog] equivalentAttribute:NSLayoutAttributeCenterX toView:container];
   [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[usersContainer]|" toView:container];
   [autoLayout addConstraintForView:addLog withSize:CGSizeMake(75,75) toView:addLog];
+  [autoLayout addVflConstraint:@"H:|[calendar]|" toView:container];
+
 
   YNCGoalUserView *lastLabel;
   NSInteger count = 0;

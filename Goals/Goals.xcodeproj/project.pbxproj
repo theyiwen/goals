@@ -19,6 +19,7 @@
 		934F94CF1BAE6E8400285112 /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 934F94C61BAE6E8400285112 /* Raleway-Regular.ttf */; };
 		934F94D01BAE6E8400285112 /* Raleway-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 934F94C71BAE6E8400285112 /* Raleway-SemiBold.ttf */; };
 		934F94D11BAE6E8400285112 /* Raleway-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 934F94C81BAE6E8400285112 /* Raleway-Thin.ttf */; };
+		934F94D51BAF32DC00285112 /* YNCCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 934F94D41BAF32DC00285112 /* YNCCalendarView.m */; };
 		9354096B1BADEDA7003E8454 /* YNCAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354096A1BADEDA7003E8454 /* YNCAutoLayout.m */; };
 		9354096E1BADEE5F003E8454 /* YNCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354096D1BADEE5F003E8454 /* YNCLoginViewController.m */; };
 		935409701BADEEA9003E8454 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9354096F1BADEEA9003E8454 /* ParseUI.framework */; };
@@ -80,6 +81,8 @@
 		934F94C61BAE6E8400285112 /* Raleway-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-Regular.ttf"; sourceTree = "<group>"; };
 		934F94C71BAE6E8400285112 /* Raleway-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-SemiBold.ttf"; sourceTree = "<group>"; };
 		934F94C81BAE6E8400285112 /* Raleway-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-Thin.ttf"; sourceTree = "<group>"; };
+		934F94D31BAF32DC00285112 /* YNCCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCCalendarView.h; sourceTree = "<group>"; };
+		934F94D41BAF32DC00285112 /* YNCCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCCalendarView.m; sourceTree = "<group>"; };
 		935409691BADEDA7003E8454 /* YNCAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCAutoLayout.h; sourceTree = "<group>"; };
 		9354096A1BADEDA7003E8454 /* YNCAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCAutoLayout.m; sourceTree = "<group>"; };
 		9354096C1BADEE5F003E8454 /* YNCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCLoginViewController.h; sourceTree = "<group>"; };
@@ -182,6 +185,15 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		934F94D21BAF32CB00285112 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				934F94D31BAF32DC00285112 /* YNCCalendarView.h */,
+				934F94D41BAF32DC00285112 /* YNCCalendarView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		935409681BADED8F003E8454 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +242,7 @@
 		93FBB2D91BADD5EE00022B2E /* Goals */ = {
 			isa = PBXGroup;
 			children = (
+				934F94D21BAF32CB00285112 /* View */,
 				9354097E1BADF947003E8454 /* Model */,
 				935409681BADED8F003E8454 /* Util */,
 				93FBB2DE1BADD5EE00022B2E /* AppDelegate.h */,
@@ -426,6 +439,7 @@
 				935409871BAE1732003E8454 /* YNCUser.m in Sources */,
 				935409811BADF998003E8454 /* YNCGoal.m in Sources */,
 				631C77501BAF4E050039AF40 /* YNCColor.m in Sources */,
+				934F94D51BAF32DC00285112 /* YNCCalendarView.m in Sources */,
 				935409841BAE1196003E8454 /* YNCGoalViewController.m in Sources */,
 				935409901BAE3FD0003E8454 /* YNCCreateLogViewController.m in Sources */,
 				63B914C61BAE319D00F4A079 /* YNCCreateGoalViewController.m in Sources */,
