@@ -7,6 +7,7 @@
 //
 
 #import "YNCCreateGoalViewController.h"
+#import "YNCAutoLayout.h"
 
 @interface YNCCreateGoalViewController ()
 
@@ -22,8 +23,6 @@
 @property (strong, nonatomic) UIButton *dailyTypeButton;
 @property (strong, nonatomic) UIButton *totalTypeButton;
 @property (strong, nonatomic) UITextField *goalDurationTextField;
-
-@property (strong, nonatomic) NSArray *pickerOptions;
 
 @end
 
@@ -48,10 +47,12 @@
   UITextField *goalDescriptionTextField = self.goalDescriptionTextField = [[UITextField alloc] init];
   UIButton *dailyTypeButton = self.dailyTypeButton = [[UIButton alloc] init];
   UIButton *totalTypeButton = self.totalTypeButton = [[UIButton alloc] init];
+  [dailyTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+  [totalTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   [dailyTypeButton setTitle:@"DAILY" forState:UIControlStateNormal];
   [totalTypeButton setTitle:@"TOTAL" forState:UIControlStateNormal];
   UITextField *goalDurationTextField = self.goalDurationTextField = [[UITextField alloc] init];
-  
+  goalTitleTextField.backgroundColor = [UIColor grayColor];
   
   [self.view addSubview:container];
   [container addSubview:goalTitleLabel];
@@ -63,6 +64,17 @@
   [container addSubview:goalDurationTextField];
   [container addSubview:goalDescriptionLabel];
   [container addSubview:goalDescriptionTextField];
+  
+  NSDictionary *views = NSDictionaryOfVariableBindings(container, goalTitleLabel, goalTitleTextField, goalTypeLabel, dailyTypeButton, totalTypeButton, goalDurationLabel, goalDurationTextField, goalDescriptionLabel, goalDescriptionTextField);
+  YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
+  [autoLayout addVflConstraint:@"V:|-100-[goalTitleLabel]-20-[goalTypeLabel]-20-[goalDurationLabel]-20-[goalDescriptionLabel]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-100-[goalTitleTextField(25)]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-135-[dailyTypeButton]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-135-[totalTypeButton]" toView:container];
+  [autoLayout addVflConstraint:@"H:|[goalTitleLabel]-10-[goalTitleTextField(200)]" toView:container];
+  [autoLayout addVflConstraint:@"H:|[goalTypeLabel]-10-[dailyTypeButton]-10-[totalTypeButton]" toView:container];
+  [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
+  [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
   
   // todo (calvin) -- person picker
   
