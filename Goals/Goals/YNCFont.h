@@ -13,6 +13,7 @@
 
 + (NSString *)regularFontName;
 + (NSString *)boldFontName;
++ (NSString *)semiBoldFontName;
 + (NSString *)lightFontName;
 + (UIFont *)standardFont;
 + (void)printFontNames;

@@ -47,7 +47,6 @@
   self.window.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1];
   [self.window makeKeyAndVisible];
   
-  [YNCFont printFontNames];
   return [[FBSDKApplicationDelegate sharedInstance] application:application
                                   didFinishLaunchingWithOptions:launchOptions];
 }

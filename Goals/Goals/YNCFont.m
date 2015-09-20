@@ -18,6 +18,10 @@
   return @"Raleway-ExtraBold";
 }
 
++ (NSString *)semiBoldFontName {
+  return @"Raleway-SemiBold";
+}
+
 + (NSString *)lightFontName {
   return @"Raleway-Light";
 }
