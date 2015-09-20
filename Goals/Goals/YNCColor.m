@@ -11,7 +11,7 @@
 @implementation YNCColor
 
 + (UIColor *) tealColor {
-  return [UIColor colorWithRed:121.0/255.0f green:189.0/255.0f blue:154/255.0f alpha:1.0f];
+  return [UIColor colorWithRed:135.0/255.0f green:202.0/255.0f blue:187.0/255.0f alpha:1.0f];
 }
 
 @end

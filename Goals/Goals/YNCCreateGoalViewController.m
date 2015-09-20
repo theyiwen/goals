@@ -56,6 +56,7 @@
   goalDescriptionTextView.layer.borderColor = [[UIColor grayColor] CGColor];
   goalDescriptionTextView.layer.cornerRadius = 8;
   
+  self.goalType = -1;
   UIView *goalTypeButtons = self.goalTypeButtons = [[UIView alloc] init];
   UIButton *dailyTypeButton = self.dailyTypeButton = [[UIButton alloc] init];
   UIButton *sumTypeButton = self.sumTypeButton = [[UIButton alloc] init];
@@ -100,8 +101,13 @@
   
   UIButton *submitButton = self.submitButton = [[UIButton alloc] init];
   [submitButton setTitle:@"SUBMIT" forState:UIControlStateNormal];
-  [submitButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+  [submitButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+  [submitButton setTitleColor:[UIColor colorWithWhite:0.7f alpha:1.0f] forState:UIControlStateDisabled];
+  submitButton.layer.borderColor = [YNCColor tealColor].CGColor;
+  submitButton.layer.borderWidth = 2.0f;
+  submitButton.layer.cornerRadius = 8;
   [submitButton addTarget:self action:@selector(submitButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  submitButton.enabled = NO;
   
   goalDescriptionLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
   goalMembersLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
@@ -146,11 +152,17 @@
   
   [autoLayout addVflConstraint:@"H:[goalDurationTextField(300)]" toView:container];
   [autoLayout addVflConstraint:@"H:|[goalDescriptionLabel]-10-[goalDescriptionTextView(200)]" toView:container];
+  
+  [autoLayout addVflConstraint:@"H:[submitButton(100)]" toView:container];
+  
   [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
   [autoLayout addConstraintForViews:@[goalTitleTextField, goalTitleTextFieldBottomBorder] equivalentAttribute:NSLayoutAttributeWidth toView:container];
-    [autoLayout addConstraintForViews:@[goalDurationTextField, goalDurationTextFieldBottomBorder] equivalentAttribute:NSLayoutAttributeWidth toView:container];
+  [autoLayout addConstraintForViews:@[goalDurationTextField, goalDurationTextFieldBottomBorder] equivalentAttribute:NSLayoutAttributeWidth toView:container];
   [autoLayout addConstraintForViews:@[container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, goalMembersView, goalDurationTextField, goalDurationTextFieldBottomBorder, submitButton] equivalentAttribute:NSLayoutAttributeCenterX toView:container];
+  
+  [goalTitleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+  [goalDurationTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
   
   // todo (calvin) -- person picker
   
@@ -167,7 +179,12 @@
       [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     }
   }
+  if ([self formValidated]) {
+    self.submitButton.enabled = YES;
+  }
 }
+
+
 
 - (void)submitButtonPressed:(UIButton *)button {
   
@@ -185,7 +202,36 @@
   
   [YNCGoal createAndSaveGoalWithTitle:self.goalTitleTextField.text desc:self.goalDescriptionTextView.text type:self.goalType duration:duration usersList:usersList];
   [self.navigationController popViewControllerAnimated:YES];
-  // TODO (REFRESH list view with callbacks)
+  // TODO (calvin): REFRESH list view with callbacks
+}
+
+- (BOOL)formValidated {
+  return (self.goalTitleTextField.text && self.goalTitleTextField.text.length > 0 && self.goalType != -1 && self.goalDurationTextField.text && self.goalDurationTextField.text.length > 0); // TODO (calvin): add users validation
+}
+
+
+// TODO (calvin): make placeholders go away
+/*
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+  if (!self.countPlaceholder.hidden) {
+    self.countPlaceholder.hidden = YES;
+  }
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+  if (!self.notesPlaceholder.hidden) {
+    self.notesPlaceholder.hidden = YES;
+  }
+}
+ */
+
+- (void)textFieldDidChange:(UITextField *)textField {
+  if ([self formValidated]) {
+    self.submitButton.enabled = YES;
+  }
+  else {
+    self.submitButton.enabled = NO;
+  }
 }
 
 @end
