@@ -45,7 +45,6 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
          forCellReuseIdentifier:kYNCListViewCellIdentifier];
   
   [YNCGoal loadGoalsWithCallback:^(NSArray *goals, NSError *error) {
-    NSLog(@"found goals %@", goals);
     self.goals = goals;
     [self.tableView reloadData];
   }];
@@ -54,7 +53,6 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   [YNCGoal loadGoalsWithCallback:^(NSArray *goals, NSError *error) {
-    NSLog(@"found goals %@", goals);
     self.goals = goals;
     [self.tableView reloadData];
   }];

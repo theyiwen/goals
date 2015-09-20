@@ -24,10 +24,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
-  NSLog(@"Hello World");
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-  
   // Initialize Parse.
   [Parse setApplicationId:@"G6ytzz5MuXyjrQVNvXuRBr6Xe0eyDrpBL8rjaPgn"
                 clientKey:@"JVpCvikLi7GQv33RTxTysRhRbyrGvIZUVYVwHz9r"];
