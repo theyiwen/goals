@@ -8,6 +8,7 @@
 
 #import "YNCListViewController.h"
 #import "YNCGoalViewController.h"
+#import "YNCCreateGoalViewController.h"
 #import "YNCAutoLayout.h"
 #import "YNCGoal.h"
 
@@ -25,6 +26,10 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 - (void)loadView {
   [super loadView];
   self.goals = [[NSArray alloc] init];
+  
+  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
+  self.navigationItem.rightBarButtonItem = addButton;
+  NSLog(@"yes");
   
   UITableView *tableView = self.tableView = [[UITableView alloc] init];
   [self.view addSubview:tableView];
@@ -69,6 +74,11 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
   YNCGoal *goal = [self goalAtIndexPath:indexPath];
   YNCGoalViewController *goalVC = [[YNCGoalViewController alloc] initWithGoal:goal];
   [self.navigationController pushViewController:goalVC animated:YES];
+}
+
+- (void)addButtonPressed {
+  YNCCreateGoalViewController *createGoalVC = [[YNCCreateGoalViewController alloc] init];
+  [self.navigationController pushViewController:createGoalVC animated:YES];
 }
 
 @end

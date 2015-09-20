@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63B914C61BAE319D00F4A079 /* YNCCreateGoalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B914C51BAE319D00F4A079 /* YNCCreateGoalViewController.m */; };
 		9354096B1BADEDA7003E8454 /* YNCAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354096A1BADEDA7003E8454 /* YNCAutoLayout.m */; };
 		9354096E1BADEE5F003E8454 /* YNCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354096D1BADEE5F003E8454 /* YNCLoginViewController.m */; };
 		935409701BADEEA9003E8454 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9354096F1BADEEA9003E8454 /* ParseUI.framework */; };
@@ -51,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		63B914C51BAE319D00F4A079 /* YNCCreateGoalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCCreateGoalViewController.m; sourceTree = "<group>"; };
+		63B914C71BAE31C300F4A079 /* YNCCreateGoalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YNCCreateGoalViewController.h; sourceTree = "<group>"; };
 		935409691BADEDA7003E8454 /* YNCAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCAutoLayout.h; sourceTree = "<group>"; };
 		9354096A1BADEDA7003E8454 /* YNCAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCAutoLayout.m; sourceTree = "<group>"; };
 		9354096C1BADEE5F003E8454 /* YNCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCLoginViewController.h; sourceTree = "<group>"; };
@@ -187,6 +190,8 @@
 				935409831BAE1196003E8454 /* YNCGoalViewController.m */,
 				935409881BAE2B34003E8454 /* YNCGoalUserView.h */,
 				935409891BAE2B34003E8454 /* YNCGoalUserView.m */,
+				63B914C51BAE319D00F4A079 /* YNCCreateGoalViewController.m */,
+				63B914C71BAE31C300F4A079 /* YNCCreateGoalViewController.h */,
 				93FBB2E11BADD5EE00022B2E /* ViewController.h */,
 				93FBB2E21BADD5EE00022B2E /* ViewController.m */,
 				93FBB2E71BADD5EE00022B2E /* Images.xcassets */,
@@ -355,6 +360,7 @@
 				935409871BAE1732003E8454 /* YNCUser.m in Sources */,
 				935409811BADF998003E8454 /* YNCGoal.m in Sources */,
 				935409841BAE1196003E8454 /* YNCGoalViewController.m in Sources */,
+				63B914C61BAE319D00F4A079 /* YNCCreateGoalViewController.m in Sources */,
 				93FBB2DD1BADD5EE00022B2E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
