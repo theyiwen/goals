@@ -8,6 +8,7 @@
 
 #import "YNCCalendarView.h"
 #import "YNCFont.h"
+#import "YNCColor.h"
 
 @interface YNCCalendarView()
 
@@ -93,7 +94,7 @@
     
         circle.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, circle_n, circle_n)
                                                  cornerRadius:circle_n/2].CGPath;
-        circle.fillColor = [UIColor blackColor].CGColor;
+        circle.fillColor = [YNCColor tealColor].CGColor;
         circle.masksToBounds = YES;
         circle.rasterizationScale = 2.0 * [UIScreen mainScreen].scale;
         circle.shouldRasterize = YES;

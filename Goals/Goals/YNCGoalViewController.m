@@ -17,6 +17,7 @@
 
 @interface YNCGoalViewController ()<YNCCreateLogViewControllerDelegate>
 
+@property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *descLabel;
 @property (strong, nonatomic) UIView *container;
@@ -40,29 +41,41 @@
 
 - (void)loadView {
   self.view = [[UIView alloc] init];
+  UIScrollView *scrollView = self.scrollView = [[UIScrollView alloc] init];
   UIView *container = self.container = [[UIView alloc] init];
   UIView *usersContainer = self.usersContainer = [[UIView alloc] init];
   UILabel *titleLabel = self.titleLabel = [[UILabel alloc] init];
   UILabel *descLabel = self.descLabel = [[UILabel alloc] init];
   UIButton *addLog = self.addLog = [[UIButton alloc] init];
-  CGRect calFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 500);
+  CGRect calFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 250);
   YNCCalendarView *calendar = self.calendar = [[YNCCalendarView alloc] initWithFrame:calFrame];
 
   self.usersLabels = [[NSMutableArray alloc] init];
   
-  [self.view addSubview:container];
+  [self.view addSubview:scrollView];
+  [scrollView addSubview:container];
   [container addSubview:titleLabel];
   [container addSubview:descLabel];
   [container addSubview:usersContainer];
   [container addSubview:addLog];
   [container addSubview:calendar];
 
-  NSDictionary *views = NSDictionaryOfVariableBindings(container, titleLabel, descLabel, usersContainer, addLog, calendar);
+  NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, container, titleLabel, descLabel, usersContainer, addLog, calendar);
+
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-100-[titleLabel]-10-[descLabel]-50-[usersContainer]-20-[addLog]-[calendar(500)]" toView:container];
-  [autoLayout addConstraintForViews:@[container, titleLabel, descLabel, addLog] equivalentAttribute:NSLayoutAttributeCenterX toView:container];
-  [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
-  [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
+  [autoLayout addVflConstraint:@"V:|-50-[titleLabel]-10-[descLabel]-50-[usersContainer]-20-[calendar(250)]-20-[addLog]-50-|" toView:container];
+  [autoLayout addConstraintForViews:@[self.view, scrollView, container, titleLabel, descLabel, addLog] equivalentAttribute:NSLayoutAttributeCenterX toView:self.view];
+  [autoLayout addVflConstraint:@"V:|[scrollView]|" toView:self.view];
+  [autoLayout addVflConstraint:@"H:|[scrollView]|" toView:self.view];
+  [autoLayout addVflConstraint:@"V:|[container]|" toView:scrollView];
+  [autoLayout addVflConstraint:@"H:|[container]|" toView:scrollView];
+  // Set width equal to scroll view port, not scroll view content size
+  [autoLayout addConstraintForViews:@[container, scrollView]
+                     equivalentAttribute:NSLayoutAttributeWidth
+                                  toView:self.view];
+  scrollView.scrollEnabled = YES;
+  [autoLayout addVflConstraint:@"V:|[container]|" toView:scrollView];
+  [autoLayout addVflConstraint:@"H:|[container]|" toView:scrollView];
   [autoLayout addVflConstraint:@"H:|[usersContainer]|" toView:container];
   [autoLayout addConstraintForView:addLog withSize:CGSizeMake(75,75) toView:addLog];
   [autoLayout addVflConstraint:@"H:|[calendar]|" toView:container];
@@ -109,6 +122,10 @@
   [self setGoalDetails];
   [addLog setImage:[UIImage imageNamed:@"add_log_button.png"] forState:UIControlStateNormal];
   [addLog addTarget:self action:@selector(addLogPressed) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
 }
 
 - (void)setGoalDetails {
