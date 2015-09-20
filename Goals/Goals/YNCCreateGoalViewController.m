@@ -16,19 +16,20 @@
 @interface YNCCreateGoalViewController ()
 
 @property (strong, nonatomic) UIView *container;
-
-@property (strong, nonatomic) UILabel *goalDescriptionLabel;
-@property (strong, nonatomic) UILabel *goalMembersLabel;
-
 @property (strong, nonatomic) UITextField *goalTitleTextField;
 @property (strong, nonatomic) UIView *goalTitleTextFieldBottomBorder;
-@property (strong, nonatomic) UITextView *goalDescriptionTextView;
 @property (strong, nonatomic) UIView *goalTypeButtons;
 @property (strong, nonatomic) NSMutableArray *typeButtons;
 @property (strong, nonatomic) UIButton *dailyTypeButton;
 @property (strong, nonatomic) UIButton *sumTypeButton;
 @property (strong, nonatomic) UITextField *goalDurationTextField;
 @property (strong, nonatomic) UIView *goalDurationTextFieldBottomBorder;
+@property (strong, nonatomic) UIView *goalMembersView;
+@property (strong, nonatomic) UILabel *goalMembersLabel;
+@property (strong, nonatomic) UIButton *addMembers;
+@property (strong, nonatomic) UIView *goalMembersBottomBorder;
+@property (strong, nonatomic) UILabel *goalDescriptionLabel;
+@property (strong, nonatomic) UITextView *goalDescriptionTextView;
 @property (strong, nonatomic) UIButton *submitButton;
 @property (nonatomic) GoalType goalType;
 
@@ -44,8 +45,6 @@
   
   UILabel *goalDescriptionLabel = self.goalDescriptionLabel = [[UILabel alloc] init];
   goalDescriptionLabel.text = @"DESCRIPTION:";
-  UILabel *goalMembersLabel = self.goalMembersLabel = [[UILabel alloc] init];
-  goalMembersLabel.text = @"WITH:";
   
   UITextField *goalTitleTextField = self.goalTitleTextField = [[UITextField alloc] init];
   goalTitleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"GOAL" attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
@@ -71,7 +70,6 @@
   dailyTypeButton.tag = daily;
   dailyTypeButton.layer.cornerRadius = 40.0f;
   [dailyTypeButton addTarget:self action:@selector(selectType:) forControlEvents:UIControlEventTouchUpInside];
-  
   [sumTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   [sumTypeButton setTitle:@"TOTAL" forState:UIControlStateNormal];
   sumTypeButton.layer.borderColor = [YNCColor tealColor].CGColor;
@@ -82,6 +80,17 @@
   [goalTypeButtons addSubview:dailyTypeButton];
   [goalTypeButtons addSubview:orLabel];
   [goalTypeButtons addSubview:sumTypeButton];
+  
+  UIView *goalMembersView = self.goalMembersView = [[UIView alloc] init];
+  UILabel *goalMembersLabel = self.goalMembersLabel = [[UILabel alloc] init];
+  goalMembersLabel.text = @"WITH";
+  UIButton *addMembers = self.addMembers = [[UIButton alloc] init];
+  [addMembers setImage:[UIImage imageNamed:@"add_hollow_button.png"] forState:UIControlStateNormal];
+  UIView *goalMembersBottomBorder = self.goalMembersBottomBorder = [[UIView alloc] init];
+  goalMembersBottomBorder.backgroundColor = [YNCColor tealColor];
+  [goalMembersView addSubview:goalMembersLabel];
+  [goalMembersView addSubview:addMembers];
+  [goalMembersView addSubview:goalMembersBottomBorder];
   
   UITextField *goalDurationTextField = self.goalDurationTextField = [[UITextField alloc] init];
   goalDurationTextField.keyboardType = UIKeyboardTypeNumberPad;
@@ -112,28 +121,36 @@
   [container addSubview:goalTypeButtons];
   [container addSubview:goalDurationTextField];
   [container addSubview:goalDurationTextFieldBottomBorder];
-  [container addSubview:goalMembersLabel];
+  [container addSubview:goalMembersView];
   [container addSubview:goalDescriptionLabel];
   [container addSubview:goalDescriptionTextView];
   [container addSubview:submitButton];
   
-  NSDictionary *views = NSDictionaryOfVariableBindings(container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, dailyTypeButton, orLabel, sumTypeButton, goalDurationTextField, goalDurationTextFieldBottomBorder, goalMembersLabel, goalDescriptionLabel, goalDescriptionTextView, submitButton);
+  NSDictionary *views = NSDictionaryOfVariableBindings(container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, dailyTypeButton, orLabel, sumTypeButton, goalDurationTextField, goalDurationTextFieldBottomBorder, goalMembersView, goalMembersLabel, addMembers, goalMembersBottomBorder, goalDescriptionLabel, goalDescriptionTextView, submitButton);
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-100-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-20-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersLabel]-20-[goalDescriptionLabel]-100-[submitButton]" toView:container];
-  [autoLayout addVflConstraint:@"V:|-280-[goalDescriptionTextView(100)]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-100-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-20-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersView]-20-[goalDescriptionLabel]-100-[submitButton]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-350-[goalDescriptionTextView(100)]" toView:container];
   [autoLayout addVflConstraint:@"H:[goalTitleTextField(300)]" toView:container];
-  //[autoLayout addVflConstraint:@"H:[goalTypeButtons]" toView:container];
+  
   [autoLayout addVflConstraint:@"V:|[dailyTypeButton(80)]|" toView:goalTypeButtons];
   [autoLayout addVflConstraint:@"V:|[orLabel]|" toView:goalTypeButtons];
   [autoLayout addVflConstraint:@"V:|[sumTypeButton(80)]|" toView:goalTypeButtons];
   [autoLayout addVflConstraint:@"H:|[dailyTypeButton(80)]-15-[orLabel]-15-[sumTypeButton(80)]|" toView:goalTypeButtons];
+  
+  [autoLayout addVflConstraint:@"V:|[goalMembersLabel]-5-[goalMembersBottomBorder(2)]|" toView:goalMembersView];
+  [autoLayout addVflConstraint:@"V:|[addMembers]" toView:goalMembersView];
+  [autoLayout addVflConstraint:@"H:|[goalMembersLabel]" toView:goalMembersView];
+  [autoLayout addVflConstraint:@"H:[addMembers]|" toView:goalMembersView];
+  [autoLayout addConstraintForView:addMembers withSize:CGSizeMake(24,24) toView:addMembers];
+  [autoLayout addVflConstraint:@"H:|[goalMembersBottomBorder(300)]|" toView:goalMembersView];
+  
   [autoLayout addVflConstraint:@"H:[goalDurationTextField(300)]" toView:container];
   [autoLayout addVflConstraint:@"H:|[goalDescriptionLabel]-10-[goalDescriptionTextView(200)]" toView:container];
   [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
   [autoLayout addConstraintForViews:@[goalTitleTextField, goalTitleTextFieldBottomBorder] equivalentAttribute:NSLayoutAttributeWidth toView:container];
     [autoLayout addConstraintForViews:@[goalDurationTextField, goalDurationTextFieldBottomBorder] equivalentAttribute:NSLayoutAttributeWidth toView:container];
-  [autoLayout addConstraintForViews:@[container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, goalDurationTextField, goalDurationTextFieldBottomBorder, submitButton] equivalentAttribute:NSLayoutAttributeCenterX toView:container];
+  [autoLayout addConstraintForViews:@[container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, goalMembersView, goalDurationTextField, goalDurationTextFieldBottomBorder, submitButton] equivalentAttribute:NSLayoutAttributeCenterX toView:container];
   
   // todo (calvin) -- person picker
   
