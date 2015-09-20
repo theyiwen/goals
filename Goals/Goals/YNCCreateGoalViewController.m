@@ -9,6 +9,7 @@
 #import "YNCCreateGoalViewController.h"
 #import "YNCAutoLayout.h"
 #import "YNCGoal.h"
+#import "YNCUser.h"
 
 @interface YNCCreateGoalViewController ()
 
@@ -120,14 +121,21 @@
 }
 
 - (void)submitButtonPressed:(UIButton *)button {
-  // [YNCGoal createAndSaveGoalWithTitle:<#(NSString *)#> desc:<#(NSString *)#> type:<#(GoalType)#> duration:<#(NSNumber *)#> usersList:<#(NSArray *)#>
-  /* PFObject *pfObject = [PFObject objectWithClassName:@"Goal"];
-  pfObject[logKey.goal] = goal.pfObject;
-  pfObject[logKey.user] = [PFUser currentUser];
-  pfObject[logKey.count] = count;
-  pfObject[logKey.notes] = notes;
-  [pfObject saveInBackgroundWithBlock:nil];
+  
+  NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+  f.numberStyle = NSNumberFormatterDecimalStyle;
+  NSNumber *duration = [f numberFromString:self.goalDurationTextField.text];
+  
+  NSMutableArray *usersBuilder = [[NSMutableArray alloc] init];
+  [usersBuilder addObject:[PFUser currentUser]];
+  /* for (PFObject *userObject in self.pfObject[YNCGoalPFKey.usersListKey]) {
+    [usersBuilder addObject:[[YNCUser alloc] initWithPFObject:userObject]];
+  }
    */
+  NSArray *usersList = [usersBuilder copy];
+  
+  [YNCGoal createAndSaveGoalWithTitle:self.goalTitleTextField.text desc:self.goalDescriptionTextField.text type:self.goalType duration:duration usersList:usersList];
+  // TODO (REFRESH list view after)
 }
 
 @end

@@ -42,10 +42,11 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 }
 
 - (GoalType) type {
-  if ([(NSString *)self.pfObject[YNCGoalPFKey.typeKey] isEqualToString:@"daily"]) {
+  NSString *type = (NSString *)self.pfObject[YNCGoalPFKey.typeKey];
+  if ([type isEqualToString:@"daily"]) {
     return daily;
   }
-  else if ([(NSString *)self.pfObject[YNCGoalPFKey.typeKey] isEqualToString:@"sum"]) {
+  else if ([type isEqualToString:@"sum"]) {
     return sum;
   }
   return 0;
@@ -99,10 +100,10 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   pfObject[YNCGoalPFKey.titleKey] = title;
   pfObject[YNCGoalPFKey.descriptionKey] = desc;
   pfObject[YNCGoalPFKey.durationKey] = duration;
-  if (type = daily) {
+  if (type == daily) {
     pfObject[YNCGoalPFKey.typeKey] = @"daily";
   }
-  else if (type = sum) {
+  else if (type == sum) {
     pfObject[YNCGoalPFKey.typeKey] = @"sum";
   }
   pfObject[YNCGoalPFKey.usersListKey] = usersList;
