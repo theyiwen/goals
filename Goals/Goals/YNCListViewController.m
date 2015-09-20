@@ -11,6 +11,7 @@
 #import "YNCCreateGoalViewController.h"
 #import "YNCAutoLayout.h"
 #import "YNCGoal.h"
+#import "YNCFont.h"
 
 static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 
@@ -66,6 +67,7 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kYNCListViewCellIdentifier];
   YNCGoal *goal = [self goalAtIndexPath:indexPath];
   cell.textLabel.text = goal.title;
+  cell.textLabel.font = [YNCFont standardFont];
   return cell;
 }
 

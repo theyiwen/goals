@@ -9,6 +9,7 @@
 #import "YNCCreateLogViewController.h"
 #import "YNCAutoLayout.h"
 #import "YNCLog.h"
+#import "YNCFont.h"
 
 @interface YNCCreateLogViewController ()<UITextFieldDelegate, UITextViewDelegate>
 
@@ -47,10 +48,9 @@
                                                        submitButton, cancelButton);
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
   [autoLayout addConstraintForView:container withSize:CGSizeMake(300, 300) toView:container];
-  [autoLayout addVflConstraint:@"V:|[cancelButton]-20-[countEntry]-20-[notesEntry(50)]-20-[submitButton]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-10-[cancelButton]-20-[countEntry]-20-[notesEntry(50)]-20-[submitButton]" toView:container];
   [autoLayout addVflConstraint:@"V:|-100-[container]" toView:self.view];
   [autoLayout addVflConstraint:@"H:|-10-[cancelButton]" toView:container];
-  [autoLayout addVflConstraint:@"V:|-10-[cancelButton]" toView:container];
   [autoLayout addVflConstraint:@"H:|-20-[countEntry]-20-|" toView:container];
   [autoLayout addVflConstraint:@"H:|-20-[notesEntry]-20-|" toView:container];
   [autoLayout addConstraintForViews:@[countEntry, notesEntry, submitButton, container, self.view]
@@ -63,11 +63,17 @@
   [autoLayout addConstraintForView:submitButton withSize:CGSizeMake(75,75) toView:submitButton];
   [self.cancelButton setTitle:@"X" forState:UIControlStateNormal];
   [self.cancelButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+  self.cancelButton.titleLabel.font = [YNCFont standardFont];
   self.submitButton.enabled = NO;
   self.countPlaceholder.text = @"add number";
   self.notesPlaceholder.text = @"add notes";
   self.countEntry.delegate = self;
   self.notesEntry.delegate = self;
+  self.countEntry.font = [YNCFont standardFont];
+  self.notesPlaceholder.font = [YNCFont standardFont];
+  self.countPlaceholder.font = [YNCFont standardFont];
+  self.notesEntry.font = [YNCFont standardFont];
+
   self.container.backgroundColor = [UIColor whiteColor];
   
   [self.submitButton setImage:[UIImage imageNamed:@"add_button.png"] forState:UIControlStateNormal];

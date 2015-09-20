@@ -8,6 +8,7 @@
 
 #import "YNCGoalUserView.h"
 #import "YNCAutoLayout.h"
+#import "YNCFont.h"
 
 @interface YNCGoalUserView()
 
@@ -50,6 +51,7 @@
     [self.photo setImage:img];
     self.photo.clipsToBounds = YES;
     self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.name.font = [YNCFont standardFont];
 
   }
   return self;

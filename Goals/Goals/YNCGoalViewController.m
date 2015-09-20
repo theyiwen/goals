@@ -12,6 +12,7 @@
 #import "YNCGoalUserView.h"
 #import "YNCLog.h"
 #import "YNCCreateLogViewController.h"
+#import "YNCFont.h"
 
 @interface YNCGoalViewController ()<YNCCreateLogViewControllerDelegate>
 
@@ -104,9 +105,10 @@
 }
 
 - (void)setGoalDetails {
-  self.titleLabel.text = self.goal.title;
+  self.titleLabel.text = self.goal.title.uppercaseString;
   self.descLabel.text = self.goal.desc;
-
+  self.titleLabel.font = [UIFont fontWithName:[YNCFont boldFontName] size:20];
+  self.descLabel.font = [YNCFont standardFont];
 }
 
 - (void)addLogPressed {

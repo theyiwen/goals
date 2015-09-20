@@ -13,6 +13,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import "YNCUser.h"
+#import "YNCFont.h"
 
 @interface AppDelegate ()<PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
@@ -46,7 +47,7 @@
   self.window.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1];
   [self.window makeKeyAndVisible];
   
-  
+  [YNCFont printFontNames];
   return [[FBSDKApplicationDelegate sharedInstance] application:application
                                   didFinishLaunchingWithOptions:launchOptions];
 }
