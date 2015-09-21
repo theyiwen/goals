@@ -58,7 +58,9 @@
 
   UIButton *addLog = self.addLog = [[UIButton alloc] init];
   CGRect calFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width - 40, 250);
-  YNCCalendarView *calendar = self.calendar = [[YNCCalendarView alloc] initWithFrame:calFrame];
+  YNCCalendarView *calendar = self.calendar = [[YNCCalendarView alloc] initWithFrame:calFrame
+                                                                                goal:self.goal
+                                                                                logs:self.logs];
 
   self.usersLabels = [[NSMutableDictionary alloc] init];
   
@@ -161,6 +163,7 @@
 }
 
 - (void)processLogs {
+  self.calendar.logs = self.logs;
   self.userSums = [[NSMutableDictionary alloc] init];
   for (YNCLog *log in self.logs) {
     if (self.userSums[log.user.pfID]) {

@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YNCGoal.h"
 
 @interface YNCCalendarView : UIView
 
+- (instancetype)initWithFrame:(CGRect)frame
+                         goal:(YNCGoal *)goal
+                         logs:(NSArray *)logs;
+
+@property (strong, nonatomic) NSArray *logs;
 @end

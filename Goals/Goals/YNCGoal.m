@@ -45,7 +45,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   return (NSString *)self.pfObject[YNCGoalPFKey.descriptionKey];
 }
 
-- (GoalType) type {
+- (GoalType)type {
   NSString *type = (NSString *)self.pfObject[YNCGoalPFKey.typeKey];
   if ([type isEqualToString:@"daily"]) {
     return daily;

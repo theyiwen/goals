@@ -13,6 +13,7 @@ const struct logKey logKey = {
   .user = @"user",
   .value = @"value",
   .notes = @"notes",
+  .date = @"date"
 };
 
 @interface YNCLog()
@@ -54,6 +55,10 @@ const struct logKey logKey = {
 
 - (NSNumber *)value {
   return self.pfObject[logKey.value];
+}
+
+- (NSDate *)date {
+  return self.pfObject[logKey.date];
 }
 
 + (void)createAndSaveLogWithGoal:(YNCGoal *)goal

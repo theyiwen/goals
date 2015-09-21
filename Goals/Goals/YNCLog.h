@@ -15,6 +15,7 @@ extern const struct logKey {
   __unsafe_unretained NSString *user;
   __unsafe_unretained NSString *value;
   __unsafe_unretained NSString *notes;
+  __unsafe_unretained NSString *date;
 } logKey;
 
 @interface YNCLog : NSObject
@@ -23,6 +24,7 @@ extern const struct logKey {
 @property (nonatomic, readonly) YNCUser *user;
 @property (nonatomic, readonly) NSString *notes;
 @property (nonatomic, readonly) NSNumber *value;
+@property (nonatomic, readonly) NSDate *date;
 
 + (void)createAndSaveLogWithGoal:(YNCGoal *)goal
                            value:(NSNumber *)value
