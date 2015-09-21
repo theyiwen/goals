@@ -74,4 +74,29 @@ const struct userKey userKey = {
   }];
 }
 
++ (NSString *)pfClassName {
+  return @"_User";
+}
+
++ (void)loadUsersWithFacebookIDs:(NSArray *)ids
+                        Callback:(void (^)(NSArray *users, NSError *error))callback {
+  PFQuery *query = [PFQuery queryWithClassName:[YNCUser pfClassName]];
+  [query orderByDescending:@"firstName"];
+  [query whereKey:userKey.facebookId containedIn:ids];
+  query.cachePolicy = kPFCachePolicyNetworkElseCache;
+  [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    if (!error) {
+      NSMutableArray *usersBuilder = [[NSMutableArray alloc] init];
+      for (PFObject *object in objects) {
+        [usersBuilder addObject:[[YNCUser alloc] initWithPFObject:object]];
+      }
+      callback([usersBuilder copy], error);
+    } else {
+      NSLog(@"Error loading users %@", error);
+      callback(nil, error);
+    }
+  }];
+}
+
+
 @end

@@ -28,5 +28,8 @@ extern const struct userKey {
 
 - (instancetype)initWithPFObject:(PFObject *)pfObject;
 - (void)fetchAndSaveFBData;
++ (NSString *)pfClassName;
++ (void)loadUsersWithFacebookIDs:(NSArray *)ids
+                        Callback:(void (^)(NSArray *users, NSError *error))callback;
 
 @end

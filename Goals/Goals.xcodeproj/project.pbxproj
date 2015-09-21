@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		631C77501BAF4E050039AF40 /* YNCColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 631C774F1BAF4E050039AF40 /* YNCColor.m */; };
+		631C77521BAF86D20039AF40 /* YNCFriendPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 631C77511BAF86D20039AF40 /* YNCFriendPickerViewController.m */; };
 		63B914C61BAE319D00F4A079 /* YNCCreateGoalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B914C51BAE319D00F4A079 /* YNCCreateGoalViewController.m */; };
 		934F94BC1BAE6CAA00285112 /* YNCFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 934F94BB1BAE6CAA00285112 /* YNCFont.m */; };
 		934F94C91BAE6E8400285112 /* Raleway-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 934F94C01BAE6E8400285112 /* Raleway-Bold.ttf */; };
@@ -68,6 +69,8 @@
 /* Begin PBXFileReference section */
 		631C774C1BAF4D940039AF40 /* YNCColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YNCColor.h; sourceTree = "<group>"; };
 		631C774F1BAF4E050039AF40 /* YNCColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCColor.m; sourceTree = "<group>"; };
+		631C77511BAF86D20039AF40 /* YNCFriendPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCFriendPickerViewController.m; sourceTree = "<group>"; };
+		631C77531BAF86E20039AF40 /* YNCFriendPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YNCFriendPickerViewController.h; sourceTree = "<group>"; };
 		63B914C51BAE319D00F4A079 /* YNCCreateGoalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCCreateGoalViewController.m; sourceTree = "<group>"; };
 		63B914C71BAE31C300F4A079 /* YNCCreateGoalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YNCCreateGoalViewController.h; sourceTree = "<group>"; };
 		934F94BA1BAE6CAA00285112 /* YNCFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCFont.h; sourceTree = "<group>"; };
@@ -257,6 +260,8 @@
 				935409891BAE2B34003E8454 /* YNCGoalUserView.m */,
 				63B914C51BAE319D00F4A079 /* YNCCreateGoalViewController.m */,
 				63B914C71BAE31C300F4A079 /* YNCCreateGoalViewController.h */,
+				631C77511BAF86D20039AF40 /* YNCFriendPickerViewController.m */,
+				631C77531BAF86E20039AF40 /* YNCFriendPickerViewController.h */,
 				9354098E1BAE3FD0003E8454 /* YNCCreateLogViewController.h */,
 				9354098F1BAE3FD0003E8454 /* YNCCreateLogViewController.m */,
 				93FBB2E11BADD5EE00022B2E /* ViewController.h */,
@@ -442,6 +447,7 @@
 				934F94D51BAF32DC00285112 /* YNCCalendarView.m in Sources */,
 				935409841BAE1196003E8454 /* YNCGoalViewController.m in Sources */,
 				935409901BAE3FD0003E8454 /* YNCCreateLogViewController.m in Sources */,
+				631C77521BAF86D20039AF40 /* YNCFriendPickerViewController.m in Sources */,
 				63B914C61BAE319D00F4A079 /* YNCCreateGoalViewController.m in Sources */,
 				93FBB2DD1BADD5EE00022B2E /* main.m in Sources */,
 			);

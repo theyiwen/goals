@@ -7,14 +7,17 @@
 //
 
 #import "YNCCreateGoalViewController.h"
+#import "YNCFriendPickerViewController.h"
 #import "YNCAutoLayout.h"
 #import "YNCFont.h"
 #import "YNCColor.h"
 #import "YNCGoal.h"
 #import "YNCUser.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 @interface YNCCreateGoalViewController ()
 
+@property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIView *container;
 @property (strong, nonatomic) UITextField *goalTitleTextField;
 @property (strong, nonatomic) UIView *goalTitleTextFieldBottomBorder;
@@ -41,6 +44,8 @@
   self.title = @"Create Goal"; // how to change font of this?
   self.view = [[UIView alloc] init];
   self.view.backgroundColor = [UIColor whiteColor];
+  
+  UIScrollView *scrollView = self.scrollView = [[UIScrollView alloc] init];
   UIView *container = self.container = [[UIView alloc] init];
   
   UILabel *goalDescriptionLabel = self.goalDescriptionLabel = [[UILabel alloc] init];
@@ -52,8 +57,8 @@
   goalTitleTextFieldBottomBorder.backgroundColor = [YNCColor tealColor];
   
   UITextView *goalDescriptionTextView = self.goalDescriptionTextView = [[UITextView alloc] init];
-  goalDescriptionTextView.layer.borderWidth = 1.0f;
-  goalDescriptionTextView.layer.borderColor = [[UIColor grayColor] CGColor];
+  goalDescriptionTextView.layer.borderWidth = 2.0f;
+  goalDescriptionTextView.layer.borderColor = [YNCColor tealColor].CGColor;
   goalDescriptionTextView.layer.cornerRadius = 8;
   
   self.goalType = -1;
@@ -87,6 +92,7 @@
   goalMembersLabel.text = @"WITH";
   UIButton *addMembers = self.addMembers = [[UIButton alloc] init];
   [addMembers setImage:[UIImage imageNamed:@"add_hollow_button.png"] forState:UIControlStateNormal];
+  [addMembers addTarget:self action:@selector(addMembersButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   UIView *goalMembersBottomBorder = self.goalMembersBottomBorder = [[UIView alloc] init];
   goalMembersBottomBorder.backgroundColor = [YNCColor tealColor];
   [goalMembersView addSubview:goalMembersLabel];
@@ -108,7 +114,7 @@
   submitButton.layer.cornerRadius = 8;
   [submitButton addTarget:self action:@selector(submitButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   submitButton.enabled = NO;
-  
+
   goalDescriptionLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
   goalMembersLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
   goalTitleTextField.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
@@ -121,7 +127,8 @@
   
   // todo (calvin): replace all blacks with dark grey
   
-  [self.view addSubview:container];
+  [self.view addSubview:scrollView];
+  [scrollView addSubview:container];
   [container addSubview:goalTitleTextField];
   [container addSubview:goalTitleTextFieldBottomBorder];
   [container addSubview:goalTypeButtons];
@@ -132,10 +139,10 @@
   [container addSubview:goalDescriptionTextView];
   [container addSubview:submitButton];
   
-  NSDictionary *views = NSDictionaryOfVariableBindings(container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, dailyTypeButton, orLabel, sumTypeButton, goalDurationTextField, goalDurationTextFieldBottomBorder, goalMembersView, goalMembersLabel, addMembers, goalMembersBottomBorder, goalDescriptionLabel, goalDescriptionTextView, submitButton);
+  NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, dailyTypeButton, orLabel, sumTypeButton, goalDurationTextField, goalDurationTextFieldBottomBorder, goalMembersView, goalMembersLabel, addMembers, goalMembersBottomBorder, goalDescriptionLabel, goalDescriptionTextView, submitButton);
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-100-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-20-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersView]-20-[goalDescriptionLabel]-100-[submitButton]" toView:container];
-  [autoLayout addVflConstraint:@"V:|-350-[goalDescriptionTextView(100)]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-50-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-20-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersView]-20-[goalDescriptionLabel]-5-[goalDescriptionTextView(100)]-50-[submitButton]|" toView:container];
+  [autoLayout addVflConstraint:@"H:|-40-[goalDescriptionTextView(300)]" toView:container];
   [autoLayout addVflConstraint:@"H:[goalTitleTextField(300)]" toView:container];
   
   [autoLayout addVflConstraint:@"V:|[dailyTypeButton(80)]|" toView:goalTypeButtons];
@@ -151,20 +158,25 @@
   [autoLayout addVflConstraint:@"H:|[goalMembersBottomBorder(300)]|" toView:goalMembersView];
   
   [autoLayout addVflConstraint:@"H:[goalDurationTextField(300)]" toView:container];
-  [autoLayout addVflConstraint:@"H:|[goalDescriptionLabel]-10-[goalDescriptionTextView(200)]" toView:container];
+  [autoLayout addVflConstraint:@"H:|-40-[goalDescriptionLabel]" toView:container];
   
   [autoLayout addVflConstraint:@"H:[submitButton(100)]" toView:container];
+
+  [autoLayout addVflConstraint:@"V:|[scrollView]|" toView:self.view];
+  [autoLayout addVflConstraint:@"H:|[scrollView]|" toView:self.view];
+  [autoLayout addVflConstraint:@"V:|[container]|" toView:scrollView];
+  [autoLayout addVflConstraint:@"H:|[container]|" toView:scrollView];
   
-  [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
-  [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
+  [autoLayout addConstraintForViews:@[container, scrollView]
+                equivalentAttribute:NSLayoutAttributeWidth
+                             toView:self.view];
   [autoLayout addConstraintForViews:@[goalTitleTextField, goalTitleTextFieldBottomBorder] equivalentAttribute:NSLayoutAttributeWidth toView:container];
   [autoLayout addConstraintForViews:@[goalDurationTextField, goalDurationTextFieldBottomBorder] equivalentAttribute:NSLayoutAttributeWidth toView:container];
   [autoLayout addConstraintForViews:@[container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, goalMembersView, goalDurationTextField, goalDurationTextFieldBottomBorder, submitButton] equivalentAttribute:NSLayoutAttributeCenterX toView:container];
+
   
   [goalTitleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
   [goalDurationTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-  
-  // todo (calvin) -- person picker
   
 }
 
@@ -184,6 +196,10 @@
   }
 }
 
+- (void)addMembersButtonPressed:(UIButton *) button {
+  YNCFriendPickerViewController *friendpickerVC = [[YNCFriendPickerViewController alloc] init];
+  [self.navigationController pushViewController:friendpickerVC animated:YES];
+}
 
 
 - (void)submitButtonPressed:(UIButton *)button {
@@ -206,7 +222,8 @@
 }
 
 - (BOOL)formValidated {
-  return (self.goalTitleTextField.text && self.goalTitleTextField.text.length > 0 && self.goalType != -1 && self.goalDurationTextField.text && self.goalDurationTextField.text.length > 0); // TODO (calvin): add users validation
+  return (self.goalTitleTextField.text && self.goalTitleTextField.text.length > 0 && self.goalType != -1 && self.goalDurationTextField.text && self.goalDurationTextField.text.length > 0);
+  // TODO (calvin): add users validation
 }
 
 
