@@ -31,14 +31,14 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   self.view = [[UIView alloc] init];
   UIView *container = self.container = [[UIView alloc] init];
   [self.view addSubview:container];
+  self.view.backgroundColor = [UIColor whiteColor];
   
-  container.backgroundColor = [YNCColor tealColor];
   UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
   self.navigationItem.rightBarButtonItem = doneButton; // should only show if picked friends > 1 but whatever
   
   
-  NSMutableSet *pickedFriends = self.pickedFriends = [[NSMutableSet alloc] init];
-  NSArray *myFriends = self.myFriends = [[NSArray alloc] init];
+  self.pickedFriends = [[NSMutableSet alloc] init];
+  self.myFriends = [[NSArray alloc] init];
   UITableView *friendsListTableView = self.friendListTableView = [[UITableView alloc] init];
   friendsListTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
   friendsListTableView.delegate = self;
@@ -51,7 +51,8 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   
   NSDictionary *views = NSDictionaryOfVariableBindings(container, friendsListTableView);
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|[friendsListTableView(500)]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-20-[friendsListTableView(500)]" toView:container];
+  // todo (calvin): this should scale to content / be scrollable yeah?
   [autoLayout addVflConstraint:@"H:|[friendsListTableView(400)]" toView:container];
   [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[container]|" toView:self.view];
@@ -91,7 +92,6 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  NSLog(@"count %d", [self.myFriends count]);
   return [self.myFriends count];
 }
 

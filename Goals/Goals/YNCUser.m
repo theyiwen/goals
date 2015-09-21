@@ -98,14 +98,4 @@ const struct userKey userKey = {
   }];
 }
 
-- (BOOL)isEqual:(id)object {
-  PFObject* obj = (PFObject *)object;
-  return [self.pfObject.objectId isEqualToString:obj.objectId];
-}
-
-- (NSUInteger)hash {
-  return self.pfObject.objectId.hash;
-} // this doesnt make sense
-
-
 @end

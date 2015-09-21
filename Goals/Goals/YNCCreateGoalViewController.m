@@ -18,6 +18,7 @@
 @interface YNCCreateGoalViewController ()<YNCFriendPickerViewControllerDelegate>
 
 @property (strong, nonatomic) YNCFriendPickerViewController *friendPickerVC;
+@property (strong, nonatomic) YNCAutoLayout *autoLayout;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIView *container;
 @property (strong, nonatomic) UITextField *goalTitleTextField;
@@ -30,6 +31,7 @@
 @property (strong, nonatomic) UIView *goalDurationTextFieldBottomBorder;
 @property (strong, nonatomic) UIView *goalMembersView;
 @property (strong, nonatomic) UILabel *goalMembersLabel;
+@property (strong, nonatomic) UIView *goalMembersAvatarStrip;
 @property (strong, nonatomic) UIButton *addMembers;
 @property (strong, nonatomic) UIView *goalMembersBottomBorder;
 @property (strong, nonatomic) UILabel *goalDescriptionLabel;
@@ -49,7 +51,6 @@
   
   YNCFriendPickerViewController *friendpickerVC = self.friendPickerVC = [[YNCFriendPickerViewController alloc] init];
   friendpickerVC.delegate = self;
-  NSArray *goalMembers = self.goalMembers = [[NSArray alloc] init];
   
   UIScrollView *scrollView = self.scrollView = [[UIScrollView alloc] init];
   UIView *container = self.container = [[UIView alloc] init];
@@ -75,39 +76,37 @@
   orLabel.textColor = [UIColor blackColor];
   orLabel.text = @"OR";
   self.typeButtons = [[NSMutableArray alloc] initWithArray:@[dailyTypeButton, sumTypeButton]];
-  [dailyTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   [dailyTypeButton setTitle:@"DAILY" forState:UIControlStateNormal];
-  dailyTypeButton.layer.borderColor = [YNCColor tealColor].CGColor;
-  dailyTypeButton.layer.borderWidth = 2.0f;
   dailyTypeButton.tag = daily;
-  dailyTypeButton.layer.cornerRadius = 40.0f;
-  [dailyTypeButton addTarget:self action:@selector(selectType:) forControlEvents:UIControlEventTouchUpInside];
-  [sumTypeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   [sumTypeButton setTitle:@"TOTAL" forState:UIControlStateNormal];
-  sumTypeButton.layer.borderColor = [YNCColor tealColor].CGColor;
-  sumTypeButton.layer.borderWidth = 2.0f;
   sumTypeButton.tag = sum;
-  sumTypeButton.layer.cornerRadius = 40.0f;
-  [sumTypeButton addTarget:self action:@selector(selectType:) forControlEvents:UIControlEventTouchUpInside];
-  [goalTypeButtons addSubview:dailyTypeButton];
+  for (UIButton *button in self.typeButtons) {
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    button.layer.borderColor = [YNCColor tealColor].CGColor;
+    button.layer.borderWidth = 2.0f;
+    button.layer.cornerRadius = 40.0f;
+    [button addTarget:self action:@selector(selectType:) forControlEvents:UIControlEventTouchUpInside];
+    [goalTypeButtons addSubview:button];
+  }
   [goalTypeButtons addSubview:orLabel];
-  [goalTypeButtons addSubview:sumTypeButton];
   
   UIView *goalMembersView = self.goalMembersView = [[UIView alloc] init];
   UILabel *goalMembersLabel = self.goalMembersLabel = [[UILabel alloc] init];
   goalMembersLabel.text = @"WITH";
+  UIView *goalMembersAvatarStrip = self.goalMembersAvatarStrip = [[UIView alloc] init];
   UIButton *addMembers = self.addMembers = [[UIButton alloc] init];
   [addMembers setImage:[UIImage imageNamed:@"add_hollow_button.png"] forState:UIControlStateNormal];
   [addMembers addTarget:self action:@selector(addMembersButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   UIView *goalMembersBottomBorder = self.goalMembersBottomBorder = [[UIView alloc] init];
   goalMembersBottomBorder.backgroundColor = [YNCColor tealColor];
   [goalMembersView addSubview:goalMembersLabel];
+  [goalMembersView addSubview:goalMembersAvatarStrip];
   [goalMembersView addSubview:addMembers];
   [goalMembersView addSubview:goalMembersBottomBorder];
   
   UITextField *goalDurationTextField = self.goalDurationTextField = [[UITextField alloc] init];
   goalDurationTextField.keyboardType = UIKeyboardTypeNumberPad;
-  goalDurationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"DURATION" attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
+  goalDurationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"# OF DAYS" attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
   UIView *goalDurationTextFieldBottomBorder = self.goalDurationTextFieldBottomBorder = [[UIView alloc] init];
   goalDurationTextFieldBottomBorder.backgroundColor = [YNCColor tealColor];
   
@@ -145,8 +144,8 @@
   [container addSubview:goalDescriptionTextView];
   [container addSubview:submitButton];
   
-  NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, dailyTypeButton, orLabel, sumTypeButton, goalDurationTextField, goalDurationTextFieldBottomBorder, goalMembersView, goalMembersLabel, addMembers, goalMembersBottomBorder, goalDescriptionLabel, goalDescriptionTextView, submitButton);
-  YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
+  NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, dailyTypeButton, orLabel, sumTypeButton, goalDurationTextField, goalDurationTextFieldBottomBorder, goalMembersView, goalMembersLabel, goalMembersAvatarStrip, addMembers, goalMembersBottomBorder, goalDescriptionLabel, goalDescriptionTextView, submitButton);
+  YNCAutoLayout *autoLayout = self.autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
   [autoLayout addVflConstraint:@"V:|-50-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-20-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersView]-20-[goalDescriptionLabel]-5-[goalDescriptionTextView(100)]-50-[submitButton]|" toView:container];
   [autoLayout addVflConstraint:@"H:|-40-[goalDescriptionTextView(300)]" toView:container];
   [autoLayout addVflConstraint:@"H:[goalTitleTextField(300)]" toView:container];
@@ -157,10 +156,14 @@
   [autoLayout addVflConstraint:@"H:|[dailyTypeButton(80)]-15-[orLabel]-15-[sumTypeButton(80)]|" toView:goalTypeButtons];
   
   [autoLayout addVflConstraint:@"V:|[goalMembersLabel]-5-[goalMembersBottomBorder(2)]|" toView:goalMembersView];
+  [autoLayout addVflConstraint:@"V:|[goalMembersAvatarStrip(24)]" toView:goalMembersView];
   [autoLayout addVflConstraint:@"V:|[addMembers]" toView:goalMembersView];
-  [autoLayout addVflConstraint:@"H:|[goalMembersLabel]" toView:goalMembersView];
+  [autoLayout addVflConstraint:@"H:|[goalMembersLabel]-10-[goalMembersAvatarStrip(205)]" toView:goalMembersView];
   [autoLayout addVflConstraint:@"H:[addMembers]|" toView:goalMembersView];
   [autoLayout addConstraintForView:addMembers withSize:CGSizeMake(24,24) toView:addMembers]; // can probably get rid of this and just make the whole view be tap target
+  
+  // todo (calvin): show the pictures of selected peeps
+  
   [autoLayout addVflConstraint:@"H:|[goalMembersBottomBorder(300)]|" toView:goalMembersView];
   
   [autoLayout addVflConstraint:@"H:[goalDurationTextField(300)]" toView:container];
@@ -225,12 +228,62 @@
 
 - (void)friendPickerViewControllerDidSubmit:(YNCFriendPickerViewController *)friendPickerViewController withFriends:(NSArray *)friends {
   self.goalMembers = [friends copy];
-  NSLog(@"selected members %@", self.goalMembers);
+  [self drawGoalMembersAvatarStrip];
 }
 
 - (BOOL)formValidated {
   return (self.goalTitleTextField.text && self.goalTitleTextField.text.length > 0 && self.goalType != -1 && self.goalDurationTextField.text && self.goalDurationTextField.text.length > 0);
   // TODO (calvin): add users validation
+}
+
+- (void) drawGoalMembersAvatarStrip {
+  for (id viewToRemove in [self.goalMembersAvatarStrip subviews]){
+      [viewToRemove removeFromSuperview];
+  }
+  UIImageView *lastPhoto;
+  NSInteger count = 0;
+  for (PFObject *object in self.goalMembers) {
+    YNCUser *user = [[YNCUser alloc] initWithPFObject:object];
+    NSURL *url = [NSURL URLWithString:user.photoUrl];
+    NSLog (@"url: %@", user.photoUrl);
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    UIImage *img = [[UIImage alloc] initWithData:data];
+    UIImageView *photo = [[UIImageView alloc] init];
+    photo.contentMode = UIViewContentModeScaleAspectFit;
+    [photo setImage:img];
+    photo.clipsToBounds = YES;
+    photo.translatesAutoresizingMaskIntoConstraints = NO;
+    photo.layer.cornerRadius = 12;
+    
+    [self.goalMembersAvatarStrip addSubview:photo];
+    [self.autoLayout addConstraintForView:photo withSize:CGSizeMake(24, 24) toView:photo];
+    if (count == 0) {
+      [self.autoLayout addConstraintWithItem:photo
+                                 toItem:self.goalMembersAvatarStrip
+                    equivalentAttribute:NSLayoutAttributeLeft
+                             multiplier:1
+                               constant:0
+                                 toView:self.goalMembersAvatarStrip];
+    }
+    if (lastPhoto) {
+      [self.autoLayout addConstraintWithItem:photo
+                                 toItem:lastPhoto
+                    equivalentAttribute:NSLayoutAttributeLeft
+                             multiplier:1
+                               constant:10
+                                 toView:self.goalMembersAvatarStrip];
+
+    }
+    
+    [self.autoLayout addConstraintForViews:@[photo,self.goalMembersAvatarStrip]
+                  equivalentAttribute:NSLayoutAttributeTop
+                               toView:self.goalMembersAvatarStrip];
+    [self.autoLayout addConstraintForViews:@[photo,self.goalMembersAvatarStrip]
+                  equivalentAttribute:NSLayoutAttributeBottom
+                               toView:self.goalMembersAvatarStrip];
+    lastPhoto = photo;
+    count = count + 1;
+  }
 }
 
 - (void)textFieldDidChange:(UITextField *)textField {
