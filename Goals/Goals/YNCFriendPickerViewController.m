@@ -20,6 +20,7 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
 @property (strong, nonatomic) UIView *container;
 @property (strong, nonatomic) NSArray *myFriends;
 @property (strong, nonatomic) UITableView *friendListTableView;
+@property (strong, nonatomic) NSMutableSet *pickedFriends;
 
 @end
 
@@ -32,9 +33,14 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   [self.view addSubview:container];
   
   container.backgroundColor = [YNCColor tealColor];
+  UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
+  self.navigationItem.rightBarButtonItem = doneButton; // should only show if picked friends > 1 but whatever
   
+  
+  NSMutableSet *pickedFriends = self.pickedFriends = [[NSMutableSet alloc] init];
   NSArray *myFriends = self.myFriends = [[NSArray alloc] init];
   UITableView *friendsListTableView = self.friendListTableView = [[UITableView alloc] init];
+  friendsListTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
   friendsListTableView.delegate = self;
   friendsListTableView.dataSource = self;
   [friendsListTableView registerClass:[UITableViewCell class]
@@ -92,9 +98,8 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kYNCFriendViewCellIdentifier];
-  NSLog(@"cell");
   YNCUser *user = (YNCUser *)self.myFriends[indexPath.row];
-  NSLog(@"user %@", user);
+
   cell.textLabel.text = user.firstName;
   cell.textLabel.font = [YNCFont standardFont];
   cell.textLabel.textColor = [UIColor blackColor];
@@ -103,18 +108,56 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   NSData *data = [NSData dataWithContentsOfURL:url];
   UIImage *img = [[UIImage alloc] initWithData:data];
   cell.imageView.image = img;
+  cell.imageView.layer.cornerRadius = 20;
+  cell.imageView.clipsToBounds = YES;
 
   return cell;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  /*YNCGoal *goal = [self goalAtIndexPath:indexPath];
-   YNCGoalViewController *goalVC = [[YNCGoalViewController alloc] initWithGoal:goal];
-   [self.navigationController pushViewController:goalVC animated:YES];
-   */
-  NSLog(@"you picked something!");
+  
+  YNCUser *user = (YNCUser *)self.myFriends[indexPath.row];
+  if (![self.pickedFriends containsObject:user.pfObject]) {
+    [self.pickedFriends addObject:user.pfObject];
+  }
+  else {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.pickedFriends removeObject:user.pfObject];
+  }
 }
+
+- (void)doneButtonPressed {
+
+  [self.delegate friendPickerViewControllerDidSubmit:self withFriends:[self.pickedFriends allObjects]];
+  [self.navigationController popViewControllerAnimated:YES];
+  NSLog(@"done");
+  
+}
+
+// todo (calvin): change done styling (teal stroke, bold names)
+
+// delegate
+
+/*
+ 
+ - (void)sizeTableViewToFitResults {
+ if (self.tableView.contentSize.height + kYESSearchBarHeight < self.view.frame.size.height) {
+ self.tableView.frame =
+ CGRectMake(self.tableView.frame.origin.x,
+ self.tableView.frame.origin.y,
+ self.tableView.contentSize.width,
+ self.tableView.contentSize.height);
+ } else {
+ self.tableView.frame =
+ CGRectMake(self.tableView.frame.origin.x,
+ self.tableView.frame.origin.y,
+ self.view.frame.size.width,
+ self.view.frame.size.height - kYESSearchBarHeight);
+ }
+ }
+ 
+ */
 
 
 @end

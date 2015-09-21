@@ -15,8 +15,9 @@
 #import "YNCUser.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
-@interface YNCCreateGoalViewController ()
+@interface YNCCreateGoalViewController ()<YNCFriendPickerViewControllerDelegate>
 
+@property (strong, nonatomic) YNCFriendPickerViewController *friendPickerVC;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIView *container;
 @property (strong, nonatomic) UITextField *goalTitleTextField;
@@ -35,6 +36,7 @@
 @property (strong, nonatomic) UITextView *goalDescriptionTextView;
 @property (strong, nonatomic) UIButton *submitButton;
 @property (nonatomic) GoalType goalType;
+@property (strong, nonatomic) NSArray *goalMembers;
 
 @end
 
@@ -44,6 +46,10 @@
   self.title = @"Create Goal"; // how to change font of this?
   self.view = [[UIView alloc] init];
   self.view.backgroundColor = [UIColor whiteColor];
+  
+  YNCFriendPickerViewController *friendpickerVC = self.friendPickerVC = [[YNCFriendPickerViewController alloc] init];
+  friendpickerVC.delegate = self;
+  NSArray *goalMembers = self.goalMembers = [[NSArray alloc] init];
   
   UIScrollView *scrollView = self.scrollView = [[UIScrollView alloc] init];
   UIView *container = self.container = [[UIView alloc] init];
@@ -154,7 +160,7 @@
   [autoLayout addVflConstraint:@"V:|[addMembers]" toView:goalMembersView];
   [autoLayout addVflConstraint:@"H:|[goalMembersLabel]" toView:goalMembersView];
   [autoLayout addVflConstraint:@"H:[addMembers]|" toView:goalMembersView];
-  [autoLayout addConstraintForView:addMembers withSize:CGSizeMake(24,24) toView:addMembers];
+  [autoLayout addConstraintForView:addMembers withSize:CGSizeMake(24,24) toView:addMembers]; // can probably get rid of this and just make the whole view be tap target
   [autoLayout addVflConstraint:@"H:|[goalMembersBottomBorder(300)]|" toView:goalMembersView];
   
   [autoLayout addVflConstraint:@"H:[goalDurationTextField(300)]" toView:container];
@@ -197,8 +203,7 @@
 }
 
 - (void)addMembersButtonPressed:(UIButton *) button {
-  YNCFriendPickerViewController *friendpickerVC = [[YNCFriendPickerViewController alloc] init];
-  [self.navigationController pushViewController:friendpickerVC animated:YES];
+  [self.navigationController pushViewController:self.friendPickerVC animated:YES];
 }
 
 
@@ -209,38 +214,24 @@
   NSNumber *duration = [f numberFromString:self.goalDurationTextField.text];
   
   NSMutableArray *usersBuilder = [[NSMutableArray alloc] init];
+  usersBuilder = [self.goalMembers mutableCopy];
   [usersBuilder addObject:[PFUser currentUser]];
-  /* for (PFObject *userObject in self.pfObject[YNCGoalPFKey.usersListKey]) {
-    [usersBuilder addObject:[[YNCUser alloc] initWithPFObject:userObject]];
-  }
-   */
-  NSArray *usersList = [usersBuilder copy];
+  //NSLog(@"goal members: %@", usersBuilder);
   
-  [YNCGoal createAndSaveGoalWithTitle:self.goalTitleTextField.text desc:self.goalDescriptionTextView.text type:self.goalType duration:duration usersList:usersList];
+  [YNCGoal createAndSaveGoalWithTitle:self.goalTitleTextField.text desc:self.goalDescriptionTextView.text type:self.goalType duration:duration usersList:usersBuilder];
   [self.navigationController popViewControllerAnimated:YES];
   // TODO (calvin): REFRESH list view with callbacks
+}
+
+- (void)friendPickerViewControllerDidSubmit:(YNCFriendPickerViewController *)friendPickerViewController withFriends:(NSArray *)friends {
+  self.goalMembers = [friends copy];
+  NSLog(@"selected members %@", self.goalMembers);
 }
 
 - (BOOL)formValidated {
   return (self.goalTitleTextField.text && self.goalTitleTextField.text.length > 0 && self.goalType != -1 && self.goalDurationTextField.text && self.goalDurationTextField.text.length > 0);
   // TODO (calvin): add users validation
 }
-
-
-// TODO (calvin): make placeholders go away
-/*
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-  if (!self.countPlaceholder.hidden) {
-    self.countPlaceholder.hidden = YES;
-  }
-}
-
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-  if (!self.notesPlaceholder.hidden) {
-    self.notesPlaceholder.hidden = YES;
-  }
-}
- */
 
 - (void)textFieldDidChange:(UITextField *)textField {
   if ([self formValidated]) {
@@ -250,5 +241,20 @@
     self.submitButton.enabled = NO;
   }
 }
+
+// TODO (calvin): make placeholders go away
+/*
+ - (void)textFieldDidBeginEditing:(UITextField *)textField {
+ if (!self.countPlaceholder.hidden) {
+ self.countPlaceholder.hidden = YES;
+ }
+ }
+ 
+ - (void)textViewDidBeginEditing:(UITextView *)textView {
+ if (!self.notesPlaceholder.hidden) {
+ self.notesPlaceholder.hidden = YES;
+ }
+ }
+ */
 
 @end

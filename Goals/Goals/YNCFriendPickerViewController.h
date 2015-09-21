@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol YNCFriendPickerViewControllerDelegate;
+
 @interface YNCFriendPickerViewController : UIViewController
+
+@property (weak, nonatomic) id<YNCFriendPickerViewControllerDelegate> delegate;
+
+@end
+
+@protocol YNCFriendPickerViewControllerDelegate
+
+- (void)friendPickerViewControllerDidSubmit:(YNCFriendPickerViewController *)friendPickerViewController
+                                withFriends:(NSArray *)friends;
 
 @end
