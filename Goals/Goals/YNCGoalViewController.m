@@ -214,7 +214,7 @@
 }
 
 - (void)createLogViewControllerDidSubmit:(YNCCreateLogViewController *)createLogViewController
-                                witValue:(NSNumber *)value
+                               withValue:(NSNumber *)value
                                    notes:(NSString *)notes {
   [YNCLog createAndSaveLogWithGoal:self.goal
                              value:value

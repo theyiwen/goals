@@ -18,7 +18,6 @@
 
 @protocol YNCCreateLogViewControllerDelegate
 
-- (void)createLogViewControllerDidCancel:(YNCCreateLogViewController *)createLogViewController;
 - (void)createLogViewControllerDidSubmit:(YNCCreateLogViewController *)createLogViewController
                                withValue:(NSNumber *)value
                                    notes:(NSString *)notes;

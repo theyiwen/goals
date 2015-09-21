@@ -73,6 +73,7 @@
   self.notesPlaceholder.font = [YNCFont standardFont];
   self.countPlaceholder.font = [YNCFont standardFont];
   self.notesEntry.font = [YNCFont standardFont];
+  self.notesEntry.text = @"";
 
   self.container.backgroundColor = [UIColor whiteColor];
   

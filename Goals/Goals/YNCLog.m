@@ -69,6 +69,7 @@ const struct logKey logKey = {
   pfObject[logKey.user] = [PFUser currentUser];
   pfObject[logKey.value] = value;
   pfObject[logKey.notes] = notes;
+  pfObject[logKey.date] = [NSDate date];
   [pfObject saveInBackgroundWithBlock:nil];
 }
 
