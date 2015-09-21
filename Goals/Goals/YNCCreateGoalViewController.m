@@ -217,7 +217,10 @@
   NSNumber *duration = [f numberFromString:self.goalDurationTextField.text];
   
   NSMutableArray *usersBuilder = [[NSMutableArray alloc] init];
-  usersBuilder = [self.goalMembers mutableCopy];
+  NSMutableArray *copy = [self.goalMembers mutableCopy];
+  if (copy) {
+    usersBuilder = copy;
+  }
   [usersBuilder addObject:[PFUser currentUser]];
   //NSLog(@"goal members: %@", usersBuilder);
   
