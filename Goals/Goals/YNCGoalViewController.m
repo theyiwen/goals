@@ -79,12 +79,12 @@
   self.usersLabels = [[NSMutableDictionary alloc] init];
   
   [self.view addSubview:scrollView];
+  [self.view addSubview:addLog];
   [scrollView addSubview:container];
   [container addSubview:name];
   [container addSubview:dates];
   [container addSubview:desc];
   [container addSubview:usersContainer];
-  [container addSubview:addLog];
   [container addSubview:calendar];
   [container addSubview:descLabel];
   [container addSubview:usersLabel];
@@ -95,8 +95,9 @@
                                                        descLabel, calLabel, usersLabel);
 
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-30-[name][dates]-20-[descLabel]-5-[desc]-20-[usersLabel]-5-[usersContainer]-20-[calLabel]-5-[calendar(250)]-20-[addLog]-50-|" toView:container];
+  [autoLayout addVflConstraint:@"V:|-30-[name][dates]-20-[descLabel]-5-[desc]-20-[usersLabel]-5-[usersContainer]-20-[calLabel]-5-[calendar(250)]-20-|" toView:container];
   [autoLayout addConstraintForViews:@[self.view, scrollView, container, addLog] equivalentAttribute:NSLayoutAttributeCenterX toView:self.view];
+  [autoLayout addVflConstraint:@"V:[addLog]-20-|" toView:self.view];
   [autoLayout addVflConstraint:@"V:|[scrollView]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[scrollView]|" toView:self.view];
   [autoLayout addVflConstraint:@"V:|[container]|" toView:scrollView];

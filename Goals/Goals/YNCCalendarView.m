@@ -93,7 +93,6 @@ static CGFloat const kDaysPerRow = 7;
   CGFloat y = 0;
   CGFloat circle_n = round(self.boxWidth - 10);
   CGFloat numRows = ceilf([self.goal.duration floatValue] / kDaysPerRow);
-  NSLog(@"rows %f, duration %@", numRows, self.goal.duration);
   int date = 1;
   for (int row = 1; row <= numRows; row++) {
     CGFloat x = 0;
@@ -179,7 +178,6 @@ static CGFloat const kDaysPerRow = 7;
     circle.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, circle_n, circle_n)
                                              cornerRadius:circle_n/2].CGPath;
     circle.fillColor = [YNCColor tealColor].CGColor;
-    circle.masksToBounds = YES;
     circle.rasterizationScale = 2.0 * [UIScreen mainScreen].scale;
     circle.shouldRasterize = YES;
     [box insertSublayer:circle atIndex:1];
