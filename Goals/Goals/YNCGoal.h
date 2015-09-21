@@ -15,6 +15,7 @@ extern const struct YNCGoalPFKey {
   __unsafe_unretained NSString *durationKey;
   __unsafe_unretained NSString *typeKey;
   __unsafe_unretained NSString *usersListKey;
+  __unsafe_unretained NSString *startDateKey;
 } YNCGoalPFKey;
 
 typedef enum {
@@ -31,6 +32,8 @@ typedef enum {
 @property (nonatomic) GoalType type; // i hope this is right
 @property (nonatomic, copy) NSNumber *duration;
 @property (nonatomic, copy) NSString *pfID;
+@property (nonatomic, copy) NSDate *startDate;
+@property (nonatomic, copy) NSDate *endDate;
 
 - (instancetype)initWithPFObject:(PFObject *)pfObject;
 + (void)loadGoalsWithCallback:(void (^)(NSArray *goals, NSError *error))callback;

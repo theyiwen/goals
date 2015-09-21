@@ -20,32 +20,28 @@ static CGFloat const kDaysPerRow = 7;
 @property (strong, nonatomic) NSMutableArray *boxes;
 @property (nonatomic) BOOL initialLayersDrawn;
 @property (strong, nonatomic) CALayer *container;
-@property (nonatomic) NSMutableArray *circleDays;
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSMutableArray *circleDays;
+@property (strong, nonatomic) NSMutableDictionary *ringDays;
+@property (strong, nonatomic) NSDictionary *userColors;
 @property (strong, nonatomic) YNCGoal *goal;
-@property (nonatomic) NSInteger *todayInDays;
+@property (nonatomic) NSInteger todayInDays;
 
 @end
 @implementation YNCCalendarView
 
 - (instancetype)initWithFrame:(CGRect)frame
                          goal:(YNCGoal *)goal
-                         logs:(NSArray *)logs{
+                         logs:(NSArray *)logs
+                   userColors:(NSDictionary *)userColors {
   if (self = [super initWithFrame:frame]) {
     _calendarWidth = frame.size.width;
     _initialLayersDrawn = NO;
+    _userColors = userColors;
     _logs = logs;
-    _dateFormatter = [[NSDateFormatter alloc] init];
-    _dateFormatter.dateFormat = @"dd";
     _circleDays = [[NSMutableArray alloc] init];
     _goal = goal;
-//    NSCalendar *cal = [NSCalendar currentCalendar];
-//    _todayInDays = [cal dateByAddingUnit:NSCalendarUnitDay
-//                                   value:1
-//                                  toDate:[NSDate date]
-//                                 options:0];
-//    [[NSDate alloc] init];
     [self processLogs];
+    _todayInDays = [self dayNumberFromDate:[NSDate date]];
   }
   return self;
 }
@@ -65,9 +61,17 @@ static CGFloat const kDaysPerRow = 7;
 
 - (void)processLogs {
   self.circleDays = [[NSMutableArray alloc] init];
+  self.ringDays = [[NSMutableDictionary alloc] init];
   for (YNCLog *log in self.logs) {
+    NSNumber *dayNumber = @([self dayNumberFromDate:log.date]);
     if ([log.user.pfID isEqual:[PFUser currentUser].objectId]) {
-      [self.circleDays addObject:@([[self.dateFormatter stringFromDate:log.date] floatValue])];
+      [self.circleDays addObject:dayNumber];
+    } else {
+      if (self.ringDays[log.user.pfID]) {
+        [(NSMutableArray *)self.ringDays[log.user.pfID] addObject:dayNumber];
+      } else {
+        self.ringDays[log.user.pfID] = [[NSMutableArray alloc] initWithObjects:dayNumber, nil];
+      }
     }
   }
   [self insertCircles];
@@ -122,7 +126,11 @@ static CGFloat const kDaysPerRow = 7;
       [day setFontSize:25];
       [day setAlignmentMode:kCAAlignmentCenter];
       day.contentsScale = [[UIScreen mainScreen] scale];
-      [day setForegroundColor:[UIColor blackColor].CGColor];
+      if (date > self.todayInDays + 1) {
+        [day setForegroundColor:[UIColor lightGrayColor].CGColor];
+      } else {
+        [day setForegroundColor:[UIColor blackColor].CGColor];
+      }
       [day setString:dateStr];
       
       CAShapeLayer *circle;
@@ -160,9 +168,11 @@ static CGFloat const kDaysPerRow = 7;
 
 - (void)insertCircles {
   CGFloat circle_n = round(self.boxWidth - 10);
+  CGFloat circle_outer_n = round(self.boxWidth - 7);
+
   CGFloat r = self.boxWidth / 2;
   for (NSNumber *number in self.circleDays) {
-    CAShapeLayer *box = self.boxes[[number integerValue] - 1];
+    CAShapeLayer *box = self.boxes[[number integerValue]];
     CAShapeLayer *circle = [CAShapeLayer layer];
     circle.bounds = CGRectMake(0, 0, circle_n, circle_n);
     circle.position = CGPointMake(r, r);
@@ -175,11 +185,36 @@ static CGFloat const kDaysPerRow = 7;
     [box insertSublayer:circle atIndex:1];
     [box.sublayers[2] setForegroundColor:[UIColor whiteColor].CGColor];
   }
+  for (NSString *userID in self.ringDays) {
+    for (NSNumber *number in self.ringDays[userID]) {
+      CAShapeLayer *box = self.boxes[[number integerValue]];
+      CAShapeLayer *circle = [CAShapeLayer layer];
+      circle.bounds = CGRectMake(0, 0, circle_outer_n, circle_outer_n);
+      circle.position = CGPointMake(r, r);
+      circle.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, circle_outer_n, circle_outer_n)
+                                               cornerRadius:circle_outer_n/2].CGPath;
+      circle.strokeColor = ((UIColor *)self.userColors[userID]).CGColor;
+      circle.fillColor = [UIColor clearColor].CGColor;
+      circle.lineWidth = 3;
+      circle.rasterizationScale = 2.0 * [UIScreen mainScreen].scale;
+      circle.shouldRasterize = YES;
+      [box insertSublayer:circle atIndex:1];
+    }
+  }
 }
 
 - (void)setCalendarWidth:(CGFloat)calendarWidth {
   _calendarWidth = calendarWidth;
 }
 
+- (NSInteger)dayNumberFromDate:(NSDate *)date {
+  NSDate *start = self.goal.startDate;
+  NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+  NSDateComponents *components = [calendar components:NSCalendarUnitDay
+                                             fromDate:start
+                                               toDate:date
+                                              options:0];
+  return components.day;
+}
 
 @end

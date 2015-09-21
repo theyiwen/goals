@@ -14,7 +14,8 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   .descriptionKey = @"description",
   .usersListKey = @"usersList",
   .typeKey = @"type",
-  .durationKey = @"duration"
+  .durationKey = @"duration",
+  .startDateKey = @"startDate",
 };
 
 @interface YNCGoal()
@@ -71,6 +72,21 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   return _users;
 }
 
+- (NSDate *)startDate {
+  return self.pfObject[YNCGoalPFKey.startDateKey];
+}
+
+- (NSDate *)endDate {
+  if (!_endDate) {
+    NSDateComponents *dateComponents = [NSDateComponents new];
+    dateComponents.day = [self.duration integerValue];
+    _endDate = [[NSCalendar currentCalendar]dateByAddingComponents:dateComponents
+                                                            toDate:self.startDate
+                                                           options:0];
+  }
+  return _endDate;
+}
+
 + (void)loadGoalsWithCallback:(void (^)(NSArray *goals, NSError *error))callback {
   PFQuery *query = [PFQuery queryWithClassName:[YNCGoal pfClassName]];
   [query orderByDescending:@"createdAt"];
@@ -104,6 +120,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   pfObject[YNCGoalPFKey.titleKey] = title;
   pfObject[YNCGoalPFKey.descriptionKey] = desc;
   pfObject[YNCGoalPFKey.durationKey] = duration;
+  pfObject[YNCGoalPFKey.startDateKey] = [NSDate date];
   if (type == daily) {
     pfObject[YNCGoalPFKey.typeKey] = @"daily";
   }

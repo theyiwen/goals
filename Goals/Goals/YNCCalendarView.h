@@ -13,7 +13,8 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
                          goal:(YNCGoal *)goal
-                         logs:(NSArray *)logs;
+                         logs:(NSArray *)logs
+                   userColors:(NSDictionary *)userColors;
 
 @property (strong, nonatomic) NSArray *logs;
 @end
