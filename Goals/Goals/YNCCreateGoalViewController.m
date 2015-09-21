@@ -7,6 +7,7 @@
 //
 
 #import "YNCCreateGoalViewController.h"
+#import "YNCFriendPickerViewController.h"
 #import "YNCAutoLayout.h"
 #import "YNCFont.h"
 #import "YNCColor.h"
@@ -14,9 +15,7 @@
 #import "YNCUser.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
-static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
-
-@interface YNCCreateGoalViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface YNCCreateGoalViewController ()
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIView *container;
@@ -36,9 +35,6 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
 @property (strong, nonatomic) UITextView *goalDescriptionTextView;
 @property (strong, nonatomic) UIButton *submitButton;
 @property (nonatomic) GoalType goalType;
-
-@property (strong, nonatomic) NSArray *myFriends;
-@property (strong, nonatomic) UITableView *memberList;
 
 @end
 
@@ -96,6 +92,7 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   goalMembersLabel.text = @"WITH";
   UIButton *addMembers = self.addMembers = [[UIButton alloc] init];
   [addMembers setImage:[UIImage imageNamed:@"add_hollow_button.png"] forState:UIControlStateNormal];
+  [addMembers addTarget:self action:@selector(addMembersButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   UIView *goalMembersBottomBorder = self.goalMembersBottomBorder = [[UIView alloc] init];
   goalMembersBottomBorder.backgroundColor = [YNCColor tealColor];
   [goalMembersView addSubview:goalMembersLabel];
@@ -117,18 +114,7 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   submitButton.layer.cornerRadius = 8;
   [submitButton addTarget:self action:@selector(submitButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   submitButton.enabled = NO;
-  
-  
-  NSArray *myFriends = self.myFriends = [[NSArray alloc] init];
-  UITableView *memberList = self.memberList = [[UITableView alloc] init];
-  memberList.delegate = self;
-  memberList.dataSource = self;
-  [memberList registerClass:[UITableViewCell class]
-         forCellReuseIdentifier:kYNCFriendViewCellIdentifier];
-  
-  
-  // no more friends
-  
+
   goalDescriptionLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
   goalMembersLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
   goalTitleTextField.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:20];
@@ -152,11 +138,10 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   [container addSubview:goalDescriptionLabel];
   [container addSubview:goalDescriptionTextView];
   [container addSubview:submitButton];
-  [container addSubview:memberList];
   
-  NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, dailyTypeButton, orLabel, sumTypeButton, goalDurationTextField, goalDurationTextFieldBottomBorder, goalMembersView, goalMembersLabel, addMembers, goalMembersBottomBorder, goalDescriptionLabel, goalDescriptionTextView, submitButton, memberList);
+  NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, dailyTypeButton, orLabel, sumTypeButton, goalDurationTextField, goalDurationTextFieldBottomBorder, goalMembersView, goalMembersLabel, addMembers, goalMembersBottomBorder, goalDescriptionLabel, goalDescriptionTextView, submitButton);
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-50-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-20-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersView]-20-[goalDescriptionLabel]-5-[goalDescriptionTextView(100)]-50-[submitButton]-10-[memberList(100)]|" toView:container];
+  [autoLayout addVflConstraint:@"V:|-50-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-20-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersView]-20-[goalDescriptionLabel]-5-[goalDescriptionTextView(100)]-50-[submitButton]|" toView:container];
   [autoLayout addVflConstraint:@"H:|-40-[goalDescriptionTextView(300)]" toView:container];
   [autoLayout addVflConstraint:@"H:[goalTitleTextField(300)]" toView:container];
   
@@ -176,7 +161,6 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   [autoLayout addVflConstraint:@"H:|-40-[goalDescriptionLabel]" toView:container];
   
   [autoLayout addVflConstraint:@"H:[submitButton(100)]" toView:container];
-  [autoLayout addVflConstraint:@"H:[memberList(300)]" toView:container];
 
   [autoLayout addVflConstraint:@"V:|[scrollView]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[scrollView]|" toView:self.view];
@@ -196,34 +180,6 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   
 }
 
-- (void)viewDidLoad {
-  // time to find friends!
-  FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
-                                initWithGraphPath:@"/me/friends"
-                                parameters:nil
-                                HTTPMethod:@"GET"];
-  [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection,
-                                        id result,
-                                        NSError *error) {
-    if(!error) {
-      NSMutableArray *friendBuilder = [[NSMutableArray alloc] init];
-      NSDictionary *friendData = (NSDictionary *)result;
-      NSDictionary *friends = (NSDictionary *)friendData[@"data"];
-      for (NSDictionary *friend in friends) {
-        [friendBuilder addObject:friend[@"id"]];
-      }
-      [YNCUser loadUsersWithFacebookIDs:[friendBuilder copy] Callback:^(NSArray *users, NSError *error) {
-        self.myFriends = [users copy];
-        [self.memberList reloadData];
-      }];
-    }
-    else {
-      NSLog(@"error finding friends");
-    }
-  }];
-
-}
-
 - (void)selectType:(UIButton *)sender {
   self.goalType = (int)sender.tag;
   
@@ -240,6 +196,10 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   }
 }
 
+- (void)addMembersButtonPressed:(UIButton *) button {
+  YNCFriendPickerViewController *friendpickerVC = [[YNCFriendPickerViewController alloc] init];
+  [self.navigationController pushViewController:friendpickerVC animated:YES];
+}
 
 
 - (void)submitButtonPressed:(UIButton *)button {
@@ -264,37 +224,6 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
 - (BOOL)formValidated {
   return (self.goalTitleTextField.text && self.goalTitleTextField.text.length > 0 && self.goalType != -1 && self.goalDurationTextField.text && self.goalDurationTextField.text.length > 0);
   // TODO (calvin): add users validation
-}
-
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  NSLog(@"count %d", [self.myFriends count]);
-  return [self.myFriends count];
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kYNCFriendViewCellIdentifier];
-  NSLog(@"cell");
-  YNCUser *user = (YNCUser *)self.myFriends[indexPath.row];
-  NSLog(@"user %@", user);
-  cell.textLabel.text = user.firstName;
-  cell.textLabel.font = [YNCFont standardFont];
-  cell.textLabel.textColor = [UIColor blackColor];
-  return cell;
-}
-
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  /*YNCGoal *goal = [self goalAtIndexPath:indexPath];
-  YNCGoalViewController *goalVC = [[YNCGoalViewController alloc] initWithGoal:goal];
-  [self.navigationController pushViewController:goalVC animated:YES];
-   */
-  NSLog(@"you picked something!");
 }
 
 
