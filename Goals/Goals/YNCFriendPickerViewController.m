@@ -51,7 +51,7 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   
   NSDictionary *views = NSDictionaryOfVariableBindings(container, friendsListTableView);
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-20-[friendsListTableView(500)]" toView:container];
+  [autoLayout addVflConstraint:@"V:|-12-[friendsListTableView(500)]" toView:container];
   // todo (calvin): this should scale to content / be scrollable yeah?
   [autoLayout addVflConstraint:@"H:|[friendsListTableView(400)]" toView:container];
   [autoLayout addVflConstraint:@"V:|[container]|" toView:self.view];
@@ -108,7 +108,7 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   NSData *data = [NSData dataWithContentsOfURL:url];
   UIImage *img = [[UIImage alloc] initWithData:data];
   cell.imageView.image = img;
-  cell.imageView.layer.cornerRadius = 20;
+  cell.imageView.layer.cornerRadius = 22;
   cell.imageView.clipsToBounds = YES;
 
   return cell;

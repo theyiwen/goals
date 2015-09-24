@@ -14,6 +14,7 @@
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import "YNCUser.h"
 #import "YNCFont.h"
+#import "YNCColor.h"
 
 @interface AppDelegate ()<PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
@@ -57,6 +58,11 @@
 - (void)postLoginLaunch {
   YNCListViewController *listView = [[YNCListViewController alloc] init];
   UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:listView];
+  navVC.navigationBar.tintColor = [YNCColor tealColor];
+  navVC.navigationBar.barTintColor = [UIColor whiteColor];
+  [navVC.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+    [UIFont fontWithName:[YNCFont semiBoldFontName] size:20],
+                                                NSFontAttributeName, nil]];
   self.window.rootViewController = navVC;
 }
 

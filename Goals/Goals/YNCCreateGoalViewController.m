@@ -95,7 +95,7 @@
   goalMembersLabel.text = @"WITH";
   UIView *goalMembersAvatarStrip = self.goalMembersAvatarStrip = [[UIView alloc] init];
   UIButton *addMembers = self.addMembers = [[UIButton alloc] init];
-  [addMembers setImage:[UIImage imageNamed:@"add_hollow_button.png"] forState:UIControlStateNormal];
+  addMembers.backgroundColor = [UIColor clearColor];
   [addMembers addTarget:self action:@selector(addMembersButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   UIView *goalMembersBottomBorder = self.goalMembersBottomBorder = [[UIView alloc] init];
   goalMembersBottomBorder.backgroundColor = [YNCColor tealColor];
@@ -112,7 +112,7 @@
   
   UIButton *submitButton = self.submitButton = [[UIButton alloc] init];
   [submitButton setTitle:@"SUBMIT" forState:UIControlStateNormal];
-  [submitButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+  [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
   [submitButton setTitleColor:[UIColor colorWithWhite:0.7f alpha:1.0f] forState:UIControlStateDisabled];
   submitButton.layer.borderColor = [YNCColor tealColor].CGColor;
   submitButton.layer.borderWidth = 2.0f;
@@ -157,7 +157,8 @@
   
   [autoLayout addVflConstraint:@"V:|[goalMembersLabel]-5-[goalMembersBottomBorder(2)]|" toView:goalMembersView];
   [autoLayout addVflConstraint:@"V:|[goalMembersAvatarStrip(24)]" toView:goalMembersView];
-  [autoLayout addVflConstraint:@"V:|[addMembers]" toView:goalMembersView];
+  [autoLayout addVflConstraint:@"H:|[addMembers]|" toView:goalMembersView];
+  [autoLayout addVflConstraint:@"V:|[addMembers]|" toView:goalMembersView];
   [autoLayout addVflConstraint:@"H:|[goalMembersLabel]-10-[goalMembersAvatarStrip(205)]" toView:goalMembersView];
   [autoLayout addVflConstraint:@"H:[addMembers]|" toView:goalMembersView];
   [autoLayout addConstraintForView:addMembers withSize:CGSizeMake(24,24) toView:addMembers]; // can probably get rid of this and just make the whole view be tap target
@@ -195,9 +196,11 @@
   for (UIButton *button in self.typeButtons) {
     if (button != sender) {
       [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+      [button setBackgroundColor:[UIColor whiteColor]];
     }
     else {
-      [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+      [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+      [button setBackgroundColor:[YNCColor tealColor]];
     }
   }
   if ([self formValidated]) {
@@ -292,9 +295,11 @@
 - (void)textFieldDidChange:(UITextField *)textField {
   if ([self formValidated]) {
     self.submitButton.enabled = YES;
+    self.submitButton.backgroundColor = [YNCColor tealColor];
   }
   else {
     self.submitButton.enabled = NO;
+    self.submitButton.backgroundColor = [UIColor whiteColor];
   }
 }
 
