@@ -43,4 +43,6 @@ typedef enum {
                               type:(GoalType)type
                           duration:(NSNumber *)duration
                          usersList:(NSArray *)usersList;
++ (void)scheduleNotificationsForGoals:(NSArray *)goals;
+
 @end

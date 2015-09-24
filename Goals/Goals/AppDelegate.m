@@ -13,6 +13,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import "YNCUser.h"
+#import "YNCGoal.h"
 #import "YNCFont.h"
 #import "YNCColor.h"
 
@@ -27,6 +28,10 @@
   // Override point for customization after application launch.
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
+  if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+    [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+  }
+  
   // Initialize Parse.
   [Parse setApplicationId:@"G6ytzz5MuXyjrQVNvXuRBr6Xe0eyDrpBL8rjaPgn"
                 clientKey:@"JVpCvikLi7GQv33RTxTysRhRbyrGvIZUVYVwHz9r"];
@@ -56,6 +61,7 @@
 }
 
 - (void)postLoginLaunch {
+  
   YNCListViewController *listView = [[YNCListViewController alloc] init];
   UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:listView];
   navVC.navigationBar.tintColor = [YNCColor tealColor];
@@ -63,6 +69,9 @@
   [navVC.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
     [UIFont fontWithName:[YNCFont semiBoldFontName] size:20],
                                                 NSFontAttributeName, nil]];
+  [YNCGoal loadGoalsWithCallback:^(NSArray *goals, NSError *error) {
+    [YNCGoal scheduleNotificationsForGoals:goals];
+  }];
   self.window.rootViewController = navVC;
 }
 
@@ -97,5 +106,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
   // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+
 
 @end

@@ -132,4 +132,62 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   
 }
 
++ (void)scheduleNotificationsForGoals:(NSArray *)goals
+{
+  [[UIApplication sharedApplication] cancelAllLocalNotifications];
+  
+  //for (int i = 0; i < maxDuration; i++) {
+    //
+  //}
+  
+  if (!goals) return;
+  
+  NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+  calendar.timeZone = [NSTimeZone defaultTimeZone];
+  NSDate *endDate = nil; // Latest date
+  
+  for (YNCGoal* goal in goals)
+  {
+    NSDate *date = [goal endDate];
+    
+    if (endDate == nil)
+    {
+      endDate = date;
+    }
+    if ([date compare:endDate] == NSOrderedDescending)
+    {
+      endDate = date;
+    }
+    
+  }
+  
+  NSLog(@"latest date: %@", endDate);
+  NSLog(@"adjusted date: %@", [calendar startOfDayForDate:endDate]);
+  
+  int kAlertTime: 20*60*60;
+  
+  for ( nextDate = startDate ; [nextDate compare:endDate] < 0 ; nextDate = [nextDate addTimeInterval:24*60*60] ) {
+    // use date
+  }
+  
+  UILocalNotification* localNotif = [[UILocalNotification alloc] init];
+  if (localNotif == nil)
+    return;
+  localNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
+  localNotif.timeZone = [NSTimeZone defaultTimeZone];
+  
+  // Notification details
+  
+  NSString *message = @"Don't forget to track your goals today!";
+  localNotif.alertBody = message;
+  
+  // Set the action button
+  localNotif.alertAction = @"Open App";
+  
+  // Schedule the notification
+  [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+  NSLog(@"scheduled");
+}
+
 @end
+
