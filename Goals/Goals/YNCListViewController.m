@@ -12,6 +12,7 @@
 #import "YNCAutoLayout.h"
 #import "YNCGoal.h"
 #import "YNCFont.h"
+#import "YNCColor.h"
 
 static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 
@@ -73,9 +74,13 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kYNCListViewCellIdentifier];
   YNCGoal *goal = [self goalAtIndexPath:indexPath];
-  cell.textLabel.text = goal.title;
-  cell.textLabel.font = [YNCFont standardFont];
+  cell.textLabel.text = goal.title.uppercaseString;
+  cell.textLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:24];
   return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  return 80;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
