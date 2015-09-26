@@ -181,7 +181,7 @@ static CGFloat const kDaysPerRow = 7;
     circle.rasterizationScale = 2.0 * [UIScreen mainScreen].scale;
     circle.shouldRasterize = YES;
     [box insertSublayer:circle atIndex:1];
-    [box.sublayers[2] setForegroundColor:[UIColor whiteColor].CGColor];
+    [(CATextLayer *)box.sublayers[2] setForegroundColor:[UIColor whiteColor].CGColor];
   }
   for (NSString *userID in self.ringDays) {
     for (NSNumber *number in self.ringDays[userID]) {
