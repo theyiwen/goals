@@ -135,12 +135,11 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 + (void)scheduleNotificationsForGoals:(NSArray *)goals
 {
   [[UIApplication sharedApplication] cancelAllLocalNotifications];
-  
-  //for (int i = 0; i < maxDuration; i++) {
-    //
-  //}
+
   
   if (!goals) return;
+  
+  /* find the latest date -- don't need this anymore for this jankiest version
   
   NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   calendar.timeZone = [NSTimeZone defaultTimeZone];
@@ -164,17 +163,30 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   NSLog(@"latest date: %@", endDate);
   NSLog(@"adjusted date: %@", [calendar startOfDayForDate:endDate]);
   
-  int kAlertTime: 20*60*60;
+  */
   
-  for ( nextDate = startDate ; [nextDate compare:endDate] < 0 ; nextDate = [nextDate addTimeInterval:24*60*60] ) {
-    // use date
+  NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+  calendar.timeZone = [NSTimeZone defaultTimeZone];
+  int kAlertTime = 20*60*60; // 8pm
+  
+
+  NSDate* alertTime = [calendar startOfDayForDate:[NSDate date]];
+  alertTime = [alertTime dateByAddingTimeInterval:kAlertTime];
+  
+  
+  if ([alertTime compare:[NSDate date]] == NSOrderedAscending) {
+    // set first alert for tomorrow if time has passed already
+    alertTime = [alertTime dateByAddingTimeInterval:60*60*24];
   }
+ 
+  //NSLog(@"alert time at %@", alertTime);
+ 
   
   UILocalNotification* localNotif = [[UILocalNotification alloc] init];
   if (localNotif == nil)
     return;
-  localNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
   localNotif.timeZone = [NSTimeZone defaultTimeZone];
+  localNotif.fireDate = alertTime;
   
   // Notification details
   
@@ -183,10 +195,11 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   
   // Set the action button
   localNotif.alertAction = @"Open App";
+  localNotif.repeatInterval = NSCalendarUnitDay;
   
   // Schedule the notification
   [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
-  NSLog(@"scheduled");
+  //NSLog(@"scheduled");
 }
 
 @end
