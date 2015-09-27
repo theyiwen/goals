@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YNCGoal.h"
 
 @protocol YNCCreateLogViewControllerDelegate;
 
 @interface YNCCreateLogViewController : UIViewController
 
 @property (weak, nonatomic) id<YNCCreateLogViewControllerDelegate> delegate;
+
+- (instancetype)initWithGoalType:(GoalType)type;
 
 @end
 

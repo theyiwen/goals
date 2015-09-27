@@ -206,7 +206,7 @@
 }
 
 - (void)addLogPressed {
-  YNCCreateLogViewController *logVC = [[YNCCreateLogViewController alloc] init];
+  YNCCreateLogViewController *logVC = [[YNCCreateLogViewController alloc] initWithGoalType:self.goal.type];
   logVC.delegate = self;
   logVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
 
