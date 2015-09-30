@@ -36,6 +36,7 @@
 		9354098A1BAE2B34003E8454 /* YNCGoalUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = 935409891BAE2B34003E8454 /* YNCGoalUserView.m */; };
 		9354098D1BAE39E0003E8454 /* YNCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354098C1BAE39E0003E8454 /* YNCLog.m */; };
 		935409901BAE3FD0003E8454 /* YNCCreateLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9354098F1BAE3FD0003E8454 /* YNCCreateLogViewController.m */; };
+		936DFF271BBAE6B300881092 /* YNCCalendarDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 936DFF261BBAE6B300881092 /* YNCCalendarDayView.m */; settings = {ASSET_TAGS = (); }; };
 		93FBB2DD1BADD5EE00022B2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2DC1BADD5EE00022B2E /* main.m */; };
 		93FBB2E01BADD5EE00022B2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2DF1BADD5EE00022B2E /* AppDelegate.m */; };
 		93FBB2E31BADD5EE00022B2E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FBB2E21BADD5EE00022B2E /* ViewController.m */; };
@@ -110,6 +111,8 @@
 		9354098C1BAE39E0003E8454 /* YNCLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCLog.m; sourceTree = "<group>"; };
 		9354098E1BAE3FD0003E8454 /* YNCCreateLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCCreateLogViewController.h; sourceTree = "<group>"; };
 		9354098F1BAE3FD0003E8454 /* YNCCreateLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCCreateLogViewController.m; sourceTree = "<group>"; };
+		936DFF251BBAE6B300881092 /* YNCCalendarDayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCCalendarDayView.h; sourceTree = "<group>"; };
+		936DFF261BBAE6B300881092 /* YNCCalendarDayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCCalendarDayView.m; sourceTree = "<group>"; };
 		93FBB2D71BADD5EE00022B2E /* Goals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Goals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93FBB2DB1BADD5EE00022B2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93FBB2DC1BADD5EE00022B2E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -191,6 +194,8 @@
 		934F94D21BAF32CB00285112 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				936DFF251BBAE6B300881092 /* YNCCalendarDayView.h */,
+				936DFF261BBAE6B300881092 /* YNCCalendarDayView.m */,
 				934F94D31BAF32DC00285112 /* YNCCalendarView.h */,
 				934F94D41BAF32DC00285112 /* YNCCalendarView.m */,
 			);
@@ -444,6 +449,7 @@
 				934F94BC1BAE6CAA00285112 /* YNCFont.m in Sources */,
 				935409871BAE1732003E8454 /* YNCUser.m in Sources */,
 				935409811BADF998003E8454 /* YNCGoal.m in Sources */,
+				936DFF271BBAE6B300881092 /* YNCCalendarDayView.m in Sources */,
 				631C77501BAF4E050039AF40 /* YNCColor.m in Sources */,
 				934F94D51BAF32DC00285112 /* YNCCalendarView.m in Sources */,
 				935409841BAE1196003E8454 /* YNCGoalViewController.m in Sources */,

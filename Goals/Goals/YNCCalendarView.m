@@ -10,6 +10,7 @@
 #import "YNCFont.h"
 #import "YNCColor.h"
 #import "YNCLog.h"
+#import "YNCCalendarDayView.h"
 
 static CGFloat const kDaysPerRow = 7;
 
@@ -17,7 +18,7 @@ static CGFloat const kDaysPerRow = 7;
 
 @property (nonatomic) CGFloat calendarWidth;
 @property (nonatomic) CGFloat boxWidth;
-@property (strong, nonatomic) NSMutableArray *boxes;
+@property (strong, nonatomic) NSMutableDictionary *boxes;
 @property (nonatomic) BOOL initialLayersDrawn;
 @property (strong, nonatomic) CALayer *container;
 @property (strong, nonatomic) NSMutableArray *circleDays;
@@ -25,6 +26,7 @@ static CGFloat const kDaysPerRow = 7;
 @property (strong, nonatomic) NSDictionary *userColors;
 @property (strong, nonatomic) YNCGoal *goal;
 @property (nonatomic) NSInteger todayInDays;
+@property (strong, nonatomic) UITapGestureRecognizer *tapGesture;
 
 @end
 @implementation YNCCalendarView
@@ -49,9 +51,14 @@ static CGFloat const kDaysPerRow = 7;
 - (void)layoutSubviews {
   [super layoutSubviews];
   if (!self.initialLayersDrawn) {
-    [self drawInitial];
+    [self drawInitialViews];
     self.initialLayersDrawn = YES;
   }
+}
+
+- (void)viewTapped:(UITapGestureRecognizer *)tapGesture {
+  UIView *tappedView = tapGesture.view;
+  [self.delegate calendarView:self didSelectDate:[self dateFromDayNumber:tappedView.tag]];
 }
 
 - (void)setLogs:(NSArray *)logs {
@@ -74,94 +81,60 @@ static CGFloat const kDaysPerRow = 7;
       }
     }
   }
-  [self insertCircles];
+  [self updateCircles];
 }
 
-- (void)drawInitial {
-  self.container = [CALayer layer];
-  self.container.bounds = self.bounds;
-  self.container.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-  self.container.masksToBounds = YES;
-  
-  [self.layer addSublayer:self.container];
-  
-  self.boxWidth = self.container.bounds.size.width / kDaysPerRow;
-
-  self.boxes = [[NSMutableArray alloc] init];
-  CGFloat n = self.boxWidth;
-  CGFloat r = self.boxWidth / 2;
-  CGFloat y = 0;
-  CGFloat circle_n = round(self.boxWidth - 10);
-  CGFloat numRows = ceilf([self.goal.duration floatValue] / kDaysPerRow);
+- (void)drawInitialViews {
+  self.boxes = [[NSMutableDictionary alloc] init];
+  self.boxWidth = self.bounds.size.width / kDaysPerRow;
   int date = 1;
+  CGFloat numRows = ceilf([self.goal.duration floatValue] / kDaysPerRow);
+  CGFloat n = self.boxWidth;
+  CGFloat y = 0;
   for (int row = 1; row <= numRows; row++) {
     CGFloat x = 0;
+    if (date > [self.goal.duration intValue]) {
+      break;
+    }
     for (int col = 1; col <= kDaysPerRow; col++) {
-      if (date > [self.goal.duration intValue]) {
-        break;
-      }
-      CAShapeLayer *boxContainer = [CAShapeLayer layer];
-      boxContainer.position = CGPointMake(x + r, y + r);
-      boxContainer.bounds = CGRectMake(0, 0, self.boxWidth, self.boxWidth);
-      
-      CAShapeLayer *box = [CAShapeLayer layer];
-      box.bounds = boxContainer.bounds;
-      box.position = CGPointMake(r, r);
-      box.path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, n, n)].CGPath;
-      box.fillColor = [UIColor whiteColor].CGColor;
-      box.masksToBounds = YES;
-      
-      NSString *dateStr = [NSString stringWithFormat:@"%d", date];
-      UIFont *font = [UIFont fontWithName:[YNCFont lightFontName] size:25];
-      CGRect labelRect = [dateStr boundingRectWithSize:boxContainer.bounds.size
-                                            options:NSStringDrawingUsesLineFragmentOrigin
-                                         attributes:@{ NSFontAttributeName :  font}
-                                            context:nil];
-
-      CATextLayer *day = [CATextLayer layer];
-      day.frame = labelRect;
-      day.position = CGPointMake(r, r);
-      [day setFont:(__bridge CFTypeRef)([YNCFont lightFontName])];
-      [day setFontSize:25];
-      [day setAlignmentMode:kCAAlignmentCenter];
-      day.contentsScale = [[UIScreen mainScreen] scale];
-      if (date > self.todayInDays + 1) {
-        [day setForegroundColor:[UIColor lightGrayColor].CGColor];
+      CGRect frame = CGRectMake(x, y, self.boxWidth, self.boxWidth);
+      YNCCalendarDayView *view = [[YNCCalendarDayView alloc] initWithFrame:frame day:date];
+      view.tag = date;
+      if (date > self.todayInDays) {
+        [view setDayTextColor:[UIColor lightGrayColor]];
       } else {
-        [day setForegroundColor:[UIColor blackColor].CGColor];
+        [view setDayTextColor:[UIColor blackColor]];
       }
-      [day setString:dateStr];
-      
-      CAShapeLayer *circle;
-      if ([self.circleDays containsObject:@(date)]) {
-        circle = [CAShapeLayer layer];
-        circle.bounds = CGRectMake(0, 0, circle_n, circle_n);
-        circle.position = CGPointMake(r, r);
-    
-        circle.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, circle_n, circle_n)
-                                                 cornerRadius:circle_n/2].CGPath;
-        circle.fillColor = [YNCColor tealColor].CGColor;
-        circle.masksToBounds = YES;
-        circle.rasterizationScale = 2.0 * [UIScreen mainScreen].scale;
-        circle.shouldRasterize = YES;
-        [day setForegroundColor:[UIColor whiteColor].CGColor];
-      }
-      
-      [boxContainer addSublayer:box];
-      if (circle) {
-        [boxContainer addSublayer:circle];
-      }
-      [boxContainer addSublayer:day];
-      [self.boxes addObject:boxContainer];
-
-      x = x + n;
+      UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
+      tapGesture.numberOfTapsRequired = 1;
+      [view addGestureRecognizer:tapGesture];
+      self.boxes[@(date)] = view;
+      [self addSubview:view];
       date = date + 1;
+      x = x + n;
     }
     y = y + n;
   }
-  
-  for (CAShapeLayer *box in self.boxes) {
-    [self.container addSublayer:box];
+  [self setHeightToFit];
+}
+
+- (void)setHeightToFit {
+  CGFloat numRows = ceilf([self.goal.duration floatValue] / kDaysPerRow);
+  CGFloat height = numRows * self.boxWidth;
+  [self.delegate calendarView:self didUpdateHeight:height];
+}
+
+- (void)updateCircles {
+  for (NSNumber *number in self.circleDays) {
+    YNCCalendarDayView *view = self.boxes[number];
+    [view setCircleSolidColor:[YNCColor tealColor]];
+    [view setDayTextColor:[UIColor whiteColor]];
+  }
+  for (NSString *userID in self.ringDays) {
+    for (NSNumber *number in self.ringDays[userID]) {
+      YNCCalendarDayView *view = self.boxes[number];
+      [view setCircleOutlineColor:(UIColor *)self.userColors[userID]];
+    }
   }
 }
 
@@ -171,7 +144,7 @@ static CGFloat const kDaysPerRow = 7;
 
   CGFloat r = self.boxWidth / 2;
   for (NSNumber *number in self.circleDays) {
-    CAShapeLayer *box = self.boxes[[number integerValue]];
+    CAShapeLayer *box = (CAShapeLayer *)((UIView *)self.boxes[number]).layer;
     CAShapeLayer *circle = [CAShapeLayer layer];
     circle.bounds = CGRectMake(0, 0, circle_n, circle_n);
     circle.position = CGPointMake(r, r);
@@ -185,7 +158,7 @@ static CGFloat const kDaysPerRow = 7;
   }
   for (NSString *userID in self.ringDays) {
     for (NSNumber *number in self.ringDays[userID]) {
-      CAShapeLayer *box = self.boxes[[number integerValue]];
+      CAShapeLayer *box = self.boxes[number];
       CAShapeLayer *circle = [CAShapeLayer layer];
       circle.bounds = CGRectMake(0, 0, circle_outer_n, circle_outer_n);
       circle.position = CGPointMake(r, r);
@@ -212,7 +185,14 @@ static CGFloat const kDaysPerRow = 7;
                                              fromDate:start
                                                toDate:date
                                               options:0];
-  return components.day;
+  return components.day + 1;
+}
+
+- (NSDate *)dateFromDayNumber:(NSInteger)dayNumber {
+  NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
+  dayComponent.day = dayNumber - 1;
+  NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+  return [calendar dateByAddingComponents:dayComponent toDate:self.goal.startDate options:0];
 }
 
 @end

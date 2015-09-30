@@ -63,6 +63,7 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
   return (YNCGoal *)self.goals[indexPath.row];
 
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   return 1;
 }
