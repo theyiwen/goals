@@ -286,7 +286,7 @@
                                  toItem:lastPhoto
                     equivalentAttribute:NSLayoutAttributeLeft
                              multiplier:1
-                               constant:10
+                               constant:30
                                  toView:self.goalMembersAvatarStrip];
 
     }

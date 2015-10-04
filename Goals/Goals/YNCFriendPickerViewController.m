@@ -45,6 +45,7 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   friendsListTableView.dataSource = self;
   [friendsListTableView registerClass:[UITableViewCell class]
      forCellReuseIdentifier:kYNCFriendViewCellIdentifier];
+  friendsListTableView.allowsMultipleSelection = YES;
   
   [container addSubview:friendsListTableView];
   
@@ -118,14 +119,19 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   
   YNCUser *user = (YNCUser *)self.myFriends[indexPath.row];
-  if (![self.pickedFriends containsObject:user.pfObject]) {
-    [self.pickedFriends addObject:user.pfObject];
-  }
-  else {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.pickedFriends removeObject:user.pfObject];
-  }
+  [self.pickedFriends addObject:user.pfObject];
 }
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+  YNCUser *user = (YNCUser *)self.myFriends[indexPath.row];
+  [self.pickedFriends removeObject:user.pfObject];
+}
+/*
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+  YNCUser *user = (YNCUser *)self.myFriends[indexPath.row];
+  return [self.pickedFriends containsObject:user.pfObject];
+}
+ */
 
 - (void)doneButtonPressed {
 
