@@ -15,7 +15,7 @@
 #import "YNCUser.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
-@interface YNCCreateGoalViewController ()<YNCFriendPickerViewControllerDelegate>
+@interface YNCCreateGoalViewController ()<YNCFriendPickerViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) YNCFriendPickerViewController *friendPickerVC;
 @property (strong, nonatomic) YNCAutoLayout *autoLayout;
@@ -37,6 +37,7 @@
 @property (strong, nonatomic) UILabel *goalDescriptionLabel;
 @property (strong, nonatomic) UITextView *goalDescriptionTextView;
 @property (strong, nonatomic) UIButton *submitButton;
+@property (strong, nonatomic) UIView *activeTextField;
 @property (nonatomic) GoalType goalType;
 @property (strong, nonatomic) NSArray *goalMembers;
 
@@ -146,7 +147,7 @@
   
   NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, dailyTypeButton, orLabel, sumTypeButton, goalDurationTextField, goalDurationTextFieldBottomBorder, goalMembersView, goalMembersLabel, goalMembersAvatarStrip, addMembers, goalMembersBottomBorder, goalDescriptionLabel, goalDescriptionTextView, submitButton);
   YNCAutoLayout *autoLayout = self.autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-50-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-20-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersView]-20-[goalDescriptionLabel]-5-[goalDescriptionTextView(100)]-50-[submitButton]|" toView:container];
+  [autoLayout addVflConstraint:@"V:|-50-[goalTitleTextField(25)]-5-[goalTitleTextFieldBottomBorder(2)]-25-[goalTypeButtons(80)]-20-[goalDurationTextField(25)]-5-[goalDurationTextFieldBottomBorder(2)]-20-[goalMembersView]-25-[goalDescriptionLabel]-5-[goalDescriptionTextView(100)]-30-[submitButton]|" toView:container];
   [autoLayout addVflConstraint:@"H:|-40-[goalDescriptionTextView(300)]" toView:container];
   [autoLayout addVflConstraint:@"H:[goalTitleTextField(300)]" toView:container];
   
@@ -155,7 +156,7 @@
   [autoLayout addVflConstraint:@"V:|[sumTypeButton(80)]|" toView:goalTypeButtons];
   [autoLayout addVflConstraint:@"H:|[dailyTypeButton(80)]-15-[orLabel]-15-[sumTypeButton(80)]|" toView:goalTypeButtons];
   
-  [autoLayout addVflConstraint:@"V:|[goalMembersLabel]-5-[goalMembersBottomBorder(2)]|" toView:goalMembersView];
+  [autoLayout addVflConstraint:@"V:|[goalMembersLabel]-5-[goalMembersBottomBorder(2)]" toView:goalMembersView];
   [autoLayout addVflConstraint:@"V:|[goalMembersAvatarStrip(24)]" toView:goalMembersView];
   [autoLayout addVflConstraint:@"H:|[addMembers]|" toView:goalMembersView];
   [autoLayout addVflConstraint:@"V:|[addMembers]|" toView:goalMembersView];
@@ -184,14 +185,22 @@
   [autoLayout addConstraintForViews:@[goalDurationTextField, goalDurationTextFieldBottomBorder] equivalentAttribute:NSLayoutAttributeWidth toView:container];
   [autoLayout addConstraintForViews:@[container, goalTitleTextField, goalTitleTextFieldBottomBorder, goalTypeButtons, goalMembersView, goalDurationTextField, goalDurationTextFieldBottomBorder, submitButton] equivalentAttribute:NSLayoutAttributeCenterX toView:container];
 
+  goalDurationTextField.delegate = self;
+  goalTitleTextField.delegate = self;
+  goalDescriptionTextView.delegate = self;
   
   [goalTitleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
   [goalDurationTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
   
+  
+  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                        action:@selector(hideKeyboard)];
+  [scrollView addGestureRecognizer:tap];
 }
 
 - (void)selectType:(UIButton *)sender {
   self.goalType = (int)sender.tag;
+  [self.activeTextField endEditing:YES];
   
   for (UIButton *button in self.typeButtons) {
     if (button != sender) {
@@ -209,6 +218,7 @@
 }
 
 - (void)addMembersButtonPressed:(UIButton *) button {
+  [self.activeTextField endEditing:YES];
   [self.navigationController pushViewController:self.friendPickerVC animated:YES];
 }
 
@@ -303,19 +313,18 @@
   }
 }
 
+- (void)hideKeyboard {
+  [self.activeTextField endEditing:YES];
+}
+
 // TODO (calvin): make placeholders go away
-/*
+
  - (void)textFieldDidBeginEditing:(UITextField *)textField {
- if (!self.countPlaceholder.hidden) {
- self.countPlaceholder.hidden = YES;
+   self.activeTextField = textField;
  }
- }
- 
+
  - (void)textViewDidBeginEditing:(UITextView *)textView {
- if (!self.notesPlaceholder.hidden) {
- self.notesPlaceholder.hidden = YES;
+   self.activeTextField = textView;
  }
- }
- */
 
 @end
