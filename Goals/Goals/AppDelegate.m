@@ -72,6 +72,8 @@
   [YNCGoal loadGoalsWithCallback:^(NSArray *goals, NSError *error) {
     [YNCGoal scheduleNotificationsForGoals:goals];
   }];
+  YNCUser *currentUser = [[YNCUser alloc] initWithPFObject:[PFUser currentUser]];
+  [currentUser fetchAndSaveFBData];
   self.window.rootViewController = navVC;
 }
 

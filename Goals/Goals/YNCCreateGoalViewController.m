@@ -261,7 +261,6 @@
   for (PFObject *object in self.goalMembers) {
     YNCUser *user = [[YNCUser alloc] initWithPFObject:object];
     NSURL *url = [NSURL URLWithString:user.photoUrl];
-    NSLog (@"url: %@", user.photoUrl);
     NSData *data = [NSData dataWithContentsOfURL:url];
     UIImage *img = [[UIImage alloc] initWithData:data];
     UIImageView *photo = [[UIImageView alloc] init];

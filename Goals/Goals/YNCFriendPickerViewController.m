@@ -137,7 +137,6 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
 
   [self.delegate friendPickerViewControllerDidSubmit:self withFriends:[self.pickedFriends allObjects]];
   [self.navigationController popViewControllerAnimated:YES];
-  NSLog(@"done");
   
 }
 
