@@ -66,7 +66,7 @@ const struct userKey userKey = {
       self.pfObject[userKey.facebookId] = userData[@"id"];
       self.pfObject[userKey.firstName] = userData[@"first_name"];
       self.pfObject[userKey.lastName] = userData[@"last_name"];
-      self.pfObject[userKey.photoUrl] = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", userData[@"id"]];
+      self.pfObject[userKey.photoUrl] = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square&return_ssl_resources=1", userData[@"id"]];
       [self.pfObject saveInBackground];
     } else {
       NSLog(@"Error fetching Facbeook data");
