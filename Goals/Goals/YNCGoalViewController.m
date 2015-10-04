@@ -15,6 +15,7 @@
 #import "YNCFont.h"
 #import "YNCCalendarView.h"
 #import "YNCColor.h"
+#import "YNCDate.h"
 
 static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 
@@ -182,7 +183,8 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
   
   self.view.backgroundColor = [UIColor whiteColor];
   [self setGoalDetails];
-  [addLog setImage:[UIImage imageNamed:@"add_log_button.png"] forState:UIControlStateNormal];
+  [addLog setImage:[UIImage imageNamed:@"add_log_button_undone.png"] forState:UIControlStateNormal];
+  [addLog setImage:[UIImage imageNamed:@"add_log_button_done.png"] forState:UIControlStateDisabled];
   [addLog addTarget:self action:@selector(addLogPressed) forControlEvents:UIControlEventTouchUpInside];
   [logTable registerClass:[UITableViewCell class]
    forCellReuseIdentifier:kYNCLogTableCellId];
@@ -204,6 +206,7 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
+  [[YNCDate shared] startDateLocalFromStartDateUTC:self.goal.startDate];
 }
 
 - (void)sizeTableViewToFitResults {

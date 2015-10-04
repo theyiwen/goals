@@ -7,13 +7,15 @@
 //
 
 #import "YNCLog.h"
+#import "YNCDate.h"
 
 const struct logKey logKey = {
   .goal = @"goal",
   .user = @"user",
   .value = @"value",
   .notes = @"notes",
-  .date = @"date"
+  .date = @"date",
+  .dayNumber = @"dayNumber"
 };
 
 @interface YNCLog()
@@ -61,15 +63,21 @@ const struct logKey logKey = {
   return self.pfObject[logKey.date];
 }
 
+- (NSInteger)dayNumber {
+  return [self.pfObject[logKey.dayNumber] integerValue];
+}
+
 + (void)createAndSaveLogWithGoal:(YNCGoal *)goal
                            value:(NSNumber *)value
                            notes:(NSString *)notes {
+  NSDate *currentDate = [NSDate date];
   PFObject *pfObject = [PFObject objectWithClassName:@"Log"];
   pfObject[logKey.goal] = goal.pfObject;
   pfObject[logKey.user] = [PFUser currentUser];
   pfObject[logKey.value] = value;
   pfObject[logKey.notes] = notes;
-  pfObject[logKey.date] = [NSDate date];
+  pfObject[logKey.date] = currentDate;
+  pfObject[logKey.dayNumber] = @([[YNCDate shared] dayNumberFromDate:currentDate start:goal.startDate]);
   [pfObject saveInBackgroundWithBlock:nil];
 }
 

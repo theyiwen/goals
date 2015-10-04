@@ -11,6 +11,7 @@
 #import "YNCColor.h"
 #import "YNCLog.h"
 #import "YNCCalendarDayView.h"
+#import "YNCDate.h"
 
 static CGFloat const kDaysPerRow = 7;
 
@@ -70,8 +71,9 @@ static CGFloat const kDaysPerRow = 7;
   self.circleDays = [[NSMutableArray alloc] init];
   self.ringDays = [[NSMutableDictionary alloc] init];
   for (YNCLog *log in self.logs) {
-    NSNumber *dayNumber = @([self dayNumberFromDate:log.date]);
+    NSNumber *dayNumber = @(log.dayNumber);
     if ([log.user.pfID isEqual:[PFUser currentUser].objectId]) {
+//      NSLog(@"adding %ld to circle days", (long)log.dayNumber);
       [self.circleDays addObject:dayNumber];
     } else {
       if (self.ringDays[log.user.pfID]) {
@@ -87,16 +89,16 @@ static CGFloat const kDaysPerRow = 7;
 - (void)drawInitialViews {
   self.boxes = [[NSMutableDictionary alloc] init];
   self.boxWidth = self.bounds.size.width / kDaysPerRow;
-  int date = 1;
+  int date = 0;
   CGFloat numRows = ceilf([self.goal.duration floatValue] / kDaysPerRow);
   CGFloat n = self.boxWidth;
   CGFloat y = 0;
   for (int row = 1; row <= numRows; row++) {
     CGFloat x = 0;
-    if (date > [self.goal.duration intValue]) {
-      break;
-    }
     for (int col = 1; col <= kDaysPerRow; col++) {
+      if (date >= [self.goal.duration intValue]) {
+        break;
+      }
       CGRect frame = CGRectMake(x, y, self.boxWidth, self.boxWidth);
       YNCCalendarDayView *view = [[YNCCalendarDayView alloc] initWithFrame:frame day:date];
       view.tag = date;
@@ -179,13 +181,7 @@ static CGFloat const kDaysPerRow = 7;
 }
 
 - (NSInteger)dayNumberFromDate:(NSDate *)date {
-  NSDate *start = self.goal.startDate;
-  NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-  NSDateComponents *components = [calendar components:NSCalendarUnitDay
-                                             fromDate:start
-                                               toDate:date
-                                              options:0];
-  return components.day + 1;
+  return [[YNCDate shared] dayNumberFromDate:date start:self.goal.startDate];
 }
 
 - (NSDate *)dateFromDayNumber:(NSInteger)dayNumber {

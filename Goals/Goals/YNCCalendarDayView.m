@@ -44,7 +44,7 @@
     box.fillColor = [UIColor whiteColor].CGColor;
     box.masksToBounds = YES;
     
-    NSString *dateStr = [NSString stringWithFormat:@"%ld", (long)day];
+    NSString *dateStr = [NSString stringWithFormat:@"%ld", (long)(day + 1)];
     UIFont *font = [UIFont fontWithName:[YNCFont lightFontName] size:25];
     CGRect labelRect = [dateStr boundingRectWithSize:boxContainer.bounds.size
                                              options:NSStringDrawingUsesLineFragmentOrigin
