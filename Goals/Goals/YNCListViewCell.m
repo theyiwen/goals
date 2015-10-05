@@ -9,7 +9,10 @@
 #import "YNCListViewCell.h"
 #import "YNCAutoLayout.h"
 #import "YNCFont.h"
+<<<<<<< HEAD
 #import "YNCColor.h"
+=======
+>>>>>>> yey
 
 @interface YNCListViewCell ()
 
@@ -32,10 +35,19 @@
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:24];
     
+<<<<<<< HEAD
     self.scoreLabel.textAlignment = NSTextAlignmentRight;
     self.scoreLabel.font = [UIFont fontWithName:[YNCFont regularFontName] size:24];
     self.scoreLabel.textColor = [YNCColor tealColor];
 
+=======
+    self.titleLabel.backgroundColor = [UIColor blueColor];
+    self.scoreLabel.backgroundColor = [UIColor redColor];
+    
+    self.scoreLabel.textAlignment = NSTextAlignmentRight;
+    self.scoreLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:24];
+    
+>>>>>>> yey
     [self.contentView addSubview:container];
     [container addSubview:self.titleLabel];
     [container addSubview:self.scoreLabel];
@@ -44,12 +56,19 @@
     
     NSDictionary *views = NSDictionaryOfVariableBindings(container, titleLabel, scoreLabel);
     YNCAutoLayout *autoLayout =[[YNCAutoLayout alloc] initWithViews:views];
+<<<<<<< HEAD
     [autoLayout addVflConstraint:@"H:|-16-[titleLabel][scoreLabel]-16-|" toView:self.container];
     [autoLayout addVflConstraint:@"H:|[container]|" toView:self.contentView];
     [autoLayout addVflConstraint:@"V:|[container]|" toView:self.contentView];
     [autoLayout addConstraintForViews:@[container, titleLabel, scoreLabel]
                   equivalentAttribute:NSLayoutAttributeCenterY
                                toView:self.container];
+=======
+    [autoLayout addVflConstraint:@"H:|[titleLabel(250)][scoreLabel]|" toView:self.container];
+    [autoLayout addVflConstraint:@"H:|[titleLabel]" toView:self.container];
+    [autoLayout addVflConstraint:@"H:[scoreLabel]|" toView:self.container];
+    
+>>>>>>> yey
   }
   return self;
 }

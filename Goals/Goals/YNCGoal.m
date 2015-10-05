@@ -88,14 +88,15 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   return _endDate;
 }
 
-- (void)processLogsWithCallback:(void(^)(void))callback {
 
+- (void)processLogsWithCallback:(void(^)(void))callback {
   [YNCLog getAllLogsForGoal:self
                withCallback:^(NSArray *logs, NSError *error) {
                  if (!error) {
                    self.allLogs = logs;
                    self.userSums = [[NSMutableDictionary alloc] init];
                    for (YNCLog *log in self.allLogs) {
+
                      if (self.userSums[log.user.pfID]) {
                        self.userSums[log.user.pfID] = @([self.userSums[log.user.pfID] floatValue] + [log.value floatValue]);
                      } else {
@@ -106,6 +107,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
                  }
                }];
 }
+
 
 
 + (BOOL)checkLogs:(NSMutableArray*)goals {
