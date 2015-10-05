@@ -41,7 +41,6 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
   [autoLayout addVflConstraint:@"H:|[tableView]|" toView:self.view];
   [autoLayout addVflConstraint:@"V:|[tableView]|" toView:self.view];
   
-  
   [YNCGoal loadGoalsWithCallback:^(NSArray *goals, NSError *error) {
     self.goals = goals;
     self.tableView.delegate = self;

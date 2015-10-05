@@ -99,6 +99,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
                    self.allLogs = logs;
                    self.userSums = [[NSMutableDictionary alloc] init];
                    for (YNCLog *log in self.allLogs) {
+
                      if (self.userSums[log.user.pfID]) {
                        self.userSums[log.user.pfID] = @([self.userSums[log.user.pfID] floatValue] + [log.value floatValue]);
                      } else {
@@ -109,6 +110,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
                  }
                }];
 }
+
 
 + (BOOL)checkLogs:(NSMutableArray*)goals {
   for (YNCGoal *goal in goals) {
