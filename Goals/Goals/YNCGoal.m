@@ -8,6 +8,7 @@
 
 #import "YNCGoal.h"
 #import "YNCUser.h"
+#import "YNCLog.h"
 
 const struct YNCGoalPFKey YNCGoalPFKey = {
   .titleKey = @"title",
@@ -30,6 +31,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 - (instancetype)initWithPFObject:(PFObject *)pfObject {
   if (self = [super init]) {
     self.pfObject = pfObject;
+    [self processLogs];
   }
   return self;
 }
@@ -85,6 +87,26 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
                                                            options:0];
   }
   return _endDate;
+}
+
+- (void)processLogs {
+
+  self.userSums = [[NSMutableDictionary alloc] init];
+  [YNCLog getAllLogsForGoal:self
+               withCallback:^(NSArray *logs, NSError *error) {
+                 if (!error) {
+                   self.allLogs = logs;
+                   for (YNCLog *log in self.allLogs) {
+                     NSLog(@"user: %@", log.user.pfID);
+                     if (self.userSums[log.user.pfID]) {
+                       self.userSums[log.user.pfID] = @([self.userSums[log.user.pfID] floatValue] + [log.value floatValue]);
+                     } else {
+                       self.userSums[log.user.pfID] = @([log.value floatValue]);
+                     }
+                   }
+                   NSLog(@"before: %@", self.userSums);
+                 }
+               }];
 }
 
 + (void)loadGoalsWithCallback:(void (^)(NSArray *goals, NSError *error))callback {

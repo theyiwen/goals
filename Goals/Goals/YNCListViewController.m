@@ -7,6 +7,7 @@
 //
 
 #import "YNCListViewController.h"
+#import "YNCListViewCell.h"
 #import "YNCGoalViewController.h"
 #import "YNCCreateGoalViewController.h"
 #import "YNCAutoLayout.h"
@@ -42,7 +43,7 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
   
   self.tableView.delegate = self;
   self.tableView.dataSource = self;
-  [self.tableView registerClass:[UITableViewCell class]
+  [self.tableView registerClass:[YNCListViewCell class]
          forCellReuseIdentifier:kYNCListViewCellIdentifier];
   
   [YNCGoal loadGoalsWithCallback:^(NSArray *goals, NSError *error) {
@@ -73,10 +74,14 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kYNCListViewCellIdentifier];
+  YNCListViewCell *cell = (YNCListViewCell *)[tableView dequeueReusableCellWithIdentifier:kYNCListViewCellIdentifier];
   YNCGoal *goal = [self goalAtIndexPath:indexPath];
-  cell.textLabel.text = goal.title.uppercaseString;
-  cell.textLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:24];
+  [cell setTitle:goal.title.uppercaseString];
+  [goal processLogs];
+  NSLog(@"me: %@", [PFUser currentUser].objectId);
+  NSLog(@"after: %@", goal.userSums);
+  NSLog(@"%@", goal.userSums[[PFUser currentUser].objectId]);
+  [cell setScore:goal.userSums[[PFUser currentUser].objectId]];
   return cell;
 }
 

@@ -27,6 +27,8 @@ typedef enum {
 
 @property (strong, nonatomic, readonly) PFObject *pfObject;
 @property (strong, nonatomic, readonly) NSArray *users;
+@property (strong, nonatomic) NSMutableDictionary *userSums;
+@property (strong, nonatomic) NSArray *allLogs;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *desc;
 @property (nonatomic) GoalType type; // i hope this is right
@@ -36,6 +38,7 @@ typedef enum {
 @property (nonatomic, copy) NSDate *endDate;
 
 - (instancetype)initWithPFObject:(PFObject *)pfObject;
+- (void)processLogs;
 + (void)loadGoalsWithCallback:(void (^)(NSArray *goals, NSError *error))callback;
 + (NSString *)pfClassName;
 + (void)createAndSaveGoalWithTitle:(NSString *)title
