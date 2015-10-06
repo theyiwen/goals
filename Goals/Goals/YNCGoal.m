@@ -31,9 +31,6 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 - (instancetype)initWithPFObject:(PFObject *)pfObject {
   if (self = [super init]) {
     self.pfObject = pfObject;
-    [self processLogsWithCallback:^{
-      //
-    }];
   }
   return self;
 }
