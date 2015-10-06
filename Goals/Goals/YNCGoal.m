@@ -31,7 +31,9 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 - (instancetype)initWithPFObject:(PFObject *)pfObject {
   if (self = [super init]) {
     self.pfObject = pfObject;
-    [self processLogs];
+    [self processLogsWithCallback:^{
+      //
+    }];
   }
   return self;
 }
@@ -89,7 +91,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
   return _endDate;
 }
 
-- (void)processLogs {
+- (void)processLogsWithCallback:(void(^)(void))callback {
 
   [YNCLog getAllLogsForGoal:self
                withCallback:^(NSArray *logs, NSError *error) {
@@ -97,16 +99,22 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
                    self.allLogs = logs;
                    self.userSums = [[NSMutableDictionary alloc] init];
                    for (YNCLog *log in self.allLogs) {
-                     NSLog(@"user: %@", log.user.pfID);
                      if (self.userSums[log.user.pfID]) {
                        self.userSums[log.user.pfID] = @([self.userSums[log.user.pfID] floatValue] + [log.value floatValue]);
                      } else {
                        self.userSums[log.user.pfID] = @([log.value floatValue]);
                      }
                    }
-                   NSLog(@"before: %@", self.userSums);
+                   callback();
                  }
                }];
+}
+
++ (BOOL)checkLogs:(NSMutableArray*)goals {
+  for (YNCGoal *goal in goals) {
+    if (!goal.allLogs) return NO;
+  }
+  return YES;
 }
 
 + (void)loadGoalsWithCallback:(void (^)(NSArray *goals, NSError *error))callback {
@@ -119,11 +127,17 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
     if (!error) {
       NSMutableArray *goalsBuilder = [[NSMutableArray alloc] init];
       for (PFObject *object in objects) {
-        YNCGoal *goal = [[YNCGoal alloc] initWithPFObject:object];
-        // NSLog(@"printing goal values: %@", goal.userSums); this prints null
+         YNCGoal *goal = [[YNCGoal alloc] initWithPFObject:object];
         [goalsBuilder addObject:goal];
       }
-      callback([goalsBuilder copy], error);
+      for (YNCGoal *goal in goalsBuilder) {
+        [goal processLogsWithCallback:^{
+          if ([YNCGoal checkLogs:goalsBuilder]) {
+            callback([goalsBuilder copy], error);
+          }
+        }];
+      }
+
     } else {
       NSLog(@"Error loading goals %@", error);
       callback(nil, error);

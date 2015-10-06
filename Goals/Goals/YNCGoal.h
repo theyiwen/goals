@@ -38,7 +38,7 @@ typedef enum {
 @property (nonatomic, copy) NSDate *endDate;
 
 - (instancetype)initWithPFObject:(PFObject *)pfObject;
-- (void)processLogs;
+- (void)processLogsWithCallback:(void(^)(void))callback;
 + (void)loadGoalsWithCallback:(void (^)(NSArray *goals, NSError *error))callback;
 + (NSString *)pfClassName;
 + (void)createAndSaveGoalWithTitle:(NSString *)title

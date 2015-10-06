@@ -77,17 +77,13 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   YNCListViewCell *cell = (YNCListViewCell *)[tableView dequeueReusableCellWithIdentifier:kYNCListViewCellIdentifier];
   YNCGoal *goal = [self goalAtIndexPath:indexPath];
-  NSLog(@"goal: %@", goal);
   [cell setTitle:goal.title.uppercaseString];
-  NSLog(@"me: %@", [PFUser currentUser].objectId);
-  NSLog(@"after: %@", goal.userSums);
-  NSLog(@"%@", goal.userSums[[PFUser currentUser].objectId]);
   [cell setScore:goal.userSums[[PFUser currentUser].objectId]];
   return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 80;
+  return 60;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
