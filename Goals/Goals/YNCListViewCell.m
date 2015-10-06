@@ -9,14 +9,7 @@
 #import "YNCListViewCell.h"
 #import "YNCAutoLayout.h"
 #import "YNCFont.h"
-<<<<<<< HEAD
-<<<<<<< HEAD
 #import "YNCColor.h"
-=======
->>>>>>> yey
-=======
-#import "YNCColor.h"
->>>>>>> logs finally process on load goals
 
 @interface YNCListViewCell ()
 
