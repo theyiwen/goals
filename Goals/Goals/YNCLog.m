@@ -67,6 +67,15 @@ const struct logKey logKey = {
   return [self.pfObject[logKey.dayNumber] integerValue];
 }
 
++ (void)updateLog:(YNCLog *)log
+        withValue:(NSNumber *)value
+            notes:(NSString *)notes {
+  PFObject *pfObject = log.pfObject;
+  pfObject[logKey.value] = value;
+  pfObject[logKey.notes] = notes;
+  [pfObject saveInBackgroundWithBlock:nil];
+}
+
 + (void)createAndSaveLogWithGoal:(YNCGoal *)goal
                            value:(NSNumber *)value
                            notes:(NSString *)notes {

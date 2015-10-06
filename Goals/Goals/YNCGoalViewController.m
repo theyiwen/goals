@@ -33,9 +33,11 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 @property (strong, nonatomic) UITableView *logTable;
 @property (strong, nonatomic) NSMutableDictionary *usersLabels;
 @property (strong, nonatomic) UIButton *addLog;
+@property (strong, nonatomic) UIButton *addNote;
 @property (strong, nonatomic) YNCCalendarView *calendar;
 
 @property (strong, nonatomic) YNCGoal *goal;
+@property (strong, nonatomic) YNCLog *todayLog;
 @property (strong, nonatomic) NSArray *allLogs;
 @property (strong, nonatomic) NSMutableDictionary *logsByDate;
 @property (strong, nonatomic) NSMutableDictionary *userSums;
@@ -80,6 +82,7 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
   UITableView *logTable = self.logTable = [[UITableView alloc] init];
 
   UIButton *addLog = self.addLog = [[UIButton alloc] init];
+  UIButton *addNote = self.addNote = [[UIButton alloc] init];
   CGRect calFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width - 40, 0);
   YNCCalendarView *calendar = self.calendar = [[YNCCalendarView alloc] initWithFrame:calFrame
                                                                                 goal:self.goal
@@ -89,7 +92,6 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
   self.usersLabels = [[NSMutableDictionary alloc] init];
   
   [self.view addSubview:scrollView];
-  [self.view addSubview:addLog];
   [scrollView addSubview:container];
   [container addSubview:name];
   [container addSubview:dates];
@@ -100,15 +102,22 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
   [container addSubview:usersLabel];
   [container addSubview:calLabel];
   [container addSubview:logTable];
+  [container addSubview:addLog];
+  [container addSubview:addNote];
 
-  NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, container, name, dates, desc, usersContainer, addLog, calendar,
+  //TODO(yiwen): put these somewhere else
+  desc.hidden = YES;
+  descLabel.hidden = YES;
+  dates.hidden = YES;
+  name.hidden = YES;
+
+  NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, container, name, dates, desc, usersContainer, addLog, addNote, calendar,
                                                        descLabel, calLabel, usersLabel, logTable);
 //  calendar.translatesAutoresizingMaskIntoConstraints = YES;
 
   YNCAutoLayout *autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
-  [autoLayout addVflConstraint:@"V:|-30-[name][dates]-20-[descLabel]-5-[desc]-20-[usersLabel]-5-[usersContainer]-20-[calLabel]-5-[calendar]-5-[logTable]-20-|" toView:container];
-  [autoLayout addConstraintForViews:@[self.view, scrollView, container, addLog] equivalentAttribute:NSLayoutAttributeCenterX toView:self.view];
-  [autoLayout addVflConstraint:@"V:[addLog]-20-|" toView:self.view];
+  [autoLayout addVflConstraint:@"V:|-20-[addLog]-5-[addNote]-10-[usersLabel]-5-[usersContainer]-20-[calLabel]-5-[calendar]-5-[logTable]-20-|" toView:container];
+  [autoLayout addConstraintForViews:@[self.view, scrollView, container, addLog, addNote] equivalentAttribute:NSLayoutAttributeCenterX toView:self.view];
   [autoLayout addVflConstraint:@"V:|[scrollView]|" toView:self.view];
   [autoLayout addVflConstraint:@"H:|[scrollView]|" toView:self.view];
   [autoLayout addVflConstraint:@"V:|[container]|" toView:scrollView];
@@ -124,7 +133,7 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
                                   toView:self.view];
   scrollView.scrollEnabled = YES;
   [autoLayout addVflConstraint:@"H:|-20-[usersContainer]-20-|" toView:container];
-  [autoLayout addConstraintForView:addLog withSize:CGSizeMake(75,75) toView:addLog];
+  [autoLayout addConstraintForView:addLog withSize:CGSizeMake(80,80) toView:addLog];
   [autoLayout addVflConstraint:@"H:|-20-[calendar]-20-|" toView:container];
   [autoLayout addVflConstraint:@"H:|-20-[logTable]-20-|" toView:container];
   self.calendarHeightConstraint = [NSLayoutConstraint constraintWithItem:calendar
@@ -132,7 +141,8 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
                                                                relatedBy:NSLayoutRelationEqual
                                                                   toItem:nil
                                                                attribute:NSLayoutAttributeNotAnAttribute
-                                                              multiplier:1.0 constant:0];
+                                                              multiplier:1.0
+                                                                constant:0];
   [self.view addConstraint:self.calendarHeightConstraint];
 
   YNCGoalUserView *lastLabel;
@@ -183,15 +193,26 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
   
   self.view.backgroundColor = [UIColor whiteColor];
   [self setGoalDetails];
+  if (self.goal.type == daily) {
+    [addNote setTitle:@"add note".uppercaseString forState:UIControlStateNormal];
+  } else {
+    [addNote setTitle:@"edit".uppercaseString forState:UIControlStateNormal];
+  }
+  addNote.titleLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:12];
+  [addNote setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+  addNote.hidden = YES;
+  [addNote addTarget:self
+              action:@selector(addNotePressed)
+    forControlEvents:UIControlEventTouchUpInside];
   [addLog setImage:[UIImage imageNamed:@"add_log_button_undone.png"] forState:UIControlStateNormal];
-  [addLog setImage:[UIImage imageNamed:@"add_log_button_done.png"] forState:UIControlStateDisabled];
+  [addLog setImage:[UIImage imageNamed:@"add_log_button_done.png"] forState:UIControlStateSelected];
   [addLog addTarget:self action:@selector(addLogPressed) forControlEvents:UIControlEventTouchUpInside];
   [logTable registerClass:[UITableViewCell class]
    forCellReuseIdentifier:kYNCLogTableCellId];
   logTable.delegate = self;
   logTable.dataSource = self;
   calendar.delegate = self;
-}
+  }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
@@ -222,6 +243,7 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 }
 
 - (void)processLogs {
+  NSInteger todaysNumber = [[YNCDate shared] dayNumberFromDate:[NSDate date] start:self.goal.startDate];
   self.calendar.logs = self.allLogs;
   self.userSums = [[NSMutableDictionary alloc] init];
   for (YNCLog *log in self.allLogs) {
@@ -230,11 +252,15 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
     } else {
       self.userSums[log.user.pfID] = @([log.value floatValue]);
     }
-    NSString *dateStr = [self.dateFormatter stringFromDate:log.date];
-    if (!self.logsByDate[dateStr]) {
-      self.logsByDate[dateStr] = [[NSMutableArray alloc] init];
+    NSNumber *dayNumber = @(log.dayNumber);
+    if (!self.logsByDate[dayNumber]) {
+      self.logsByDate[dayNumber] = [[NSMutableArray alloc] init];
     }
-    [(NSMutableArray *)self.logsByDate[dateStr] addObject:log];
+    [(NSMutableArray *)self.logsByDate[dayNumber] addObject:log];
+    if (todaysNumber == log.dayNumber) {
+      self.todayLog = log;
+      [self setTodayLogDone];
+    }
   }
   for (NSString *userID in self.userSums) {
     [self userLabelForUser:userID].score = self.userSums[userID];
@@ -243,17 +269,33 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 }
 
 - (void)setGoalDetails {
+  self.title =self.goal.title.uppercaseString;
   self.name.text = self.goal.title.uppercaseString;
   self.desc.text = self.goal.desc;
   self.name.font = [UIFont fontWithName:[YNCFont boldFontName] size:20];
   self.desc.font = [YNCFont standardFont];
 }
 
+#pragma mark - logs
+
 - (void)addLogPressed {
-  YNCCreateLogViewController *logVC = [[YNCCreateLogViewController alloc] initWithGoalType:self.goal.type];
+  if (self.goal.type == daily && !self.addLog.selected) {
+    [self setTodayLogDone];
+    [YNCLog createAndSaveLogWithGoal:self.goal
+                               value:@1
+                               notes:@""];
+  } else {
+    YNCCreateLogViewController *logVC = [[YNCCreateLogViewController alloc] initWithGoalType:self.goal.type];
+    logVC.delegate = self;
+    logVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [self presentViewController:logVC animated:YES completion:nil];
+  }
+}
+
+- (void)addNotePressed {
+  YNCCreateLogViewController *logVC = [[YNCCreateLogViewController alloc] initWithGoalType:self.goal.type existingLog:self.todayLog];
   logVC.delegate = self;
   logVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-
   [self presentViewController:logVC animated:YES completion:nil];
 }
 
@@ -264,6 +306,21 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
                              value:value
                              notes:notes];
 }
+
+- (void)createLogViewController:(YNCCreateLogViewController *)createLogViewController
+                     didEditLog:(YNCLog *)log
+                      withValue:(NSNumber *)value
+                          notes:(NSString *)notes {
+  [YNCLog updateLog:log withValue:value notes:notes];
+}
+
+- (void)setTodayLogDone {
+  self.addLog.selected = YES;
+  self.addLog.userInteractionEnabled = NO;
+  self.addNote.hidden = NO;
+}
+
+#pragma mark - calendar
 
 - (void)calendarView:(YNCCalendarView *)calendarView didSelectDate:(NSDate *)date {
   if (self.logsByDate[[self.dateFormatter stringFromDate:date]]) {
@@ -278,6 +335,8 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 - (void)calendarView:(YNCCalendarView *)calendarView didUpdateHeight:(CGFloat)height {
   self.calendarHeightConstraint.constant = height;
 }
+
+#pragma mark - table view
 
 - (YNCLog *)logAtIndexPath:(NSIndexPath *)indexPath {
   return (YNCLog *)self.logResults[indexPath.row];

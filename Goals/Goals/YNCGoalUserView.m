@@ -25,9 +25,6 @@
 @implementation YNCGoalUserView
 - (instancetype)initWithUser:(YNCUser *)user color:(UIColor *)color {
   if (self = [super initWithFrame:CGRectZero]) {
-    _color = color;
-    
-    _user = user;
     _name = [[UILabel alloc] init];
     _scoreLabel = [[UILabel alloc] init];
     _photo = [[UIImageView alloc] init];
@@ -56,18 +53,13 @@
     
     self.photo.layer.cornerRadius = 20;
     self.circle.layer.cornerRadius = 22.5;
-    self.circle.backgroundColor = self.color;
     
-    self.name.text = self.user.fullName;
-    self.name.hidden = YES;
-    NSURL *url = [NSURL URLWithString:self.user.photoUrl];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    UIImage *img = [[UIImage alloc] initWithData:data];
-    self.photo.contentMode = UIViewContentModeScaleAspectFit;
-    [self.photo setImage:img];
+
     self.photo.clipsToBounds = YES;
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.scoreLabel.font = [UIFont fontWithName:[YNCFont lightFontName] size:15];
+    self.user = user;
+    self.color = color;
   }
   return self;
 }
@@ -75,6 +67,22 @@
 - (void)setScore:(NSNumber *)score {
   _score = score;
   _scoreLabel.text = [NSString stringWithFormat:@"%@", score];
+}
+
+- (void)setUser:(YNCUser *)user {
+  _user = user;
+  self.name.text = _user.fullName;
+  self.name.hidden = YES;
+  NSURL *url = [NSURL URLWithString:_user.photoUrl];
+  NSData *data = [NSData dataWithContentsOfURL:url];
+  UIImage *img = [[UIImage alloc] initWithData:data];
+  self.photo.contentMode = UIViewContentModeScaleAspectFit;
+  [self.photo setImage:img];
+}
+
+- (void)setColor:(UIColor *)color {
+  _color = color;
+  self.circle.backgroundColor = _color;
 }
 
 @end

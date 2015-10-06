@@ -28,14 +28,21 @@ CGFloat const kAnimationDuration = 0.4;
 @property (strong, nonatomic) UIView *countBottomBorder;
 @property (strong, nonatomic) UIView *notesBottomBorder;
 @property (nonatomic) GoalType goalType;
+@property (nonatomic) YNCLog *existingLog;
+
 
 @end
 
 @implementation YNCCreateLogViewController
 
 - (instancetype)initWithGoalType:(GoalType)type {
-  if (self = [super init]) {
+  return [self initWithGoalType:type existingLog:nil];
+}
+
+- (instancetype)initWithGoalType:(GoalType)type existingLog:(YNCLog *)existingLog {
+  if (self = [self init]) {
     self.goalType = type;
+    self.existingLog = existingLog;
     self.transitioningDelegate = self;
 
   }
@@ -154,6 +161,7 @@ CGFloat const kAnimationDuration = 0.4;
   
   UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
   [outerContainer addGestureRecognizer:tap];
+  
 }
 
 - (void)viewTapped:(UIGestureRecognizer *)tapGesture {
@@ -165,6 +173,14 @@ CGFloat const kAnimationDuration = 0.4;
     [self.notesEntry becomeFirstResponder];
   } else if (self.goalType == sum) {
     [self.countEntry becomeFirstResponder];
+  }
+  if (self.existingLog) {
+    self.notesEntry.text = self.existingLog.notes;
+    [self textFieldDidChange:self.notesEntry];
+    if (self.goalType == sum) {
+      self.countEntry.text = [self.existingLog.value stringValue];
+      [self textFieldDidChange:self.countEntry];
+    }
   }
 }
 
@@ -216,9 +232,16 @@ CGFloat const kAnimationDuration = 0.4;
     NSLog(@"Shouldn't be here");
   } else {
     NSNumber *value = @((self.goalType == sum) ? [self.countEntry.text floatValue] : 1);
-    [self.delegate createLogViewControllerDidSubmit:self
-                                          withValue:value
-                                              notes:self.notesEntry.text];
+    if (self.existingLog) {
+      [self.delegate createLogViewController:self
+                                  didEditLog:self.existingLog
+                                   withValue:value
+                                       notes:self.notesEntry.text];
+    } else {
+      [self.delegate createLogViewControllerDidSubmit:self
+                                            withValue:value
+                                                notes:self.notesEntry.text];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
   }
 }

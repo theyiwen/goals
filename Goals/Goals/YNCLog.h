@@ -31,6 +31,9 @@ extern const struct logKey {
 + (void)createAndSaveLogWithGoal:(YNCGoal *)goal
                            value:(NSNumber *)value
                            notes:(NSString *)notes;
++ (void)updateLog:(YNCLog *)log
+        withValue:(NSNumber *)value
+            notes:(NSString *)notes;
 
 + (void)getAllLogsForGoal:(YNCGoal *)goal
              withCallback:(void (^)(NSArray *logs, NSError *error))callback;

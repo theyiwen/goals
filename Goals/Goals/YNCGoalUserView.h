@@ -16,5 +16,6 @@ static CGFloat const kYNCGoalUserViewWidth = 45;
 @property (strong, nonatomic) NSNumber *score;
 
 - (instancetype)initWithUser:(YNCUser *)user color:(UIColor *)color;
-
+- (void)setColor:(UIColor *)color;
+- (void)setUser:(YNCUser *)user;
 @end
