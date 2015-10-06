@@ -44,14 +44,12 @@
     
     NSDictionary *views = NSDictionaryOfVariableBindings(container, titleLabel, scoreLabel);
     YNCAutoLayout *autoLayout =[[YNCAutoLayout alloc] initWithViews:views];
-
     [autoLayout addVflConstraint:@"H:|-16-[titleLabel][scoreLabel]-16-|" toView:self.container];
     [autoLayout addVflConstraint:@"H:|[container]|" toView:self.contentView];
     [autoLayout addVflConstraint:@"V:|[container]|" toView:self.contentView];
     [autoLayout addConstraintForViews:@[container, titleLabel, scoreLabel]
                   equivalentAttribute:NSLayoutAttributeCenterY
                                toView:self.container];
-
   }
   return self;
 }
