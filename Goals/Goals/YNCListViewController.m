@@ -41,15 +41,16 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
   [autoLayout addVflConstraint:@"H:|[tableView]|" toView:self.view];
   [autoLayout addVflConstraint:@"V:|[tableView]|" toView:self.view];
   
-  self.tableView.delegate = self;
-  self.tableView.dataSource = self;
-  [self.tableView registerClass:[YNCListViewCell class]
-         forCellReuseIdentifier:kYNCListViewCellIdentifier];
   
   [YNCGoal loadGoalsWithCallback:^(NSArray *goals, NSError *error) {
     self.goals = goals;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.tableView registerClass:[YNCListViewCell class]
+           forCellReuseIdentifier:kYNCListViewCellIdentifier];
     [self.tableView reloadData];
   }];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -76,8 +77,8 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   YNCListViewCell *cell = (YNCListViewCell *)[tableView dequeueReusableCellWithIdentifier:kYNCListViewCellIdentifier];
   YNCGoal *goal = [self goalAtIndexPath:indexPath];
+  NSLog(@"goal: %@", goal);
   [cell setTitle:goal.title.uppercaseString];
-  [goal processLogs];
   NSLog(@"me: %@", [PFUser currentUser].objectId);
   NSLog(@"after: %@", goal.userSums);
   NSLog(@"%@", goal.userSums[[PFUser currentUser].objectId]);

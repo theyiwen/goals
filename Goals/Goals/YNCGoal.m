@@ -91,11 +91,11 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 
 - (void)processLogs {
 
-  self.userSums = [[NSMutableDictionary alloc] init];
   [YNCLog getAllLogsForGoal:self
                withCallback:^(NSArray *logs, NSError *error) {
                  if (!error) {
                    self.allLogs = logs;
+                   self.userSums = [[NSMutableDictionary alloc] init];
                    for (YNCLog *log in self.allLogs) {
                      NSLog(@"user: %@", log.user.pfID);
                      if (self.userSums[log.user.pfID]) {
@@ -119,7 +119,9 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
     if (!error) {
       NSMutableArray *goalsBuilder = [[NSMutableArray alloc] init];
       for (PFObject *object in objects) {
-        [goalsBuilder addObject:[[YNCGoal alloc] initWithPFObject:object]];
+        YNCGoal *goal = [[YNCGoal alloc] initWithPFObject:object];
+        // NSLog(@"printing goal values: %@", goal.userSums); this prints null
+        [goalsBuilder addObject:goal];
       }
       callback([goalsBuilder copy], error);
     } else {

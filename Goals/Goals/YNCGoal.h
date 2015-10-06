@@ -31,7 +31,7 @@ typedef enum {
 @property (strong, nonatomic) NSArray *allLogs;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *desc;
-@property (nonatomic) GoalType type; // i hope this is right
+@property (nonatomic) GoalType type;
 @property (nonatomic, copy) NSNumber *duration;
 @property (nonatomic, copy) NSString *pfID;
 @property (nonatomic, copy) NSDate *startDate;
