@@ -7,6 +7,7 @@
 //
 
 #import "YNCFriendPickerViewController.h"
+#import "YNCFriendPickerCell.h"
 #import "YNCAutoLayout.h"
 #import "YNCFont.h"
 #import "YNCColor.h"
@@ -43,7 +44,7 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
   friendsListTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
   friendsListTableView.delegate = self;
   friendsListTableView.dataSource = self;
-  [friendsListTableView registerClass:[UITableViewCell class]
+  [friendsListTableView registerClass:[YNCFriendPickerCell class]
      forCellReuseIdentifier:kYNCFriendViewCellIdentifier];
   friendsListTableView.allowsMultipleSelection = YES;
   
@@ -98,28 +99,37 @@ static NSString * const kYNCFriendViewCellIdentifier = @"cellIdentifier";
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kYNCFriendViewCellIdentifier];
+  YNCFriendPickerCell *cell = (YNCFriendPickerCell *)[tableView dequeueReusableCellWithIdentifier:kYNCFriendViewCellIdentifier];
   YNCUser *user = (YNCUser *)self.myFriends[indexPath.row];
+  cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-  cell.textLabel.text = user.firstName;
-  cell.textLabel.font = [YNCFont standardFont];
-  cell.textLabel.textColor = [UIColor blackColor];
+  [cell setName:user.firstName];
   
   NSURL *url = [NSURL URLWithString:user.photoUrl];
   NSData *data = [NSData dataWithContentsOfURL:url];
   UIImage *img = [[UIImage alloc] initWithData:data];
-  cell.imageView.image = img;
-  cell.imageView.layer.cornerRadius = 22;
-  cell.imageView.clipsToBounds = YES;
+  [cell setPicture:img];
 
   return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  return 60;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   
   YNCUser *user = (YNCUser *)self.myFriends[indexPath.row];
-  [self.pickedFriends addObject:user.pfObject];
+  if (![self.pickedFriends containsObject:user.pfObject]) {
+    [self.pickedFriends addObject:user.pfObject];
+  }
+  else {
+      [self.pickedFriends removeObject:user.pfObject];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  }
+  
+    
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {

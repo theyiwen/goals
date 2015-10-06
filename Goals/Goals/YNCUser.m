@@ -81,7 +81,7 @@ const struct userKey userKey = {
 + (void)loadUsersWithFacebookIDs:(NSArray *)ids
                         Callback:(void (^)(NSArray *users, NSError *error))callback {
   PFQuery *query = [PFQuery queryWithClassName:[YNCUser pfClassName]];
-  [query orderByDescending:@"firstName"];
+  [query orderByAscending:@"firstName"];
   [query whereKey:userKey.facebookId containedIn:ids];
   query.cachePolicy = kPFCachePolicyNetworkElseCache;
   [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {

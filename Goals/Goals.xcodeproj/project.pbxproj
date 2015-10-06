@@ -11,6 +11,7 @@
 		631C77521BAF86D20039AF40 /* YNCFriendPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 631C77511BAF86D20039AF40 /* YNCFriendPickerViewController.m */; };
 		63B914C61BAE319D00F4A079 /* YNCCreateGoalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B914C51BAE319D00F4A079 /* YNCCreateGoalViewController.m */; };
 		63D1358D1BC1CB20005C81F4 /* YNCListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D1358C1BC1CB20005C81F4 /* YNCListViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		63FCFCBE1BC3B5ED00325B30 /* YNCFriendPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FCFCBD1BC3B5ED00325B30 /* YNCFriendPickerCell.m */; settings = {ASSET_TAGS = (); }; };
 		934F94BC1BAE6CAA00285112 /* YNCFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 934F94BB1BAE6CAA00285112 /* YNCFont.m */; };
 		934F94C91BAE6E8400285112 /* Raleway-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 934F94C01BAE6E8400285112 /* Raleway-Bold.ttf */; };
 		934F94CA1BAE6E8400285112 /* Raleway-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 934F94C11BAE6E8400285112 /* Raleway-ExtraBold.ttf */; };
@@ -78,6 +79,8 @@
 		63B914C71BAE31C300F4A079 /* YNCCreateGoalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YNCCreateGoalViewController.h; sourceTree = "<group>"; };
 		63D1358C1BC1CB20005C81F4 /* YNCListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCListViewCell.m; sourceTree = "<group>"; };
 		63D1358E1BC1CB46005C81F4 /* YNCListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YNCListViewCell.h; sourceTree = "<group>"; };
+		63FCFCBC1BC3B5ED00325B30 /* YNCFriendPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCFriendPickerCell.h; sourceTree = "<group>"; };
+		63FCFCBD1BC3B5ED00325B30 /* YNCFriendPickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCFriendPickerCell.m; sourceTree = "<group>"; };
 		934F94BA1BAE6CAA00285112 /* YNCFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCFont.h; sourceTree = "<group>"; };
 		934F94BB1BAE6CAA00285112 /* YNCFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCFont.m; sourceTree = "<group>"; };
 		934F94C01BAE6E8400285112 /* Raleway-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-Bold.ttf"; sourceTree = "<group>"; };
@@ -277,6 +280,8 @@
 				63B914C71BAE31C300F4A079 /* YNCCreateGoalViewController.h */,
 				631C77511BAF86D20039AF40 /* YNCFriendPickerViewController.m */,
 				631C77531BAF86E20039AF40 /* YNCFriendPickerViewController.h */,
+				63FCFCBC1BC3B5ED00325B30 /* YNCFriendPickerCell.h */,
+				63FCFCBD1BC3B5ED00325B30 /* YNCFriendPickerCell.m */,
 				9354098E1BAE3FD0003E8454 /* YNCCreateLogViewController.h */,
 				9354098F1BAE3FD0003E8454 /* YNCCreateLogViewController.m */,
 				93FBB2E11BADD5EE00022B2E /* ViewController.h */,
@@ -389,7 +394,7 @@
 				TargetAttributes = {
 					93FBB2D61BADD5EE00022B2E = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = Q3323D4JX4;
+						DevelopmentTeam = ABXR2FQXWB;
 					};
 					93FBB2EF1BADD5EE00022B2E = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -458,6 +463,7 @@
 				9354096B1BADEDA7003E8454 /* YNCAutoLayout.m in Sources */,
 				934F94BC1BAE6CAA00285112 /* YNCFont.m in Sources */,
 				63D1358D1BC1CB20005C81F4 /* YNCListViewCell.m in Sources */,
+				63FCFCBE1BC3B5ED00325B30 /* YNCFriendPickerCell.m in Sources */,
 				935409871BAE1732003E8454 /* YNCUser.m in Sources */,
 				935409811BADF998003E8454 /* YNCGoal.m in Sources */,
 				936DFF271BBAE6B300881092 /* YNCCalendarDayView.m in Sources */,

@@ -14,6 +14,10 @@
   return [UIColor colorWithRed:135.0/255.0f green:202.0/255.0f blue:187.0/255.0f alpha:1.0f];
 }
 
++ (UIColor *) tealHighlightColor {
+  return [UIColor colorWithRed:215.0/255.0f green:241.0/255.0f blue:235.0/255.0f alpha:1.0f];
+}
+
 + (NSArray *)userColors {
   
   return @[[YNCColor tealColor],
