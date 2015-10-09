@@ -59,7 +59,8 @@ static CGFloat const kDaysPerRow = 7;
 
 - (void)viewTapped:(UITapGestureRecognizer *)tapGesture {
   UIView *tappedView = tapGesture.view;
-  [self.delegate calendarView:self didSelectDate:[self dateFromDayNumber:tappedView.tag]];
+  [self.delegate calendarView:self didSelectDayNumber:@(tappedView.tag)];
+//  [self.delegate calendarView:self didSelectDate:[self dateFromDayNumber:tappedView.tag]];
 }
 
 - (void)setLogs:(NSArray *)logs {

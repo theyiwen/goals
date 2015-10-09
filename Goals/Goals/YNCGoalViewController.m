@@ -45,6 +45,7 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *logResults;
 @property (strong, nonatomic) NSLayoutConstraint *calendarHeightConstraint;
+@property (strong, nonatomic) NSLayoutConstraint *logTableHeightConstraint;
 
 @end
 
@@ -147,7 +148,15 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
                                                                attribute:NSLayoutAttributeNotAnAttribute
                                                               multiplier:1.0
                                                                 constant:0];
+  self.logTableHeightConstraint = [NSLayoutConstraint constraintWithItem:logTable
+                                                               attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:nil
+                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                              multiplier:1.0
+                                                                constant:0];
   [self.view addConstraint:self.calendarHeightConstraint];
+  [self.view addConstraint:self.logTableHeightConstraint];
 
   YNCGoalUserView *lastLabel;
   NSInteger count = 0;
@@ -236,11 +245,8 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 }
 
 - (void)sizeTableViewToFitResults {
-    self.logTable.frame =
-    CGRectMake(self.logTable.frame.origin.x,
-               self.logTable.frame.origin.y,
-               self.logTable.contentSize.width,
-               self.logTable.contentSize.height);
+  self.logTableHeightConstraint.constant = self.logTable.contentSize.height;
+  [self.view layoutIfNeeded];
 }
 
 - (void)processLogs {
@@ -331,9 +337,9 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 
 #pragma mark - calendar
 
-- (void)calendarView:(YNCCalendarView *)calendarView didSelectDate:(NSDate *)date {
-  if (self.logsByDate[[self.dateFormatter stringFromDate:date]]) {
-    self.logResults = self.logsByDate[[self.dateFormatter stringFromDate:date]];
+- (void)calendarView:(YNCCalendarView *)calendarView didSelectDayNumber:(NSNumber *)dayNumber {
+  if (self.logsByDate[dayNumber]) {
+    self.logResults = self.logsByDate[dayNumber];
   } else {
     self.logResults = [[NSMutableArray alloc] init];
   }

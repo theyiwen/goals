@@ -26,7 +26,7 @@
 
 @protocol YNCCalendarViewDelegate
 
-- (void)calendarView:(YNCCalendarView *)calendarView didSelectDate:(NSDate *)date;
+- (void)calendarView:(YNCCalendarView *)calendarView didSelectDayNumber:(NSNumber *)dayNumber;
 - (void)calendarView:(YNCCalendarView *)calendarView didUpdateHeight:(CGFloat)height;
 
 @end
