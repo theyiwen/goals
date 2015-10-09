@@ -44,7 +44,7 @@
     [autoLayout addConstraintForView:self withSize:CGSizeMake(kYNCGoalUserViewWidth, 70) toView:self];
     [autoLayout addVflConstraint:@"V:|-5-[circle]-2-[score]" toView:self];
     [autoLayout addConstraintForView:self.photo withSize:CGSizeMake(40, 40) toView:self.photo];
-    [autoLayout addConstraintForView:self.circle withSize:CGSizeMake(45, 45) toView:self.circle];
+    [autoLayout addConstraintForView:self.circle withSize:CGSizeMake(46, 46) toView:self.circle];
 
     [autoLayout addConstraintForViews:@[self, _photo, _scoreLabel]
                   equivalentAttribute:NSLayoutAttributeCenterX
@@ -52,7 +52,7 @@
     [autoLayout addCenteringConstraintForViews:@[_circle, _photo] toView:self];
     
     self.photo.layer.cornerRadius = 20;
-    self.circle.layer.cornerRadius = 22.5;
+    self.circle.layer.cornerRadius = 23;
     
 
     self.photo.clipsToBounds = YES;

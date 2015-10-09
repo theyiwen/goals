@@ -14,5 +14,6 @@
 - (void)setCircleSolidColor:(UIColor *)color;
 - (void)setCircleOutlineColor:(UIColor *)color;
 - (void)setDayTextColor:(UIColor *)color;
+- (void)setRingColors:(NSArray *)colors;
 
 @end

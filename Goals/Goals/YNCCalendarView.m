@@ -23,7 +23,7 @@ static CGFloat const kDaysPerRow = 7;
 @property (nonatomic) BOOL initialLayersDrawn;
 @property (strong, nonatomic) CALayer *container;
 @property (strong, nonatomic) NSMutableArray *circleDays;
-@property (strong, nonatomic) NSMutableDictionary *ringDays;
+@property (strong, nonatomic) NSMutableDictionary *ringDays; // { dayNumber: [userIds] }
 @property (strong, nonatomic) NSDictionary *userColors;
 @property (strong, nonatomic) YNCGoal *goal;
 @property (nonatomic) NSInteger todayInDays;
@@ -73,13 +73,12 @@ static CGFloat const kDaysPerRow = 7;
   for (YNCLog *log in self.logs) {
     NSNumber *dayNumber = @(log.dayNumber);
     if ([log.user.pfID isEqual:[PFUser currentUser].objectId]) {
-//      NSLog(@"adding %ld to circle days", (long)log.dayNumber);
       [self.circleDays addObject:dayNumber];
-    } else {
-      if (self.ringDays[log.user.pfID]) {
-        [(NSMutableArray *)self.ringDays[log.user.pfID] addObject:dayNumber];
+    } else { // other person
+      if (self.ringDays[dayNumber]) {
+        [(NSMutableArray *)self.ringDays[dayNumber] addObject:log.user.pfID];
       } else {
-        self.ringDays[log.user.pfID] = [[NSMutableArray alloc] initWithObjects:dayNumber, nil];
+        self.ringDays[dayNumber] = [[NSMutableArray alloc] initWithObjects:log.user.pfID, nil];
       }
     }
   }
@@ -132,47 +131,15 @@ static CGFloat const kDaysPerRow = 7;
     [view setCircleSolidColor:[YNCColor tealColor]];
     [view setDayTextColor:[UIColor whiteColor]];
   }
-  for (NSString *userID in self.ringDays) {
-    for (NSNumber *number in self.ringDays[userID]) {
-      YNCCalendarDayView *view = self.boxes[number];
-      [view setCircleOutlineColor:(UIColor *)self.userColors[userID]];
+  for (NSNumber *number in self.ringDays) {
+    NSMutableArray *colors = [[NSMutableArray alloc] init];
+    YNCCalendarDayView *view = self.boxes[number];
+    for (NSString *userId in self.ringDays[number]) {
+      if (![colors containsObject:self.userColors[userId]]) {
+        [colors addObject:self.userColors[userId]];
+      }
     }
-  }
-}
-
-- (void)insertCircles {
-  CGFloat circle_n = round(self.boxWidth - 10);
-  CGFloat circle_outer_n = round(self.boxWidth - 7);
-
-  CGFloat r = self.boxWidth / 2;
-  for (NSNumber *number in self.circleDays) {
-    CAShapeLayer *box = (CAShapeLayer *)((UIView *)self.boxes[number]).layer;
-    CAShapeLayer *circle = [CAShapeLayer layer];
-    circle.bounds = CGRectMake(0, 0, circle_n, circle_n);
-    circle.position = CGPointMake(r, r);
-    circle.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, circle_n, circle_n)
-                                             cornerRadius:circle_n/2].CGPath;
-    circle.fillColor = [YNCColor tealColor].CGColor;
-    circle.rasterizationScale = 2.0 * [UIScreen mainScreen].scale;
-    circle.shouldRasterize = YES;
-    [box insertSublayer:circle atIndex:1];
-    [(CATextLayer *)box.sublayers[2] setForegroundColor:[UIColor whiteColor].CGColor];
-  }
-  for (NSString *userID in self.ringDays) {
-    for (NSNumber *number in self.ringDays[userID]) {
-      CAShapeLayer *box = self.boxes[number];
-      CAShapeLayer *circle = [CAShapeLayer layer];
-      circle.bounds = CGRectMake(0, 0, circle_outer_n, circle_outer_n);
-      circle.position = CGPointMake(r, r);
-      circle.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, circle_outer_n, circle_outer_n)
-                                               cornerRadius:circle_outer_n/2].CGPath;
-      circle.strokeColor = ((UIColor *)self.userColors[userID]).CGColor;
-      circle.fillColor = [UIColor clearColor].CGColor;
-      circle.lineWidth = 3;
-      circle.rasterizationScale = 2.0 * [UIScreen mainScreen].scale;
-      circle.shouldRasterize = YES;
-      [box insertSublayer:circle atIndex:1];
-    }
+    [view setRingColors:[colors copy]];
   }
 }
 
