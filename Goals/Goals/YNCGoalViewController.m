@@ -58,12 +58,16 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
     _userColors = [[NSMutableDictionary alloc] init];
     _logResults = [[NSMutableArray alloc] init];
     _logsByDate = [[NSMutableDictionary alloc] init];
+    self.userColors[[PFUser currentUser].objectId] =[YNCColor userColors][0];
     int count = 0;
+    int userColorLimit = (int)[YNCColor userColors].count - 1;
     for (YNCUser *user in self.goal.users) {
-      self.userColors[user.pfID] = [YNCColor userColors][count];
-      count = count + 1;
+      if (![user.pfID isEqualToString:[PFUser currentUser].objectId]) {
+        int index = count % userColorLimit + 1;
+        self.userColors[user.pfID] = [YNCColor userColors][index];
+        count = count + 1;
+      }
     }
-
   }
   return self;
 }
@@ -257,7 +261,7 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
       self.logsByDate[dayNumber] = [[NSMutableArray alloc] init];
     }
     [(NSMutableArray *)self.logsByDate[dayNumber] addObject:log];
-    if (todaysNumber == log.dayNumber) {
+    if (todaysNumber == log.dayNumber && [log.user.pfID isEqualToString:[PFUser currentUser].objectId]) {
       self.todayLog = log;
       [self setTodayLogDone];
     }
