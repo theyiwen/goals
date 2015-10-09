@@ -14,6 +14,7 @@
 #import "YNCGoal.h"
 #import "YNCFont.h"
 #import "YNCColor.h"
+#import "YNCUser.h"
 
 static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
 
@@ -78,6 +79,34 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
   YNCGoal *goal = [self goalAtIndexPath:indexPath];
   [cell setTitle:goal.title.uppercaseString];
   [cell setScore:goal.userSums[[PFUser currentUser].objectId]];
+  
+  NSArray *members;
+  members = [goal.userSums keysSortedByValueUsingComparator: ^(id obj1, id obj2) {
+    
+    // this doesnt
+    if ([obj1 integerValue] > [obj2 integerValue]) {
+      
+      return (NSComparisonResult)NSOrderedDescending;
+    }
+    if ([obj1 integerValue] < [obj2 integerValue]) {
+      
+      return (NSComparisonResult)NSOrderedAscending;
+    }
+    
+    return (NSComparisonResult)NSOrderedSame;
+  }];
+  
+  NSMutableArray *images;
+  NSInteger count = goal.users.count;
+  for (NSInteger i = 0; i < MIN(3, count); i++) {
+    NSURL *url = [NSURL URLWithString:((YNCUser *)goal.usersByID[members[i]]).photoUrl];
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    UIImage *img = [[UIImage alloc] initWithData:data];
+    [images addObject:img];
+  }
+//  [cell setMembersWithImages:[images copy] count:count];
+
+  
   return cell;
 }
 

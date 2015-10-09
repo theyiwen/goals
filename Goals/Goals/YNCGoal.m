@@ -22,6 +22,7 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
 @interface YNCGoal()
 
 @property (nonatomic, readwrite) NSArray *users;
+@property (nonatomic, readwrite) NSDictionary *usersByID;
 @property (strong, readwrite) PFObject *pfObject;
 
 @end
@@ -74,6 +75,17 @@ const struct YNCGoalPFKey YNCGoalPFKey = {
     _users = [usersBuilder copy];
   }
   return _users;
+}
+
+- (NSDictionary *)usersByID {
+  if (!_usersByID) {
+    NSMutableDictionary *usersByID = [[NSMutableDictionary alloc] init];
+    for (YNCUser *user in self.users) {
+      usersByID[user.pfID] = user;
+    }
+    _usersByID = [usersByID copy];
+  }
+  return _usersByID;
 }
 
 - (NSDate *)startDate {

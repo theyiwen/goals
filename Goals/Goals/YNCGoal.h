@@ -27,6 +27,7 @@ typedef enum {
 
 @property (strong, nonatomic, readonly) PFObject *pfObject;
 @property (strong, nonatomic, readonly) NSArray *users;
+@property (strong, nonatomic, readonly) NSDictionary *usersByID;
 @property (strong, nonatomic) NSMutableDictionary *userSums;
 @property (strong, nonatomic) NSArray *allLogs;
 @property (nonatomic, copy) NSString *title;

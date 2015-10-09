@@ -13,6 +13,7 @@
 
 @interface YNCListViewCell ()
 
+@property (strong, nonatomic) YNCAutoLayout *autoLayout;
 @property (strong, nonatomic) UIView *container;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *scoreLabel;
@@ -42,12 +43,13 @@
 
     [self.contentView addSubview:container];
     [container addSubview:self.titleLabel];
+    [container addSubview:self.membersContainer];
     [container addSubview:self.scoreLabel];
     
     
     
     NSDictionary *views = NSDictionaryOfVariableBindings(container, titleLabel, membersContainer, scoreLabel);
-    YNCAutoLayout *autoLayout =[[YNCAutoLayout alloc] initWithViews:views];
+    YNCAutoLayout *autoLayout = self.autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
 
     [autoLayout addVflConstraint:@"H:|-16-[titleLabel][membersContainer][scoreLabel]-16-|" toView:self.container];
     [autoLayout addVflConstraint:@"H:|[container]|" toView:self.contentView];
@@ -75,8 +77,38 @@
 }
 
 - (void)setMembersWithImages:(NSArray *)images
-                       count:(int)count {
-  
+                       count:(NSInteger)count {
+  UIImageView *lastImageView;
+  for (NSInteger i = 0; i < MIN(3, count); i++) {
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.image = images[i];
+   
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.clipsToBounds = YES;
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    imageView.layer.cornerRadius = 24;
+    
+    [self.membersContainer addSubview:imageView]; /*
+    [self.autoLayout addConstraintForView:photo withSize:CGSizeMake(48, 48) toView:photo];
+    if (count == 0) {
+      [self.autoLayout addConstraintWithItem:photo
+                                      toItem:self.goalMembersAvatarStrip
+                         equivalentAttribute:NSLayoutAttributeLeft
+                                  multiplier:1
+                                    constant:0
+                                      toView:self.goalMembersAvatarStrip];
+    }
+    if (lastPhoto) {
+      [self.autoLayout addConstraintWithItem:photo
+                                      toItem:lastPhoto
+                         equivalentAttribute:NSLayoutAttributeLeft
+                                  multiplier:1
+                                    constant:30
+                                      toView:self.goalMembersAvatarStrip];
+      
+    }
+    */
+  }
 }
 
 @end
