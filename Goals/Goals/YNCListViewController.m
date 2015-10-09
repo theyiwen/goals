@@ -86,25 +86,26 @@ static NSString * const kYNCListViewCellIdentifier = @"cellIdentifier";
     // this doesnt
     if ([obj1 integerValue] > [obj2 integerValue]) {
       
-      return (NSComparisonResult)NSOrderedDescending;
+      return (NSComparisonResult)NSOrderedAscending;
     }
     if ([obj1 integerValue] < [obj2 integerValue]) {
       
-      return (NSComparisonResult)NSOrderedAscending;
+      return (NSComparisonResult)NSOrderedDescending;
     }
     
     return (NSComparisonResult)NSOrderedSame;
   }];
   
-  NSMutableArray *images;
+  NSMutableArray *images = [[NSMutableArray alloc] init];;
   NSInteger count = goal.users.count;
   for (NSInteger i = 0; i < MIN(3, count); i++) {
-    NSURL *url = [NSURL URLWithString:((YNCUser *)goal.usersByID[members[i]]).photoUrl];
+    YNCUser *user = (YNCUser *) goal.usersByID[members[i]];
+    NSURL *url = [NSURL URLWithString:user.photoUrl];
     NSData *data = [NSData dataWithContentsOfURL:url];
     UIImage *img = [[UIImage alloc] initWithData:data];
     [images addObject:img];
   }
-//  [cell setMembersWithImages:[images copy] count:count];
+  [cell setMembersWithImages:[images copy] count:count];
 
   
   return cell;

@@ -35,8 +35,6 @@
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.font = [UIFont fontWithName:[YNCFont semiBoldFontName] size:24];
     
-    membersContainer.backgroundColor = [UIColor redColor];
-    
     self.scoreLabel.textAlignment = NSTextAlignmentRight;
     self.scoreLabel.font = [UIFont fontWithName:[YNCFont regularFontName] size:24];
     self.scoreLabel.textColor = [YNCColor tealColor];
@@ -51,10 +49,11 @@
     NSDictionary *views = NSDictionaryOfVariableBindings(container, titleLabel, membersContainer, scoreLabel);
     YNCAutoLayout *autoLayout = self.autoLayout = [[YNCAutoLayout alloc] initWithViews:views];
 
-    [autoLayout addVflConstraint:@"H:|-16-[titleLabel][membersContainer][scoreLabel]-16-|" toView:self.container];
+    [autoLayout addVflConstraint:@"H:|-16-[titleLabel][membersContainer(104)]-16-[scoreLabel]-16-|" toView:self.container];
+        [autoLayout addVflConstraint:@"V:[membersContainer(50)]" toView:self.container];
     [autoLayout addVflConstraint:@"H:|[container]|" toView:self.contentView];
     [autoLayout addVflConstraint:@"V:|[container]|" toView:self.contentView];
-    [autoLayout addConstraintForViews:@[container, titleLabel, scoreLabel]
+    [autoLayout addConstraintForViews:@[container, titleLabel, membersContainer, scoreLabel]
                   equivalentAttribute:NSLayoutAttributeCenterY
                                toView:self.container];
   }
@@ -82,33 +81,41 @@
   for (NSInteger i = 0; i < MIN(3, count); i++) {
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.image = images[i];
-   
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.clipsToBounds = YES;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    imageView.layer.cornerRadius = 24;
+    imageView.layer.cornerRadius = 16;
     
-    [self.membersContainer addSubview:imageView]; /*
-    [self.autoLayout addConstraintForView:photo withSize:CGSizeMake(48, 48) toView:photo];
-    if (count == 0) {
-      [self.autoLayout addConstraintWithItem:photo
-                                      toItem:self.goalMembersAvatarStrip
+    [self.membersContainer addSubview:imageView];
+    [self.autoLayout addConstraintForView:imageView withSize:CGSizeMake(32, 32) toView:imageView];
+    if (i == 0) {
+      [self.autoLayout addConstraintWithItem:imageView
+                                      toItem:self.membersContainer
                          equivalentAttribute:NSLayoutAttributeLeft
                                   multiplier:1
                                     constant:0
-                                      toView:self.goalMembersAvatarStrip];
+                                      toView:self.membersContainer];
     }
-    if (lastPhoto) {
-      [self.autoLayout addConstraintWithItem:photo
-                                      toItem:lastPhoto
+    if (lastImageView) {
+      [self.autoLayout addConstraintWithItem:imageView
+                                      toItem:lastImageView
                          equivalentAttribute:NSLayoutAttributeLeft
                                   multiplier:1
-                                    constant:30
-                                      toView:self.goalMembersAvatarStrip];
+                                    constant:36
+                                      toView:self.membersContainer];
       
     }
-    */
+    [self.autoLayout addConstraintWithItem:imageView
+                                    toItem:self.membersContainer
+                       equivalentAttribute:NSLayoutAttributeCenterY
+                                multiplier:1
+                                  constant:0
+                                    toView:self.membersContainer];
+    lastImageView = imageView;
   }
+  
+  
+  // todo (calvin): handle count >= 3
 }
 
 @end
