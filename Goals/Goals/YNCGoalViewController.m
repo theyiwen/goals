@@ -31,7 +31,7 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
 @property (strong, nonatomic) UIView *container;
 @property (strong, nonatomic) UIView *usersContainer;
 @property (strong, nonatomic) UITableView *logTable;
-@property (strong, nonatomic) NSMutableDictionary *usersLabels;
+@property (strong, nonatomic) NSMutableDictionary *usersLabelsByIndex;
 @property (strong, nonatomic) UIButton *addLog;
 @property (strong, nonatomic) UIButton *addNote;
 @property (strong, nonatomic) YNCCalendarView *calendar;
@@ -93,8 +93,8 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
                                                                                 logs:self.allLogs
                                                                           userColors:self.userColors];
 
-  self.usersLabels = [[NSMutableDictionary alloc] init];
-  
+  self.usersLabelsByIndex = [[NSMutableDictionary alloc] init];
+
   [self.view addSubview:scrollView];
   [scrollView addSubview:container];
   [container addSubview:name];
@@ -153,7 +153,8 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
   NSInteger count = 0;
   for (YNCUser *user in self.goal.users) {
     YNCGoalUserView *label = [[YNCGoalUserView alloc] initWithUser:user color:(UIColor *)self.userColors[user.pfID]];
-    self.usersLabels[user.pfID] = label;
+    label.tag = count;
+    self.usersLabelsByIndex[@(count)] = label;
     [self.usersContainer addSubview:label];
     if (count == 0) {
       [autoLayout addConstraintWithItem:label
@@ -242,10 +243,6 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
                self.logTable.contentSize.height);
 }
 
-- (YNCGoalUserView *)userLabelForUser:(NSString *)userID {
-  return (YNCGoalUserView *)self.usersLabels[userID];
-}
-
 - (void)processLogs {
   NSInteger todaysNumber = [[YNCDate shared] dayNumberFromDate:[NSDate date] start:self.goal.startDate];
   self.calendar.logs = self.allLogs;
@@ -266,11 +263,19 @@ static NSString * const kYNCLogTableCellId = @"cellIdentifier";
       [self setTodayLogDone];
     }
   }
-  for (NSString *userID in self.userSums) {
-    [self userLabelForUser:userID].score = self.userSums[userID];
+  // sorting sums
+  NSArray* sortedKeys = [self.userSums keysSortedByValueUsingSelector:@selector(compare:)];
+  sortedKeys = [[sortedKeys reverseObjectEnumerator] allObjects];
+  NSInteger count = 0;
+  for (NSString *userId in sortedKeys) {
+    YNCGoalUserView *view = self.usersLabelsByIndex[@(count)];
+    YNCUser *user = self.goal.usersByID[userId];
+    [view setUser:user];
+    [view setScore:self.userSums[userId]];
+    count = count + 1;
   }
-
 }
+
 
 - (void)setGoalDetails {
   self.title =self.goal.title.uppercaseString;
