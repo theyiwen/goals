@@ -11,7 +11,9 @@
 @interface YNCListViewCell : UITableViewCell
 
 
--(void)setTitle:(NSString *)title;
+- (void)setTitle:(NSString *)title;
 - (void)setScore:(NSNumber *)score;
+- (void)setMembersWithImages:(NSArray *)images
+                       count:(int)count;
 
 @end
